@@ -1,0 +1,3 @@
+rootProject.name = 'iBeaconServerManager'
+
+//rootProject.path = new org.gradle.util.Path('output/')
