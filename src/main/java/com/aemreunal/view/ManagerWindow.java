@@ -19,6 +19,7 @@ package com.aemreunal.view;
 import java.awt.*;
 import java.util.prefs.Preferences;
 import javax.swing.*;
+import com.aemreunal.view.project.ProjectTab;
 import com.aemreunal.view.user.UserTab;
 
 public class ManagerWindow extends JFrame {
@@ -42,6 +43,7 @@ public class ManagerWindow extends JFrame {
 
     private void addPanels() {
         this.tabbedPane.addTab("User", new UserTab());
+        this.tabbedPane.addTab("Project", new ProjectTab());
         // Other Panels
         // Other Panels
         // Other Panels

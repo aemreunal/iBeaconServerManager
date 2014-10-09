@@ -20,9 +20,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class ItemTable extends JTable {
-    public static final String[] USER_TABLE_COL_NAMES     = { "User ID", "Username" };
-    public static final String[] PROJECTS_TABLE_COL_NAMES = { "Project ID", "Name", "Description", "Creation Date" };
-    public static final String[] BEACONS_TABLE_COL_NAMES  = { "Beacon ID", "UUID", "Major", "Minor",
+    public static final String[] USER_TABLE_COL_NAMES    = { "User ID", "Username" };
+    public static final String[] PROJECT_TABLE_COL_NAMES = { "Project ID", "Name", "Description", "Creation Date" };
+    public static final String[] BEACONS_TABLE_COL_NAMES = { "Beacon ID", "UUID", "Major", "Minor",
             "Description", "Group ID", "Scenario ID", "Creation Date" };
 
 

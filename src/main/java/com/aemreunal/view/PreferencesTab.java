@@ -32,7 +32,6 @@ public class PreferencesTab extends JPanel {
 
     public PreferencesTab() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        setLayout(new BorderLayout(5, 5));
         createComponents();
         addComponents();
     }

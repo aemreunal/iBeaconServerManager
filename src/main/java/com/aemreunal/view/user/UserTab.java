@@ -16,22 +16,16 @@ package com.aemreunal.view.user;
  ***************************
  */
 
-import javax.swing.*;
 import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
+import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 
-public class UserTab extends JPanel {
-    private JTabbedPane tabbedPane;
+public class UserTab extends CommonTab {
 
-    public UserTab() {
-        this.tabbedPane = new JTabbedPane();
-        addPanels();
-        add(tabbedPane);
-    }
-
-    private void addPanels() {
+    @Override
+    protected void addPanels() {
         addRegisterPanel();
         addGetUserPanel();
         addDeleteUserPanel();
@@ -50,7 +44,7 @@ public class UserTab extends JPanel {
         ResponsePanel responsePanel = new ResponsePanel();
         commonPanel.setTopPanel(new GetUserPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
-        this.tabbedPane.addTab("Get User", commonPanel);
+        this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteUserPanel() {
@@ -58,7 +52,7 @@ public class UserTab extends JPanel {
         ResponsePanel responsePanel = new ResponsePanel();
         commonPanel.setTopPanel(new DeleteUserPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
-        this.tabbedPane.addTab("Delete User", commonPanel);
+        this.tabbedPane.addTab("Delete", commonPanel);
     }
 
     public static String[][] convertUserJsonToTable(JSONObject user) {
