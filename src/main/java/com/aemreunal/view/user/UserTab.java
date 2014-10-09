@@ -22,10 +22,10 @@ import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 
-public class UserPanel extends JPanel {
+public class UserTab extends JPanel {
     private JTabbedPane tabbedPane;
 
-    public UserPanel() {
+    public UserTab() {
         this.tabbedPane = new JTabbedPane();
         addPanels();
         add(tabbedPane);
@@ -33,7 +33,7 @@ public class UserPanel extends JPanel {
 
     private void addPanels() {
         addRegisterPanel();
-        addQueryUserPanel();
+        addGetUserPanel();
     }
 
     private void addRegisterPanel() {
@@ -44,7 +44,7 @@ public class UserPanel extends JPanel {
         this.tabbedPane.addTab("Register", commonPanel);
     }
 
-    private void addQueryUserPanel() {
+    private void addGetUserPanel() {
         CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
         commonPanel.setTopPanel(new GetUserPanel(responsePanel));

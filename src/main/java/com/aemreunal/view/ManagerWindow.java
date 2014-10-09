@@ -17,15 +17,19 @@ package com.aemreunal.view;
  */
 
 import java.awt.*;
+import java.util.prefs.Preferences;
 import javax.swing.*;
-import com.aemreunal.view.user.UserPanel;
+import com.aemreunal.view.user.UserTab;
 
 public class ManagerWindow extends JFrame {
+    public static final Dimension MINIMUM_SIZE = new Dimension(600, 600);
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
+    private Preferences preferences;
 
-    public ManagerWindow() {
+    public ManagerWindow(Preferences preferences) {
         super("iBeacon Server Manager");
+        this.preferences = preferences;
         initComponents();
         addPanels();
         setWindowAttributes();
@@ -37,14 +41,14 @@ public class ManagerWindow extends JFrame {
     }
 
     private void addPanels() {
-        this.tabbedPane.addTab("User", new UserPanel());
+        this.tabbedPane.addTab("User", new UserTab());
     }
 
     private void setWindowAttributes() {
         this.mainPanel.add(tabbedPane);
         add(this.mainPanel);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(800, 600));
+        this.setMinimumSize(MINIMUM_SIZE);
         this.setVisible(true);
     }
 }

@@ -17,6 +17,7 @@ package com.aemreunal;
  */
 
 import java.io.IOException;
+import java.util.prefs.Preferences;
 import com.aemreunal.view.ManagerWindow;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -34,12 +35,33 @@ import com.mashape.unirest.http.exceptions.UnirestException;
  *
  */
 
-public class Manager {
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
-        new ManagerWindow();
+public class iBeaconServerManager {
+    private static Preferences   preferences;
+    private static ManagerWindow managerWindow;
 
-//        testRequest();
+    public static void main(String[] args) {
+        new iBeaconServerManager();
+    }
+
+    public iBeaconServerManager() {
+        preferences = Preferences.userRoot().node(this.getClass().getName());
+//        try {
+//            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+//        } catch (KeyStoreException e) {
+//            System.err.println("Unable to get KeyStore instance!");
+//            e.printStackTrace();
+//        }
+        Unirest.setDefaultHeader("Content-Type", "application/json");
+        Unirest.setDefaultHeader("Accept", "application/json");
+        this.managerWindow = new ManagerWindow(preferences);
+    }
+
+    public static Preferences getPreferences() {
+        return preferences;
+    }
+
+    public static ManagerWindow getManagerWindow() {
+        return managerWindow;
     }
 
     private static void testRequest() {
