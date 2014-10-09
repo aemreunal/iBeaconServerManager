@@ -16,6 +16,8 @@ package com.aemreunal.view.project;
  ***************************
  */
 
+import java.util.Date;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
@@ -27,6 +29,7 @@ public class ProjectTab extends CommonTab {
     @Override
     protected void addPanels() {
         addCreateProjectPanel();
+        addGetProjectPanel();
     }
 
     private void addCreateProjectPanel() {
@@ -37,12 +40,41 @@ public class ProjectTab extends CommonTab {
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
+    private void addGetProjectPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new GetProjectPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Get", commonPanel);
+    }
+
     public static String[][] convertProjectCreateJsonToTable(JSONObject createdProject) {
         String[][] projectTable = new String[1][ItemTable.PROJECT_TABLE_COL_NAMES.length];
         projectTable[0][0] = createdProject.get("projectId").toString();
         projectTable[0][1] = createdProject.get("name").toString();
         projectTable[0][2] = createdProject.get("description").toString();
         projectTable[0][3] = "";
+        return projectTable;
+    }
+
+    public static String[][] convertProjectJsonToTable(JSONObject project) {
+        String[][] projectTable = new String[1][ItemTable.PROJECT_TABLE_COL_NAMES.length];
+        projectTable[0][0] = project.get("projectId").toString();
+        projectTable[0][1] = project.get("name").toString();
+        projectTable[0][2] = project.get("description").toString();
+        projectTable[0][3] = new Date(Long.parseLong(project.get("creationDate").toString())).toString();
+        return projectTable;
+    }
+
+    public static String[][] convertProjectsJsonToTable(JSONArray projects) {
+        String[][] projectTable = new String[projects.length()][ItemTable.PROJECT_TABLE_COL_NAMES.length];
+        for (int i = 0; i < projects.length(); i++) {
+            JSONObject project = projects.getJSONObject(i);
+            projectTable[i][0] = project.get("projectId").toString();
+            projectTable[i][1] = project.get("name").toString();
+            projectTable[i][2] = project.get("description").toString();
+            projectTable[i][3] = new Date(Long.parseLong(project.get("creationDate").toString())).toString();
+        }
         return projectTable;
     }
 }

@@ -33,4 +33,16 @@ public class ProjectManager extends RestManager {
     private static String getProjectCreateJson(String name, String description) {
         return "{\"name\":\"" + name + "\",\"description\":\"" + description + "\"}";
     }
+
+    public static HttpResponse<JsonNode> getAllProjects() {
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects")
+                                     .getHttpRequest();
+        return performRequest(request);
+    }
+
+    public static HttpResponse<JsonNode> getProject(String projectId) {
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId)
+                                     .getHttpRequest();
+        return performRequest(request);
+    }
 }
