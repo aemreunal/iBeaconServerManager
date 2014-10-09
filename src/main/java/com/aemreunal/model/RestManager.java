@@ -16,62 +16,32 @@ package com.aemreunal.model;
  ***************************
  */
 
-import com.aemreunal.iBeaconServerManager;
+import javax.swing.*;
+import org.json.JSONObject;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequest;
 
 public class RestManager {
-    public static final String SERVER_ADDRESS_KEY     = "ServerAddress";
-    public static final String DEFAULT_SERVER_ADDRESS = "http://localhost:8080";
-    public static final String USERNAME_KEY           = "Username";
-    public static final String DEFAULT_USERNAME       = "testuser";
-    public static final String PASSWORD_KEY           = "Password";
-    public static final String DEFAULT_PASSWORD       = "testpassword";
 
-    protected static String getServerAddress() {
-        return iBeaconServerManager.getPreferences().get(SERVER_ADDRESS_KEY, DEFAULT_SERVER_ADDRESS);
+    protected static HttpResponse<JsonNode> performRequest(HttpRequest request) {
+        try {
+            HttpResponse<JsonNode> jsonResponse = request.asJson();
+            if (jsonResponse.getCode() >= 400 && jsonResponse.getCode() < 500) {
+                JOptionPane.showMessageDialog(null, getErrorMessage(jsonResponse.getBody().getObject()), "An error ocurred!", JOptionPane.ERROR_MESSAGE);
+            }
+            return jsonResponse;
+        } catch (UnirestException e) {
+            System.err.println("A Unirest exception ocurred!");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+            throw new NullPointerException();
+        }
     }
 
-    protected static void setServerAddress(String serverAddress) {
-        iBeaconServerManager.getPreferences().put(SERVER_ADDRESS_KEY, serverAddress);
-    }
-
-    protected static String getUsername() {
-        return iBeaconServerManager.getPreferences().get(USERNAME_KEY, DEFAULT_USERNAME);
-
-//        KeyStore keyStore = iBeaconServerManager.getKeyStore();
-//        // get user password and file input stream
-//        char[] password = "password".toCharArray();
-//        java.io.FileInputStream fis = new java.io.FileInputStream(keyStore.);
-//        keyStore.load(fis, password);
-//        fis.close();
-//
-//        // get my private key
-//        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
-//                keyStore.getEntry("privateKeyAlias", password);
-//        PrivateKey myPrivateKey = pkEntry.getPrivateKey();
-//
-//        // save my secret key
-//        javax.crypto.SecretKey mySecretKey;
-//        KeyStore.SecretKeyEntry skEntry =
-//                new KeyStore.SecretKeyEntry(mySecretKey);
-//        keyStore.setEntry("secretKeyAlias", skEntry, password);
-//
-//        // store away the keystore
-//        java.io.FileOutputStream fos =
-//                new java.io.FileOutputStream("newKeyStoreName");
-//        keyStore.store(fos, password);
-//        fos.close();
-    }
-
-    protected static void setUsername(String username) {
-        iBeaconServerManager.getPreferences().put(USERNAME_KEY, username);
-    }
-
-    protected static String getPassword() {
-        return iBeaconServerManager.getPreferences().get(PASSWORD_KEY, DEFAULT_PASSWORD);
-    }
-
-    protected static void setPassword(String password) {
-        iBeaconServerManager.getPreferences().put(USERNAME_KEY, password);
+    private static String getErrorMessage(JSONObject object) {
+        return "An error ocurred with the last request.\nThe cause of error: " + object.getString("reason") + "\nError message: " + object.getString("error");
     }
 }
 

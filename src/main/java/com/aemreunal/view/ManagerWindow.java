@@ -25,11 +25,11 @@ public class ManagerWindow extends JFrame {
     public static final Dimension MINIMUM_SIZE = new Dimension(600, 600);
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
-    private Preferences preferences;
+//    private Preferences preferences;
 
     public ManagerWindow(Preferences preferences) {
         super("iBeacon Server Manager");
-        this.preferences = preferences;
+//        this.preferences = preferences;
         initComponents();
         addPanels();
         setWindowAttributes();
@@ -42,6 +42,11 @@ public class ManagerWindow extends JFrame {
 
     private void addPanels() {
         this.tabbedPane.addTab("User", new UserTab());
+        // Other Panels
+        // Other Panels
+        // Other Panels
+        // Other Panels
+        this.tabbedPane.addTab("Preferences", new PreferencesTab());
     }
 
     private void setWindowAttributes() {

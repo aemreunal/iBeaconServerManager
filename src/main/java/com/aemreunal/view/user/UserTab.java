@@ -34,6 +34,7 @@ public class UserTab extends JPanel {
     private void addPanels() {
         addRegisterPanel();
         addGetUserPanel();
+        addDeleteUserPanel();
     }
 
     private void addRegisterPanel() {
@@ -50,6 +51,14 @@ public class UserTab extends JPanel {
         commonPanel.setTopPanel(new GetUserPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Get User", commonPanel);
+    }
+
+    private void addDeleteUserPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new DeleteUserPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Delete User", commonPanel);
     }
 
     public static String[][] convertUserJsonToTable(JSONObject user) {
