@@ -27,8 +27,8 @@ public class ResponsePanel extends JPanel {
     public ResponsePanel() {
         setLayout(new BorderLayout(3, 3));
         scrollPane = new JScrollPane();
-        this.statusCodeLabel = new JLabel("*** Response code: - ***");
-        this.statusCodeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        this.statusCodeLabel = new JLabel("Response code: -");
+        this.statusCodeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         add(this.statusCodeLabel, BorderLayout.NORTH);
         this.itemTable = new ItemTable(new String[0][0], new String[0]);
         scrollPane.setViewportView(this.itemTable);
@@ -36,7 +36,7 @@ public class ResponsePanel extends JPanel {
     }
 
     public void showResponseCode(int httpStatusCode) {
-        this.statusCodeLabel.setText("*** Response code: " + httpStatusCode + " ***");
+        this.statusCodeLabel.setText("Response code: " + httpStatusCode);
     }
 
     public void showResponseTable(String[] columnNames, String[][] items) {
