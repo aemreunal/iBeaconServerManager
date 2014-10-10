@@ -34,14 +34,12 @@ public class DeleteUserPanel extends JPanel {
         super(new GridBagLayout());
         createComponents(responsePanel);
         addComponents();
-
     }
 
     private void createComponents(ResponsePanel responsePanel) {
-        DeleteUserActionListener actionListener = new DeleteUserActionListener(responsePanel);
         usernameField = new JTextField(10);
         deleteUserButton = new JButton("Delete user");
-        deleteUserButton.addActionListener(actionListener);
+        deleteUserButton.addActionListener(new DeleteUserActionListener(responsePanel));
     }
 
     private void addComponents() {

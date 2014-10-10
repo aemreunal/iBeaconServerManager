@@ -45,4 +45,10 @@ public class ProjectManager extends RestManager {
                                      .getHttpRequest();
         return performRequest(request);
     }
+
+    public static HttpResponse<JsonNode> deleteProject(String projectId) {
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "?confirm=yes")
+                                     .getHttpRequest();
+        return performRequest(request);
+    }
 }

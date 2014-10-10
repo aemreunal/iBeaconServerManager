@@ -30,6 +30,7 @@ public class ProjectTab extends CommonTab {
     protected void addPanels() {
         addCreateProjectPanel();
         addGetProjectPanel();
+        addDeleteProjectPanel();
     }
 
     private void addCreateProjectPanel() {
@@ -46,6 +47,14 @@ public class ProjectTab extends CommonTab {
         commonPanel.setTopPanel(new GetProjectPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
+    }
+
+    private void addDeleteProjectPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new DeleteProjectPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Delete", commonPanel);
     }
 
     public static String[][] convertProjectCreateJsonToTable(JSONObject createdProject) {
