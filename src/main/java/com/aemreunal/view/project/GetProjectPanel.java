@@ -28,25 +28,37 @@ import com.mashape.unirest.http.JsonNode;
 
 public class GetProjectPanel extends JPanel {
     private JTextField projectIdField;
+    private JTextField projectNameField;
     private JButton getButton;
 
     public GetProjectPanel(ResponsePanel responsePanel) {
-        super(new GridBagLayout());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
     }
 
     private void createComponents(ResponsePanel responsePanel) {
-        projectIdField = new JTextField(10);
+        projectIdField = new JTextField(5);
         projectIdField.addActionListener(new GetActionListener(responsePanel));
-        getButton = new JButton("Create");
+        projectNameField = new JTextField(10);
+        projectNameField.addActionListener(new GetActionListener(responsePanel));
+        getButton = new JButton("Get");
         getButton.addActionListener(new GetActionListener(responsePanel));
     }
 
     private void addComponents() {
-        this.add(new JLabel("Project ID (leave blank to get all):"));
-        this.add(projectIdField);
-        this.add(getButton);
+        JPanel projectIdPanel = new JPanel(new GridBagLayout());
+        projectIdPanel.add(new JLabel("Project ID (leave blank to get all):"));
+        projectIdPanel.add(projectIdField);
+        projectIdPanel.add(getButton);
+        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
+        this.add(projectIdPanel);
+
+        JPanel projectNamePanel = new JPanel(new GridBagLayout());
+        projectNamePanel.add(new JLabel("Search by project name:"));
+        projectNamePanel.add(projectNameField);
+        projectNamePanel.setMaximumSize(projectNamePanel.getPreferredSize());
+        this.add(projectNamePanel);
     }
 
     private class GetActionListener implements ActionListener {
@@ -60,7 +72,7 @@ public class GetProjectPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
             if (projectIdField.getText().trim().equals("")) {
-                response = ProjectManager.getAllProjects();
+                response = ProjectManager.getAllProjects(projectNameField.getText().trim());
             } else {
                 response = ProjectManager.getProject(projectIdField.getText().trim());
             }

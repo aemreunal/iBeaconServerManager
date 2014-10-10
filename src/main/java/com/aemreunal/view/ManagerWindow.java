@@ -23,7 +23,7 @@ import com.aemreunal.view.project.ProjectTab;
 import com.aemreunal.view.user.UserTab;
 
 public class ManagerWindow extends JFrame {
-    public static final Dimension MINIMUM_SIZE = new Dimension(600, 600);
+    public static final Dimension MINIMUM_SIZE = new Dimension(600, 650);
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
 //    private Preferences preferences;

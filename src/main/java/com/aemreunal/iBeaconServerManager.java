@@ -53,7 +53,7 @@ public class iBeaconServerManager {
 //        }
         Unirest.setDefaultHeader("Content-Type", "application/json");
         Unirest.setDefaultHeader("Accept", "application/json");
-        this.managerWindow = new ManagerWindow(preferences);
+        iBeaconServerManager.managerWindow = new ManagerWindow(preferences);
     }
 
     public static Preferences getPreferences() {
