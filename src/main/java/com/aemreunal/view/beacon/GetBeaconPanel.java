@@ -98,24 +98,27 @@ public class GetBeaconPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
-            if(projectIdField.getText().trim().equals("")) {
+            String projectId = projectIdField.getText().trim();
+            if(projectId.equals("")) {
                 return;
             }
-            if (beaconIdField.getText().trim().equals("")) {
+            String beaconId = beaconIdField.getText().trim();
+            if (beaconId.equals("")) {
                 response = BeaconManager.getAllBeacons(beaconUUIDField.getText().trim(),
                                                        beaconMajorField.getText().trim(),
                                                        beaconMinorField.getText().trim(),
-                                                       projectIdField.getText().trim());
+                                                       projectId);
             } else {
-                response = BeaconManager.getBeacon(beaconIdField.getText().trim(), projectIdField.getText().trim());
+                response = BeaconManager.getBeacon(beaconId, projectId);
             }
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 200) {
                 String[][] beaconResponse;
-                if (response.getBody().isArray()) {
-                    beaconResponse = BeaconTab.convertBeaconsJsonToTable(response.getBody().getArray());
+                JsonNode responseBody = response.getBody();
+                if (responseBody.isArray()) {
+                    beaconResponse = BeaconTab.convertBeaconsJsonToTable(responseBody.getArray());
                 } else {
-                    beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
+                    beaconResponse = BeaconTab.convertBeaconJsonToTable(responseBody.getObject());
                 }
                 responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
             }

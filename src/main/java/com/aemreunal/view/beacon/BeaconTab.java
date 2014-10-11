@@ -30,6 +30,7 @@ public class BeaconTab extends CommonTab {
     protected void addPanels() {
         addCreateBeaconPanel();
         addGetBeaconPanel();
+        addDeleteBeaconPanel();
     }
 
     private void addCreateBeaconPanel() {
@@ -48,16 +49,14 @@ public class BeaconTab extends CommonTab {
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
-    /*
-     * 0  "Beacon ID",     *   "beaconId" : 2,
-     * 1  "UUID",          *   "uuid" : "E686DF2A-C0E0-3777-819A-0526356BD1B6",
-     * 2  "Major",         *   "major" : "6",
-     * 3  "Minor",         *   "minor" : "799",
-     * 4  "Description",   *   "description" : "Et iusto nihil in. Veniam provident eaque labore ratione aperiam.",
-     * 5  "Group ID",      *   "group" : null
-     * 6  "Scenario ID",   *   "scenario" : null,
-     * 7  "Creation Date"  *   "creationDate" : 1413014830179,
-    */
+    private void addDeleteBeaconPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new DeleteBeaconPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Delete", commonPanel);
+    }
+
     public static String[][] convertBeaconJsonToTable(JSONObject beacon) {
         String[][] beaconTable = new String[1][ItemTable.BEACONS_TABLE_COL_NAMES.length];
         parseBeaconJson(beacon, 0, beaconTable);
@@ -73,6 +72,16 @@ public class BeaconTab extends CommonTab {
         return beaconTable;
     }
 
+    /*
+     * 0  "Beacon ID",     *   "beaconId" : 2,
+     * 1  "UUID",          *   "uuid" : "E686DF2A-C0E0-3777-819A-0526356BD1B6",
+     * 2  "Major",         *   "major" : "6",
+     * 3  "Minor",         *   "minor" : "799",
+     * 4  "Description",   *   "description" : "Et iusto nihil in. Veniam provident eaque labore ratione aperiam.",
+     * 5  "Group ID",      *   "group" : null
+     * 6  "Scenario ID",   *   "scenario" : null,
+     * 7  "Creation Date"  *   "creationDate" : 1413014830179,
+    */
     private static void parseBeaconJson(JSONObject beacon, int index, String[][] beaconTable) {
         beaconTable[index][0] = beacon.get("beaconId").toString();
         beaconTable[index][1] = beacon.get("uuid").toString();
