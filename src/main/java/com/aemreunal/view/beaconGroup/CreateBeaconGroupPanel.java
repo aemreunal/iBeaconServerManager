@@ -1,4 +1,4 @@
-package com.aemreunal.view.beacon;
+package com.aemreunal.view.beaconGroup;
 
 /*
  ***************************
@@ -20,30 +20,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconManager;
+import com.aemreunal.model.BeaconGroupManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class CreateBeaconPanel extends JPanel {
-    private JTextField uuidField;
-    private JTextField majorField;
-    private JTextField minorField;
+public class CreateBeaconGroupPanel extends JPanel {
+    private JTextField nameField;
     private JTextField descriptionField;
     private JTextField projectIdField;
     private JButton    createButton;
 
-    public CreateBeaconPanel(ResponsePanel responsePanel) {
+    public CreateBeaconGroupPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
     }
 
     private void createComponents(ResponsePanel responsePanel) {
-        uuidField = new JTextField(10);
-        majorField = new JTextField(10);
-        minorField = new JTextField(10);
+        nameField = new JTextField(10);
         descriptionField = new JTextField(10);
         projectIdField = new JTextField(5);
         createButton = new JButton("Create");
@@ -57,23 +53,11 @@ public class CreateBeaconPanel extends JPanel {
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel uuidPanel = new JPanel(new GridBagLayout());
-        uuidPanel.add(new JLabel("UUID:"));
-        uuidPanel.add(uuidField);
-        uuidPanel.setMinimumSize(uuidPanel.getPreferredSize());
-        this.add(uuidPanel);
-
-        JPanel majorPanel = new JPanel(new GridBagLayout());
-        majorPanel.add(new JLabel("Major:"));
-        majorPanel.add(majorField);
-        majorPanel.setMinimumSize(majorPanel.getPreferredSize());
-        this.add(majorPanel);
-
-        JPanel minorPanel = new JPanel(new GridBagLayout());
-        minorPanel.add(new JLabel("Minor:"));
-        minorPanel.add(minorField);
-        minorPanel.setMinimumSize(minorPanel.getPreferredSize());
-        this.add(minorPanel);
+        JPanel namePanel = new JPanel(new GridBagLayout());
+        namePanel.add(new JLabel("Name:"));
+        namePanel.add(nameField);
+        namePanel.setMinimumSize(namePanel.getPreferredSize());
+        this.add(namePanel);
 
         JPanel descriptionPanel = new JPanel(new GridBagLayout());
         descriptionPanel.add(new JLabel("Description:"));
@@ -96,16 +80,18 @@ public class CreateBeaconPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            HttpResponse<JsonNode> response = BeaconManager.createBeacon(uuidField.getText().trim(),
-                                                                         majorField.getText().trim(),
-                                                                         minorField.getText().trim(),
-                                                                         descriptionField.getText().trim(),
-                                                                         projectIdField.getText().trim());
+            String projectId = projectIdField.getText().trim();
+            if (projectId.equals("")) {
+                return;
+            }
+            HttpResponse<JsonNode> response = BeaconGroupManager.createGroup(nameField.getText().trim(),
+                                                                             descriptionField.getText().trim(),
+                                                                             projectId);
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 201) {
                 // Normal response
-                String[][] createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
+                String[][] createResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
+                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, createResponse);
             }
         }
     }

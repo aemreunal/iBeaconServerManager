@@ -78,12 +78,12 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][2] = beacon.get("major").toString();
         beaconTable[index][3] = beacon.get("minor").toString();
         beaconTable[index][4] = beacon.get("description").toString();
-        String groupID = getSubObjectID("beaconGroup", beacon.getJSONObject("group"));
+        String groupID = getSubObjectID("beaconGroup", beacon.optJSONObject("group"));
         beaconTable[index][5] = groupID;
         if (groupID.equals("-")) {
-            beaconTable[index][6] = getSubObjectID("scenario", beacon.getJSONObject("scenario"));
+            beaconTable[index][6] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
         } else {
-            String groupScenarioID = getSubObjectID("scenario", beacon.getJSONObject("group").getJSONObject("scenario"));
+            String groupScenarioID = getSubObjectID("scenario", beacon.optJSONObject("group").optJSONObject("scenario"));
             beaconTable[index][6] = groupScenarioID + " (via group)";
         }
         beaconTable[index][7] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
