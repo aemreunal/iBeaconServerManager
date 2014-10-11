@@ -16,24 +16,26 @@ package com.aemreunal.view;
  ***************************
  */
 
-import java.awt.*;
-import java.util.prefs.Preferences;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import javax.swing.*;
 import com.aemreunal.view.api.APITab;
 import com.aemreunal.view.beacon.BeaconTab;
+import com.aemreunal.view.beaconGroup.BeaconGroupTab;
 import com.aemreunal.view.prefs.PreferencesTab;
 import com.aemreunal.view.project.ProjectTab;
+import com.aemreunal.view.scenario.ScenarioTab;
 import com.aemreunal.view.user.UserTab;
+import com.mashape.unirest.http.Unirest;
 
 public class ManagerWindow extends JFrame {
-    public static final Dimension MINIMUM_SIZE = new Dimension(600, 650);
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
-//    private Preferences preferences;
 
-    public ManagerWindow(Preferences preferences) {
+    public ManagerWindow() {
         super("iBeacon Server Manager");
-//        this.preferences = preferences;
         initComponents();
         addPanels();
         setWindowAttributes();
@@ -48,10 +50,8 @@ public class ManagerWindow extends JFrame {
         this.tabbedPane.addTab("User", new UserTab());
         this.tabbedPane.addTab("Project", new ProjectTab());
         this.tabbedPane.addTab("Beacon", new BeaconTab());
-        // Other Panels
-        // Other Panels
-        // Other Panels
-        // Other Panels
+        this.tabbedPane.addTab("Beacon Group", new BeaconGroupTab());
+        this.tabbedPane.addTab("Scenario", new ScenarioTab());
         this.tabbedPane.addTab("API", new APITab());
         this.tabbedPane.addTab("Preferences", new PreferencesTab());
     }
@@ -59,8 +59,27 @@ public class ManagerWindow extends JFrame {
     private void setWindowAttributes() {
         this.mainPanel.add(tabbedPane);
         add(this.mainPanel);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setMinimumSize(MINIMUM_SIZE);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showOptionDialog(null, "Are you sure you want to exit?", "Exiting...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0) {
+                    stopUnirest();
+                    System.exit(0);
+                }
+            }
+        };
+        this.addWindowListener(exitListener);
+        this.setMinimumSize(this.getPreferredSize());
         this.setVisible(true);
+    }
+
+    public void stopUnirest() {
+        try {
+            Unirest.shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

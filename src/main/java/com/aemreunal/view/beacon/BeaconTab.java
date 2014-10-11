@@ -72,38 +72,20 @@ public class BeaconTab extends CommonTab {
         return beaconTable;
     }
 
-    /*
-     * 0  "Beacon ID",     *   "beaconId" : 2,
-     * 1  "UUID",          *   "uuid" : "E686DF2A-C0E0-3777-819A-0526356BD1B6",
-     * 2  "Major",         *   "major" : "6",
-     * 3  "Minor",         *   "minor" : "799",
-     * 4  "Description",   *   "description" : "Et iusto nihil in. Veniam provident eaque labore ratione aperiam.",
-     * 5  "Group ID",      *   "group" : null
-     * 6  "Scenario ID",   *   "scenario" : null,
-     * 7  "Creation Date"  *   "creationDate" : 1413014830179,
-    */
     private static void parseBeaconJson(JSONObject beacon, int index, String[][] beaconTable) {
         beaconTable[index][0] = beacon.get("beaconId").toString();
         beaconTable[index][1] = beacon.get("uuid").toString();
         beaconTable[index][2] = beacon.get("major").toString();
         beaconTable[index][3] = beacon.get("minor").toString();
         beaconTable[index][4] = beacon.get("description").toString();
-        String groupID = getObjectID("beaconGroup", beacon.get("group"));
+        String groupID = getSubObjectID("beaconGroup", beacon.getJSONObject("group"));
         beaconTable[index][5] = groupID;
         if (groupID.equals("-")) {
-            beaconTable[index][6] = getObjectID("scenario", beacon.get("scenario"));
+            beaconTable[index][6] = getSubObjectID("scenario", beacon.getJSONObject("scenario"));
         } else {
-            String groupScenarioID = getObjectID("scenario", beacon.getJSONObject("group").get("scenario"));
+            String groupScenarioID = getSubObjectID("scenario", beacon.getJSONObject("group").getJSONObject("scenario"));
             beaconTable[index][6] = groupScenarioID + " (via group)";
         }
         beaconTable[index][7] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
-    }
-
-    private static String getObjectID(String keyName, Object object) {
-        if (object == null || object.toString().equals("null")) {
-            return "-";
-        } else {
-            return ((JSONObject) object).get(keyName + "Id").toString();
-        }
     }
 }

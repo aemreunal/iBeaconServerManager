@@ -17,6 +17,7 @@ package com.aemreunal.view;
  */
 
 import javax.swing.*;
+import org.json.JSONObject;
 
 public abstract class CommonTab extends JPanel {
     protected JTabbedPane tabbedPane;
@@ -28,4 +29,12 @@ public abstract class CommonTab extends JPanel {
     }
 
     protected abstract void addPanels();
+
+    protected static String getSubObjectID(String keyName, JSONObject object) {
+        if (object == null || object.toString().equals("null")) {
+            return "-";
+        } else {
+            return object.get(keyName + "Id").toString();
+        }
+    }
 }
