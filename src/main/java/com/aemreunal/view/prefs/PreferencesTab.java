@@ -1,4 +1,4 @@
-package com.aemreunal.view;
+package com.aemreunal.view.prefs;
 
 /*
  ***************************

@@ -21,6 +21,7 @@ import java.util.prefs.Preferences;
 import javax.swing.*;
 import com.aemreunal.view.api.APITab;
 import com.aemreunal.view.beacon.BeaconTab;
+import com.aemreunal.view.prefs.PreferencesTab;
 import com.aemreunal.view.project.ProjectTab;
 import com.aemreunal.view.user.UserTab;
 
