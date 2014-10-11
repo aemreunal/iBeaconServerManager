@@ -24,6 +24,7 @@ public class ItemTable extends JTable {
     public static final String[] PROJECT_TABLE_COL_NAMES = { "Project ID", "Name", "Description", "Creation Date" };
     public static final String[] BEACONS_TABLE_COL_NAMES = { "Beacon ID", "UUID", "Major", "Minor",
             "Description", "Group ID", "Scenario ID", "Creation Date" };
+    public static final String[] API_QUERY_TABLE_COL_NAMES    = { "Short Msg.", "Long Msg.", "URL" };
 
 
     public ItemTable(String[][] tableData, String[] columnNames) {

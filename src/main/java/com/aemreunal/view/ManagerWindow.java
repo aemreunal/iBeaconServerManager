@@ -19,6 +19,7 @@ package com.aemreunal.view;
 import java.awt.*;
 import java.util.prefs.Preferences;
 import javax.swing.*;
+import com.aemreunal.view.api.APITab;
 import com.aemreunal.view.project.ProjectTab;
 import com.aemreunal.view.user.UserTab;
 
@@ -48,6 +49,7 @@ public class ManagerWindow extends JFrame {
         // Other Panels
         // Other Panels
         // Other Panels
+        this.tabbedPane.addTab("API", new APITab());
         this.tabbedPane.addTab("Preferences", new PreferencesTab());
     }
 
