@@ -1,4 +1,4 @@
-package com.aemreunal.view.api;
+package com.aemreunal.view.beacon;
 
 /*
  ***************************
@@ -20,20 +20,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.APIManager;
+import com.aemreunal.model.BeaconManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class QueryBeaconPanel extends JPanel {
+public class CreateBeaconPanel extends JPanel {
     private JTextField uuidField;
     private JTextField majorField;
     private JTextField minorField;
-    private JTextField secretField;
-    private JButton    queryButton;
+    private JTextField descriptionField;
+    private JTextField projectIdField;
+    private JButton    createButton;
 
-    public QueryBeaconPanel(ResponsePanel responsePanel) {
+    public CreateBeaconPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
@@ -44,10 +45,10 @@ public class QueryBeaconPanel extends JPanel {
         uuidField = new JTextField(10);
         majorField = new JTextField(10);
         minorField = new JTextField(10);
-        secretField = new JTextField(10);
-        secretField.addActionListener(actionListener);
-        queryButton = new JButton("Query");
-        queryButton.addActionListener(actionListener);
+        descriptionField = new JTextField(10);
+        projectIdField = new JTextField(10);
+        createButton = new JButton("Create");
+        createButton.addActionListener(actionListener);
     }
 
     private void addComponents() {
@@ -69,14 +70,20 @@ public class QueryBeaconPanel extends JPanel {
         minorPanel.setMinimumSize(minorPanel.getPreferredSize());
         this.add(minorPanel);
 
-        JPanel secretPanel = new JPanel(new GridBagLayout());
-        secretPanel.add(new JLabel("Secret:"));
-        secretPanel.add(secretField);
-        secretPanel.setMinimumSize(secretPanel.getPreferredSize());
-        this.add(secretPanel);
+        JPanel descriptionPanel = new JPanel(new GridBagLayout());
+        descriptionPanel.add(new JLabel("Description:"));
+        descriptionPanel.add(descriptionField);
+        descriptionPanel.setMinimumSize(descriptionPanel.getPreferredSize());
+        this.add(descriptionPanel);
+
+        JPanel projectIdPanel = new JPanel(new GridBagLayout());
+        projectIdPanel.add(new JLabel("Project ID:"));
+        projectIdPanel.add(projectIdField);
+        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
+        this.add(projectIdPanel);
 
         JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.add(queryButton);
+        buttonPanel.add(createButton);
         buttonPanel.setMinimumSize(buttonPanel.getPreferredSize());
         this.add(buttonPanel);
     }
@@ -90,15 +97,16 @@ public class QueryBeaconPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            HttpResponse<JsonNode> response = APIManager.queryBeacon(uuidField.getText().trim(),
-                                                                     majorField.getText().trim(),
-                                                                     minorField.getText().trim(),
-                                                                     secretField.getText().trim());
+            HttpResponse<JsonNode> response = BeaconManager.createBeacon(uuidField.getText().trim(),
+                                                                         majorField.getText().trim(),
+                                                                         minorField.getText().trim(),
+                                                                         descriptionField.getText().trim(),
+                                                                         projectIdField.getText().trim());
             responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            if (response.getCode() == 201) {
                 // Normal response
-                String[][] queryResponse = APITab.convertQueryJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
+                String[][] createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
+                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
             }
         }
     }

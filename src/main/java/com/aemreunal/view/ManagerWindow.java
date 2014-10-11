@@ -20,6 +20,7 @@ import java.awt.*;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 import com.aemreunal.view.api.APITab;
+import com.aemreunal.view.beacon.BeaconTab;
 import com.aemreunal.view.project.ProjectTab;
 import com.aemreunal.view.user.UserTab;
 
@@ -45,6 +46,7 @@ public class ManagerWindow extends JFrame {
     private void addPanels() {
         this.tabbedPane.addTab("User", new UserTab());
         this.tabbedPane.addTab("Project", new ProjectTab());
+        this.tabbedPane.addTab("Beacon", new BeaconTab());
         // Other Panels
         // Other Panels
         // Other Panels
