@@ -31,14 +31,21 @@ public class BeaconManager extends RestManager {
         return performRequest(request);
     }
 
-//    public static HttpResponse<JsonNode> getAllBeacons(String beaconId, String projectId) {
-//        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId)
-//                                     .getHttpRequest();
-//        return performRequest(request);
-//    }
+    public static HttpResponse<JsonNode> getAllBeacons(String uuid, String major, String minor, String projectId) {
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons"
+                                                  + "?uuid=" + uuid + "&major=" + major + "&minor=" + minor)
+                                     .getHttpRequest();
+        return performRequest(request);
+    }
 
     public static HttpResponse<JsonNode> getBeacon(String beaconId, String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId)
+                                     .getHttpRequest();
+        return performRequest(request);
+    }
+
+    public static HttpResponse<JsonNode> deleteBeacon(String beaconId, String projectId) {
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId + "?confirm=yes")
                                      .getHttpRequest();
         return performRequest(request);
     }

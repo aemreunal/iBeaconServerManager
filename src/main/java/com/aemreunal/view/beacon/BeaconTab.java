@@ -29,6 +29,7 @@ public class BeaconTab extends CommonTab {
     @Override
     protected void addPanels() {
         addCreateBeaconPanel();
+        addGetBeaconPanel();
     }
 
     private void addCreateBeaconPanel() {
@@ -37,6 +38,14 @@ public class BeaconTab extends CommonTab {
         commonPanel.setTopPanel(new CreateBeaconPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
+    }
+
+    private void addGetBeaconPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new GetBeaconPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Get", commonPanel);
     }
 
     /*
@@ -56,10 +65,10 @@ public class BeaconTab extends CommonTab {
     }
 
     public static String[][] convertBeaconsJsonToTable(JSONArray beacons) {
-        String[][] beaconTable = new String[1][ItemTable.BEACONS_TABLE_COL_NAMES.length];
+        String[][] beaconTable = new String[beacons.length()][ItemTable.BEACONS_TABLE_COL_NAMES.length];
         for (int i = 0; i < beacons.length(); i++) {
             JSONObject beacon = beacons.getJSONObject(i);
-            parseBeaconJson(beacon, 0, beaconTable);
+            parseBeaconJson(beacon, i, beaconTable);
         }
         return beaconTable;
     }
@@ -75,7 +84,8 @@ public class BeaconTab extends CommonTab {
         if (groupID.equals("-")) {
             beaconTable[index][6] = getObjectID("scenario", beacon.get("scenario"));
         } else {
-            beaconTable[index][6] = "<query group for scenario>";
+            String groupScenarioID = getObjectID("scenario", beacon.getJSONObject("group").get("scenario"));
+            beaconTable[index][6] = groupScenarioID + " (via group)";
         }
         beaconTable[index][7] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
     }
