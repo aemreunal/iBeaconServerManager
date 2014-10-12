@@ -32,10 +32,8 @@ public class UserTab extends CommonTab {
     }
 
     private void addRegisterPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new RegisterPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new RegisterPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Register", commonPanel);
     }
 

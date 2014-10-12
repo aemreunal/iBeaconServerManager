@@ -26,6 +26,13 @@ public class CommonPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
+    public CommonPanel(JPanel topPanel, JPanel bottomPanel) {
+        this();
+        setTopPanel(topPanel);
+        setBottomPanel(bottomPanel);
+        setTopPanelSize();
+    }
+
     public void setTopPanel(JPanel topPanel) {
         if(this.topPanel != null) {
             remove(this.topPanel);
@@ -40,5 +47,9 @@ public class CommonPanel extends JPanel {
         }
         this.bottomPanel = bottomPanel;
         add(this.bottomPanel);
+    }
+
+    public void setTopPanelSize() {
+        this.topPanel.setMaximumSize(this.topPanel.getPreferredSize());
     }
 }

@@ -66,7 +66,6 @@ public class ManagerWindow extends JFrame {
         add(this.mainPanel, BorderLayout.CENTER);
 
         this.setMinimumSize(this.getPreferredSize());
-//        pack();
         setLocationRelativeTo(null);
         this.setVisible(true);
     }
