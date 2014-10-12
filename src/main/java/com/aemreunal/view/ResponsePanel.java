@@ -25,7 +25,7 @@ public class ResponsePanel extends JPanel {
     private ItemTable   itemTable;
 
     public ResponsePanel() {
-        setLayout(new BorderLayout(3, 3));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         scrollPane = new JScrollPane();
         this.statusCodeLabel = new JLabel("Response code: -");
         this.statusCodeLabel.setFont(new Font("Arial", Font.BOLD, 18));

@@ -16,6 +16,7 @@ package com.aemreunal.view;
  ***************************
  */
 
+import java.awt.*;
 import javax.swing.*;
 import org.json.JSONObject;
 
@@ -24,6 +25,7 @@ public abstract class CommonTab extends JPanel {
 
     public CommonTab() {
         this.tabbedPane = new JTabbedPane();
+        this.setLayout(new BorderLayout());
         addPanels();
         add(tabbedPane);
     }

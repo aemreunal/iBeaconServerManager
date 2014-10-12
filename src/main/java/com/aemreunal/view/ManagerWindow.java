@@ -16,6 +16,7 @@ package com.aemreunal.view;
  ***************************
  */
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -31,7 +32,7 @@ import com.aemreunal.view.user.UserTab;
 import com.mashape.unirest.http.Unirest;
 
 public class ManagerWindow extends JFrame {
-    private JPanel mainPanel;
+    private JPanel      mainPanel;
     private JTabbedPane tabbedPane;
 
     public ManagerWindow() {
@@ -42,7 +43,7 @@ public class ManagerWindow extends JFrame {
     }
 
     private void initComponents() {
-        this.mainPanel = new JPanel();
+        this.mainPanel = new JPanel(new BorderLayout());
         this.tabbedPane = new JTabbedPane();
     }
 
@@ -57,8 +58,20 @@ public class ManagerWindow extends JFrame {
     }
 
     private void setWindowAttributes() {
-        this.mainPanel.add(tabbedPane);
-        add(this.mainPanel);
+        setWindowCloseOperation();
+
+        this.setLayout(new BorderLayout());
+
+        this.mainPanel.add(tabbedPane, BorderLayout.CENTER);
+        add(this.mainPanel, BorderLayout.CENTER);
+
+        this.setMinimumSize(this.getPreferredSize());
+//        pack();
+        setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+
+    private void setWindowCloseOperation() {
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         WindowListener exitListener = new WindowAdapter() {
             @Override
@@ -71,8 +84,6 @@ public class ManagerWindow extends JFrame {
             }
         };
         this.addWindowListener(exitListener);
-        this.setMinimumSize(this.getPreferredSize());
-        this.setVisible(true);
     }
 
     public void stopUnirest() {
