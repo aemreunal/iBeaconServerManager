@@ -99,11 +99,11 @@ public class GetBeaconPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
             String projectId = projectIdField.getText().trim();
-            if(projectId.equals("")) {
+            if(projectId.isEmpty()) {
                 return;
             }
             String beaconId = beaconIdField.getText().trim();
-            if (beaconId.equals("")) {
+            if (beaconId.isEmpty()) {
                 response = BeaconManager.getAllBeacons(beaconUUIDField.getText().trim(),
                                                        beaconMajorField.getText().trim(),
                                                        beaconMinorField.getText().trim(),

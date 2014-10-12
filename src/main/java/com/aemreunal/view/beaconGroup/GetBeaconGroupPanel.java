@@ -81,11 +81,11 @@ public class GetBeaconGroupPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
             String projectId = projectIdField.getText().trim();
-            if(projectId.equals("")) {
+            if(projectId.isEmpty()) {
                 return;
             }
             String beaconGroupId = beaconGroupIdField.getText().trim();
-            if (beaconGroupId.equals("")) {
+            if (beaconGroupId.isEmpty()) {
                 response = BeaconGroupManager.getAllGroups(beaconGroupNameField.getText().trim(),
                                                            projectId);
             } else {

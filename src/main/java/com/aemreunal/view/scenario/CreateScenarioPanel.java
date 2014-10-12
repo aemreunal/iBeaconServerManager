@@ -1,4 +1,4 @@
-package com.aemreunal.view.beaconGroup;
+package com.aemreunal.view.scenario;
 
 /*
  ***************************
@@ -20,28 +20,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconGroupManager;
+import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class CreateBeaconGroupPanel extends JPanel {
+public class CreateScenarioPanel extends JPanel {
+    public static final int FIELD_WIDTH = 12;
+    private JTextField projectIdField;
     private JTextField nameField;
     private JTextField descriptionField;
-    private JTextField projectIdField;
+    private JTextField shortMsgField;
+    private JTextField longMsgField;
+    private JTextField urlField;
     private JButton    createButton;
 
-    public CreateBeaconGroupPanel(ResponsePanel responsePanel) {
+    public CreateScenarioPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
     }
 
     private void createComponents(ResponsePanel responsePanel) {
-        nameField = new JTextField(10);
-        descriptionField = new JTextField(10);
         projectIdField = new JTextField(5);
+        nameField = new JTextField(FIELD_WIDTH);
+        descriptionField = new JTextField(FIELD_WIDTH);
+        shortMsgField = new JTextField(FIELD_WIDTH);
+        longMsgField = new JTextField(FIELD_WIDTH);
+        urlField = new JTextField(FIELD_WIDTH);
         createButton = new JButton("Create");
         createButton.addActionListener(new CreateActionListener(responsePanel));
     }
@@ -65,6 +72,20 @@ public class CreateBeaconGroupPanel extends JPanel {
         descriptionPanel.setMinimumSize(descriptionPanel.getPreferredSize());
         this.add(descriptionPanel);
 
+        JPanel msgPanel = new JPanel(new GridBagLayout());
+        msgPanel.add(new JLabel("Short Msg:"));
+        msgPanel.add(shortMsgField);
+        msgPanel.add(new JLabel("Long Msg:"));
+        msgPanel.add(longMsgField);
+        msgPanel.setMinimumSize(msgPanel.getPreferredSize());
+        this.add(msgPanel);
+
+        JPanel urlPanel = new JPanel(new GridBagLayout());
+        urlPanel.add(new JLabel("URL:"));
+        urlPanel.add(urlField);
+        urlPanel.setMinimumSize(urlPanel.getPreferredSize());
+        this.add(urlPanel);
+
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.add(createButton);
         buttonPanel.setMinimumSize(buttonPanel.getPreferredSize());
@@ -81,17 +102,21 @@ public class CreateBeaconGroupPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
-            if (projectId.isEmpty()) {
+            String name = nameField.getText().trim();
+            String description = descriptionField.getText().trim();
+            String shortMsg = shortMsgField.getText().trim();
+            String longMsg = longMsgField.getText().trim();
+            String url = urlField.getText().trim();
+
+            if (projectId.isEmpty() || name.isEmpty()) {
                 return;
             }
-            HttpResponse<JsonNode> response = BeaconGroupManager.createGroup(nameField.getText().trim(),
-                                                                             descriptionField.getText().trim(),
-                                                                             projectId);
+
+            HttpResponse<JsonNode> response = ScenarioManager.createScenario(name, description, shortMsg, longMsg, url, projectId);
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 201) {
-                // Normal response
-                String[][] createResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, createResponse);
+                String[][] createResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
+                responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, createResponse);
             }
         }
     }

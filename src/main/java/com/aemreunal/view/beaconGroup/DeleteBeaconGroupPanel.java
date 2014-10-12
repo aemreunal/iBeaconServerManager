@@ -63,7 +63,7 @@ public class DeleteBeaconGroupPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String beaconGroupId = beaconGroupIdField.getText().trim();
             String projectId = projectIdField.getText().trim();
-            if (!beaconGroupId.equals("") && !projectId.equals("")) {
+            if (!beaconGroupId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = BeaconGroupManager.deleteGroup(beaconGroupId, projectId);
                 responsePanel.showResponseCode(response.getCode());
                 if (response.getCode() == 200) {

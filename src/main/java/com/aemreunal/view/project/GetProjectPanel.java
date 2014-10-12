@@ -71,7 +71,7 @@ public class GetProjectPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
-            if (projectIdField.getText().trim().equals("")) {
+            if (projectIdField.getText().trim().isEmpty()) {
                 response = ProjectManager.getAllProjects(projectNameField.getText().trim());
             } else {
                 response = ProjectManager.getProject(projectIdField.getText().trim());

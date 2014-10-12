@@ -73,7 +73,7 @@ public class GetMembersPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
             String beaconGroupId = beaconGroupIdField.getText().trim();
-            if (projectId.equals("") || beaconGroupId.equals("")) {
+            if (projectId.isEmpty() || beaconGroupId.isEmpty()) {
                 return;
             }
             HttpResponse<JsonNode> response = BeaconGroupManager.getGroupMembers(beaconGroupId, projectId);

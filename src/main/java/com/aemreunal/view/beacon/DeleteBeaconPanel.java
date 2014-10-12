@@ -63,7 +63,7 @@ public class DeleteBeaconPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String beaconId = beaconIdField.getText().trim();
             String projectId = projectIdField.getText().trim();
-            if (!beaconId.equals("") && !projectId.equals("")) {
+            if (!beaconId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = BeaconManager.deleteBeacon(beaconId, projectId);
                 responsePanel.showResponseCode(response.getCode());
                 if (response.getCode() == 200) {
