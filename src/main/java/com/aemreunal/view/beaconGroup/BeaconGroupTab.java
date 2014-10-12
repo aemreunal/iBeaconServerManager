@@ -30,9 +30,8 @@ public class BeaconGroupTab extends CommonTab {
     protected void addPanels() {
         addCreateBeaconGroupPanel();
         addGetBeaconGroupPanel();
-//        addAddingMemberPanel();
-//        addRemovingMemberPanel();
         addGetMembersPanel();
+        addModifyMemberPanel();
         addDeleteBeaconGroupPanel();
     }
 
@@ -58,6 +57,14 @@ public class BeaconGroupTab extends CommonTab {
         commonPanel.setTopPanel(new GetMembersPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Members", commonPanel);
+    }
+
+    private void addModifyMemberPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new ModifyMemberPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Modify", commonPanel);
     }
 
     private void addDeleteBeaconGroupPanel() {
