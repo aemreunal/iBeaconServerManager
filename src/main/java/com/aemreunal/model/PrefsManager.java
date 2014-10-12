@@ -23,9 +23,9 @@ public class PrefsManager {
     public static final String SERVER_ADDRESS_KEY     = "ServerAddress";
     public static final String DEFAULT_SERVER_ADDRESS = "http://localhost:8080";
     public static final String USERNAME_KEY           = "Username";
-    public static final String DEFAULT_USERNAME       = "testuser";
+    public static final String DEFAULT_USERNAME       = "_";
     public static final String PASSWORD_KEY           = "Password";
-    public static final String DEFAULT_PASSWORD       = "testpassword";
+    public static final String DEFAULT_PASSWORD       = "_";
 
     public static String getServerAddress() {
         return iBeaconServerManager.getPreferences().get(SERVER_ADDRESS_KEY, DEFAULT_SERVER_ADDRESS);
