@@ -1,4 +1,4 @@
-package com.aemreunal.view.beaconGroup;
+package com.aemreunal.view.scenario;
 
 /*
  ***************************
@@ -20,19 +20,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconGroupManager;
+import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class GetBeaconGroupPanel extends JPanel {
+public class GetScenarioPanel extends JPanel {
     private JTextField projectIdField;
-    private JTextField beaconGroupIdField;
-    private JTextField beaconGroupNameField;
+    private JTextField scenarioIdField;
     private JButton    getButton;
 
-    public GetBeaconGroupPanel(ResponsePanel responsePanel) {
+    public GetScenarioPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
@@ -41,10 +40,8 @@ public class GetBeaconGroupPanel extends JPanel {
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
         projectIdField.addActionListener(new GetActionListener(responsePanel));
-        beaconGroupIdField = new JTextField(5);
-        beaconGroupIdField.addActionListener(new GetActionListener(responsePanel));
-        beaconGroupNameField = new JTextField(10);
-        beaconGroupNameField.addActionListener(new GetActionListener(responsePanel));
+        scenarioIdField = new JTextField(5);
+        scenarioIdField.addActionListener(new GetActionListener(responsePanel));
         getButton = new JButton("Get");
         getButton.addActionListener(new GetActionListener(responsePanel));
     }
@@ -56,18 +53,12 @@ public class GetBeaconGroupPanel extends JPanel {
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel beaconGroupIdPanel = new JPanel(new GridBagLayout());
-        beaconGroupIdPanel.add(new JLabel("Beacon group ID (leave blank to get all):"));
-        beaconGroupIdPanel.add(beaconGroupIdField);
-        beaconGroupIdPanel.add(getButton);
-        beaconGroupIdPanel.setMinimumSize(beaconGroupIdPanel.getPreferredSize());
-        this.add(beaconGroupIdPanel);
-
-        JPanel beaconGroupNamePanel = new JPanel(new GridBagLayout());
-        beaconGroupNamePanel.add(new JLabel("Search by Name:"));
-        beaconGroupNamePanel.add(beaconGroupNameField);
-        beaconGroupNamePanel.setMinimumSize(beaconGroupNamePanel.getPreferredSize());
-        this.add(beaconGroupNamePanel);
+        JPanel scenarioIdPanel = new JPanel(new GridBagLayout());
+        scenarioIdPanel.add(new JLabel("Scenario ID:"));
+        scenarioIdPanel.add(scenarioIdField);
+        scenarioIdPanel.add(getButton);
+        scenarioIdPanel.setMinimumSize(scenarioIdPanel.getPreferredSize());
+        this.add(scenarioIdPanel);
     }
 
     private class GetActionListener implements ActionListener {
@@ -84,23 +75,22 @@ public class GetBeaconGroupPanel extends JPanel {
             if (projectId.isEmpty()) {
                 return;
             }
-            String beaconGroupId = beaconGroupIdField.getText().trim();
-            if (beaconGroupId.isEmpty()) {
-                response = BeaconGroupManager.getAllGroups(beaconGroupNameField.getText().trim(),
-                                                           projectId);
+            String scenarioId = scenarioIdField.getText().trim();
+            if (scenarioId.isEmpty()) {
+                response = ScenarioManager.getAllScenarios(projectId);
             } else {
-                response = BeaconGroupManager.getGroup(beaconGroupId, projectId);
+                response = ScenarioManager.getScenario(scenarioId, projectId);
             }
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 200) {
-                String[][] beaconGroupResponse;
+                String[][] scenarioResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {
-                    beaconGroupResponse = BeaconGroupTab.convertBeaconGroupsJsonToTable(responseBody.getArray());
+                    scenarioResponse = ScenarioTab.convertScenariosJsonToTable(responseBody.getArray());
                 } else {
-                    beaconGroupResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(responseBody.getObject());
+                    scenarioResponse = ScenarioTab.convertScenarioJsonToTable(responseBody.getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
+                responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, scenarioResponse);
             }
         }
     }

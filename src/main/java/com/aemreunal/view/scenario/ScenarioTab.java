@@ -44,7 +44,7 @@ public class ScenarioTab extends CommonTab {
     @Override
     protected void addPanels() {
         addCreateScenarioPanel();
-//        addGetScenarioPanel();
+        addGetScenarioPanel();
 //        addGetMembersPanel();
 //        addModifyMembersPanel();
 //        addDeleteScenarioPanel();
@@ -56,6 +56,14 @@ public class ScenarioTab extends CommonTab {
         commonPanel.setTopPanel(new CreateScenarioPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
+    }
+
+    private void addGetScenarioPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new GetScenarioPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Get", commonPanel);
     }
 
     public static String[][] convertScenarioJsonToTable(JSONObject scenario) {
