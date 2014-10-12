@@ -16,7 +16,6 @@ package com.aemreunal.view.beacon;
  ***************************
  */
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -32,7 +31,6 @@ public class DeleteBeaconPanel extends JPanel {
     private JButton    deleteBeaconButton;
 
     public DeleteBeaconPanel(final ResponsePanel responsePanel) {
-        super(new GridBagLayout());
         createComponents(responsePanel);
         addComponents();
     }

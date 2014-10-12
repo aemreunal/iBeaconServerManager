@@ -48,17 +48,17 @@ public class GetMembersPanel extends JPanel {
     }
 
     private void addComponents() {
-        JPanel projectIdPanel = new JPanel(new GridBagLayout());
-        projectIdPanel.add(new JLabel("Project ID:"));
-        projectIdPanel.add(projectIdField);
-        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
-        this.add(projectIdPanel);
+        JPanel idPanel = new JPanel(new GridBagLayout());
+        idPanel.add(new JLabel("Project ID:"));
+        idPanel.add(projectIdField);
+        idPanel.add(new JLabel("Beacon group ID:"));
+        idPanel.add(beaconGroupIdField);
+        idPanel.setMaximumSize(idPanel.getPreferredSize());
+        this.add(idPanel);
 
         JPanel beaconIdPanel = new JPanel(new GridBagLayout());
-        beaconIdPanel.add(new JLabel("Beacon group ID:"));
-        beaconIdPanel.add(beaconGroupIdField);
         beaconIdPanel.add(getButton);
-        beaconIdPanel.setMinimumSize(beaconIdPanel.getPreferredSize());
+        beaconIdPanel.setMaximumSize(beaconIdPanel.getPreferredSize());
         this.add(beaconIdPanel);
     }
 

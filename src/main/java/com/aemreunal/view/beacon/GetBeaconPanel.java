@@ -56,18 +56,13 @@ public class GetBeaconPanel extends JPanel {
     }
 
     private void addComponents() {
-        JPanel projectIdPanel = new JPanel(new GridBagLayout());
-        projectIdPanel.add(new JLabel("Project ID:"));
-        projectIdPanel.add(projectIdField);
-        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
-        this.add(projectIdPanel);
-
-        JPanel beaconIdPanel = new JPanel(new GridBagLayout());
-        beaconIdPanel.add(new JLabel("Beacon ID (leave blank to get all):"));
-        beaconIdPanel.add(beaconIdField);
-        beaconIdPanel.add(getButton);
-        beaconIdPanel.setMinimumSize(beaconIdPanel.getPreferredSize());
-        this.add(beaconIdPanel);
+        JPanel idPanel = new JPanel(new GridBagLayout());
+        idPanel.add(new JLabel("Project ID:"));
+        idPanel.add(projectIdField);
+        idPanel.add(new JLabel("Beacon ID (leave blank to get all):"));
+        idPanel.add(beaconIdField);
+        idPanel.setMaximumSize(idPanel.getPreferredSize());
+        this.add(idPanel);
 
         JPanel projectNamePanel = new JPanel(new GridBagLayout());
         projectNamePanel.add(new JLabel("Search by UUID:"));
@@ -86,6 +81,11 @@ public class GetBeaconPanel extends JPanel {
         beaconMinorPanel.add(beaconMinorField);
         beaconMinorPanel.setMaximumSize(beaconMinorPanel.getPreferredSize());
         this.add(beaconMinorPanel);
+
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        buttonPanel.add(getButton);
+        buttonPanel.setMaximumSize(buttonPanel.getPreferredSize());
+        this.add(buttonPanel);
     }
 
     private class GetActionListener implements ActionListener {
