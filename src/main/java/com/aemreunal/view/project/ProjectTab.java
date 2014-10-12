@@ -34,26 +34,20 @@ public class ProjectTab extends CommonTab {
     }
 
     private void addCreateProjectPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new CreateProjectPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new CreateProjectPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetProjectPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new GetProjectPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new GetProjectPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteProjectPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new DeleteProjectPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new DeleteProjectPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

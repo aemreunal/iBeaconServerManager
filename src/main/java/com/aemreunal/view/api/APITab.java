@@ -30,25 +30,16 @@ public class APITab extends CommonTab {
     }
 
     private void addQueryBeaconPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new QueryBeaconPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new QueryBeaconPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Query", commonPanel);
     }
-
-    /*
-     *  {
-     *    "url" : "http://aemreunal.com",
-     *    "short" : "Test message.",
-     *    "long" : "Test message that is a bit more longer. Neat, huh?"
-     *  }
-     */
+    
     public static String[][] convertQueryJsonToTable(JSONObject project) {
-        String[][] queryTable = new String[1][ItemTable.API_QUERY_TABLE_COL_NAMES.length];
-        queryTable[0][0] = project.get("short").toString();
-        queryTable[0][1] = project.get("long").toString();
-        queryTable[0][2] = project.get("url").toString();
-        return queryTable;
+        String[] queryTable = new String[ItemTable.API_QUERY_TABLE_COL_NAMES.length];
+        queryTable[0] = project.get("short").toString();
+        queryTable[1] = project.get("long").toString();
+        queryTable[2] = project.get("url").toString();
+        return new String[][] { queryTable };
     }
 }

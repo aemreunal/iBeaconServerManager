@@ -44,18 +44,14 @@ public class ScenarioTab extends CommonTab {
     }
 
     private void addCreateScenarioPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new CreateScenarioPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new CreateScenarioPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetScenarioPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new GetScenarioPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new GetScenarioPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
@@ -68,10 +64,8 @@ public class ScenarioTab extends CommonTab {
     }
 
     private void addDeleteScenarioPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new DeleteScenarioPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new DeleteScenarioPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

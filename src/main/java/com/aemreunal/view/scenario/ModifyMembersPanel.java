@@ -31,18 +31,14 @@ public class ModifyMembersPanel extends CommonTab {
     }
 
     private void addModifyBeaconMembersTab() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new ModifyBeaconMembersPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new ModifyBeaconMembersPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Beacon", commonPanel);
     }
 
     private void addModifyBeaconGroupMembersTab() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new ModifyBeaconGroupMembersPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new ModifyBeaconGroupMembersPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Beacon Group", commonPanel);
     }
 }

@@ -34,26 +34,20 @@ public class BeaconTab extends CommonTab {
     }
 
     private void addCreateBeaconPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new CreateBeaconPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new CreateBeaconPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetBeaconPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new GetBeaconPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new GetBeaconPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteBeaconPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new DeleteBeaconPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new DeleteBeaconPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

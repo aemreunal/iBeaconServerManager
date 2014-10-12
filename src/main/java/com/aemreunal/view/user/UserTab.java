@@ -38,25 +38,21 @@ public class UserTab extends CommonTab {
     }
 
     private void addGetUserPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new GetUserPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new GetUserPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteUserPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new DeleteUserPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new DeleteUserPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 
     public static String[][] convertUserJsonToTable(JSONObject user) {
-        String[][] userTable = new String[1][ItemTable.USER_TABLE_COL_NAMES.length];
-        userTable[0][0] = user.get("userId").toString();
-        userTable[0][1] = user.get("username").toString();
-        return userTable;
+        String[] userTable = new String[ItemTable.USER_TABLE_COL_NAMES.length];
+        userTable[0] = user.get("userId").toString();
+        userTable[1] = user.get("username").toString();
+        return new String[][] { userTable };
     }
 }

@@ -36,42 +36,32 @@ public class BeaconGroupTab extends CommonTab {
     }
 
     private void addCreateBeaconGroupPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new CreateBeaconGroupPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new CreateBeaconGroupPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetBeaconGroupPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new GetBeaconGroupPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new GetBeaconGroupPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addGetMembersPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new GetMembersPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new GetMembersPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Members", commonPanel);
     }
 
     private void addModifyMemberPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new ModifyMembersPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new ModifyMembersPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Modify", commonPanel);
     }
 
     private void addDeleteBeaconGroupPanel() {
-        CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new DeleteBeaconGroupPanel(responsePanel));
-        commonPanel.setBottomPanel(responsePanel);
+        CommonPanel commonPanel = new CommonPanel(new DeleteBeaconGroupPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 
