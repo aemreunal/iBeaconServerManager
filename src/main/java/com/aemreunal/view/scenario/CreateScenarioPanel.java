@@ -54,41 +54,32 @@ public class CreateScenarioPanel extends JPanel {
     }
 
     private void addComponents() {
-        JPanel projectIdPanel = new JPanel(new GridBagLayout());
+        JPanel projectIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
-        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel namePanel = new JPanel(new GridBagLayout());
-        namePanel.add(new JLabel("Name:"));
-        namePanel.add(nameField);
-        namePanel.setMinimumSize(namePanel.getPreferredSize());
-        this.add(namePanel);
+        JPanel nameDescPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        nameDescPanel.add(new JLabel("Name:"));
+        nameDescPanel.add(nameField);
+        nameDescPanel.add(new JLabel("Description:"));
+        nameDescPanel.add(descriptionField);
+        this.add(nameDescPanel);
 
-        JPanel descriptionPanel = new JPanel(new GridBagLayout());
-        descriptionPanel.add(new JLabel("Description:"));
-        descriptionPanel.add(descriptionField);
-        descriptionPanel.setMinimumSize(descriptionPanel.getPreferredSize());
-        this.add(descriptionPanel);
-
-        JPanel msgPanel = new JPanel(new GridBagLayout());
+        JPanel msgPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         msgPanel.add(new JLabel("Short Msg:"));
         msgPanel.add(shortMsgField);
         msgPanel.add(new JLabel("Long Msg:"));
         msgPanel.add(longMsgField);
-        msgPanel.setMinimumSize(msgPanel.getPreferredSize());
         this.add(msgPanel);
 
-        JPanel urlPanel = new JPanel(new GridBagLayout());
+        JPanel urlPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         urlPanel.add(new JLabel("URL:"));
         urlPanel.add(urlField);
-        urlPanel.setMinimumSize(urlPanel.getPreferredSize());
         this.add(urlPanel);
 
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(createButton);
-        buttonPanel.setMinimumSize(buttonPanel.getPreferredSize());
         this.add(buttonPanel);
     }
 

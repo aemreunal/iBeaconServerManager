@@ -47,17 +47,15 @@ public class GetScenarioPanel extends JPanel {
     }
 
     private void addComponents() {
-        JPanel projectIdPanel = new JPanel(new GridBagLayout());
+        JPanel projectIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
-        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel scenarioIdPanel = new JPanel(new GridBagLayout());
+        JPanel scenarioIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         scenarioIdPanel.add(new JLabel("Scenario ID:"));
         scenarioIdPanel.add(scenarioIdField);
         scenarioIdPanel.add(getButton);
-        scenarioIdPanel.setMinimumSize(scenarioIdPanel.getPreferredSize());
         this.add(scenarioIdPanel);
     }
 
