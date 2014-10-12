@@ -1,4 +1,4 @@
-package com.aemreunal.view.beaconGroup;
+package com.aemreunal.view.scenario.beaconGroup;
 
 /*
  ***************************
@@ -20,20 +20,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconGroupManager;
+import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.beaconGroup.BeaconGroupTab;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class ModifyMembersPanel extends JPanel {
+public class ModifyBeaconGroupMembersPanel extends JPanel {
     private JTextField projectIdField;
+    private JTextField scenarioIdField;
     private JTextField beaconGroupIdField;
-    private JTextField beaconIdField;
     private JButton    addButton;
     private JButton    removeButton;
 
-    public ModifyMembersPanel(ResponsePanel responsePanel) {
+    public ModifyBeaconGroupMembersPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
@@ -41,8 +42,8 @@ public class ModifyMembersPanel extends JPanel {
 
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
+        scenarioIdField = new JTextField(5);
         beaconGroupIdField = new JTextField(5);
-        beaconIdField = new JTextField(5);
         addButton = new JButton("Add");
         addButton.addActionListener(new ModifyActionListener(responsePanel));
         removeButton = new JButton("Remove");
@@ -53,18 +54,18 @@ public class ModifyMembersPanel extends JPanel {
         JPanel idPanel = new JPanel(new GridBagLayout());
         idPanel.add(new JLabel("Project ID:"));
         idPanel.add(projectIdField);
-        idPanel.add(new JLabel("Group ID:"));
-        idPanel.add(beaconGroupIdField);
+        idPanel.add(new JLabel("Scenario ID:"));
+        idPanel.add(scenarioIdField);
         idPanel.setMaximumSize(idPanel.getPreferredSize());
         this.add(idPanel);
 
-        JPanel beaconIdPanel = new JPanel(new GridBagLayout());
-        beaconIdPanel.add(new JLabel("Beacon ID:"));
-        beaconIdPanel.add(beaconIdField);
-        beaconIdPanel.add(addButton);
-        beaconIdPanel.add(removeButton);
-        beaconIdPanel.setMaximumSize(beaconIdPanel.getPreferredSize());
-        this.add(beaconIdPanel);
+        JPanel beaconGroupIdPanel = new JPanel(new GridBagLayout());
+        beaconGroupIdPanel.add(new JLabel("Beacon Group ID:"));
+        beaconGroupIdPanel.add(beaconGroupIdField);
+        beaconGroupIdPanel.add(addButton);
+        beaconGroupIdPanel.add(removeButton);
+        beaconGroupIdPanel.setMaximumSize(beaconGroupIdPanel.getPreferredSize());
+        this.add(beaconGroupIdPanel);
     }
 
     private class ModifyActionListener implements ActionListener {
@@ -77,16 +78,16 @@ public class ModifyMembersPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
-            String groupId = beaconGroupIdField.getText().trim();
-            String beaconId = beaconIdField.getText().trim();
-            if (projectId.isEmpty() || groupId.isEmpty() || beaconId.isEmpty()) {
+            String scenarioId = scenarioIdField.getText().trim();
+            String beaconGroupId = beaconGroupIdField.getText().trim();
+            if (projectId.isEmpty() || scenarioId.isEmpty() || beaconGroupId.isEmpty()) {
                 return;
             }
             HttpResponse<JsonNode> response;
             if (e.getSource().equals(addButton)) {
-                response = BeaconGroupManager.addMember(beaconId, groupId, projectId);
+                response = ScenarioManager.addBeaconGroup(beaconGroupId, scenarioId, projectId);
             } else {
-                response = BeaconGroupManager.removeMember(beaconId, groupId, projectId);
+                response = ScenarioManager.removeBeaconGroup(beaconGroupId, scenarioId, projectId);
             }
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 200) {
@@ -95,4 +96,5 @@ public class ModifyMembersPanel extends JPanel {
             }
         }
     }
+
 }

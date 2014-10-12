@@ -27,18 +27,11 @@ import com.aemreunal.view.ResponsePanel;
 public class ScenarioTab extends CommonTab {
 
     /*
-     * getAllScenariosOfUser
-     * getScenario
-     *
-     * getMemberBeacons
      * addBeaconToScenario
      * removeBeaconFromScenario
      *
-     * getMemberBeaconGroups
      * addBeaconGroupToScenario
      * removeBeaconGroupFromScenario
-     *
-     * deleteScenario
      */
 
     @Override
@@ -46,7 +39,7 @@ public class ScenarioTab extends CommonTab {
         addCreateScenarioPanel();
         addGetScenarioPanel();
         addGetMembersPanel();
-//        addModifyMembersPanel();
+        addModifyMembersPanel();
         addDeleteScenarioPanel();
     }
 
@@ -68,6 +61,10 @@ public class ScenarioTab extends CommonTab {
 
     private void addGetMembersPanel() {
         this.tabbedPane.addTab("Members", new GetMembersPanel());
+    }
+
+    private void addModifyMembersPanel() {
+        this.tabbedPane.addTab("Modify", new ModifyMembersPanel());
     }
 
     private void addDeleteScenarioPanel() {
