@@ -33,7 +33,7 @@ public class BeaconGroupTab extends CommonTab {
 //        addGetMembersPanel();
 //        addAddingMemberPanel();
 //        addRemovingMemberPanel();
-//        addDeleteBeaconGroupPanel();
+        addDeleteBeaconGroupPanel();
     }
 
     private void addCreateBeaconGroupPanel() {
@@ -42,6 +42,14 @@ public class BeaconGroupTab extends CommonTab {
         commonPanel.setTopPanel(new CreateBeaconGroupPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
+    }
+
+    private void addDeleteBeaconGroupPanel() {
+        CommonPanel commonPanel = new CommonPanel();
+        ResponsePanel responsePanel = new ResponsePanel();
+        commonPanel.setTopPanel(new DeleteBeaconGroupPanel(responsePanel));
+        commonPanel.setBottomPanel(responsePanel);
+        this.tabbedPane.addTab("Delete", commonPanel);
     }
 
     public static String[][] convertBeaconGroupJsonToTable(JSONObject beaconGroup) {
