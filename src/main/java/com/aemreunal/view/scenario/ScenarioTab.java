@@ -45,7 +45,7 @@ public class ScenarioTab extends CommonTab {
     protected void addPanels() {
         addCreateScenarioPanel();
         addGetScenarioPanel();
-//        addGetMembersPanel();
+        addGetMembersPanel();
 //        addModifyMembersPanel();
         addDeleteScenarioPanel();
     }
@@ -64,6 +64,10 @@ public class ScenarioTab extends CommonTab {
         commonPanel.setTopPanel(new GetScenarioPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
+    }
+
+    private void addGetMembersPanel() {
+        this.tabbedPane.addTab("Members", new GetMembersPanel());
     }
 
     private void addDeleteScenarioPanel() {
