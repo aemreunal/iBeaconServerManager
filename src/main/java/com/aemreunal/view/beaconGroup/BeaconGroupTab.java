@@ -62,7 +62,7 @@ public class BeaconGroupTab extends CommonTab {
     private void addModifyMemberPanel() {
         CommonPanel commonPanel = new CommonPanel();
         ResponsePanel responsePanel = new ResponsePanel();
-        commonPanel.setTopPanel(new ModifyMemberPanel(responsePanel));
+        commonPanel.setTopPanel(new ModifyMembersPanel(responsePanel));
         commonPanel.setBottomPanel(responsePanel);
         this.tabbedPane.addTab("Modify", commonPanel);
     }

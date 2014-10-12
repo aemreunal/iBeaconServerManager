@@ -26,14 +26,14 @@ import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class ModifyMemberPanel extends JPanel {
+public class ModifyMembersPanel extends JPanel {
     private JTextField projectIdField;
     private JTextField beaconGroupIdField;
     private JTextField beaconIdField;
     private JButton    addButton;
     private JButton    removeButton;
 
-    public ModifyMemberPanel(ResponsePanel responsePanel) {
+    public ModifyMembersPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
