@@ -35,7 +35,7 @@ public class BeaconGroupManager extends RestManager {
     }
 
     public static HttpResponse<JsonNode> getAllGroups(String name, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacongroups")
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacongroups?name=" + name)
                                      .getHttpRequest();
         return performRequest(request);
     }
