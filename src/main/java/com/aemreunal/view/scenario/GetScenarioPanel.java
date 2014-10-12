@@ -53,7 +53,7 @@ public class GetScenarioPanel extends JPanel {
         this.add(projectIdPanel);
 
         JPanel scenarioIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        scenarioIdPanel.add(new JLabel("Scenario ID:"));
+        scenarioIdPanel.add(new JLabel("Scenario ID (Leave blank to get all):"));
         scenarioIdPanel.add(scenarioIdField);
         scenarioIdPanel.add(getButton);
         this.add(scenarioIdPanel);
