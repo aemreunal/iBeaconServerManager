@@ -16,7 +16,6 @@ package com.aemreunal.view.user;
  ***************************
  */
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -31,7 +30,6 @@ public class DeleteUserPanel extends JPanel {
     private JButton    deleteUserButton;
 
     public DeleteUserPanel(final ResponsePanel responsePanel) {
-        super(new GridBagLayout());
         createComponents(responsePanel);
         addComponents();
     }

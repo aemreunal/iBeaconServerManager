@@ -16,7 +16,6 @@ package com.aemreunal.view.user;
  ***************************
  */
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -31,10 +30,9 @@ public class GetUserPanel extends JPanel {
     private JButton getUserButton;
 
     public GetUserPanel(final ResponsePanel responsePanel) {
-        super(new GridBagLayout());
         createComponents(responsePanel);
         addComponents();
-
+        setMaximumSize(getPreferredSize());
     }
 
     private void createComponents(ResponsePanel responsePanel) {
@@ -60,7 +58,11 @@ public class GetUserPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            HttpResponse<JsonNode> response = UserManager.getUser(usernameField.getText().trim());
+            String username = usernameField.getText().trim();
+            if (username.isEmpty()) {
+                return;
+            }
+            HttpResponse<JsonNode> response = UserManager.getUser(username);
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 200) {
                 // Normal response

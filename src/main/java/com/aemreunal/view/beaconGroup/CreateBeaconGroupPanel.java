@@ -53,22 +53,14 @@ public class CreateBeaconGroupPanel extends JPanel {
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel namePanel = new JPanel(new GridBagLayout());
-        namePanel.add(new JLabel("Name:"));
-        namePanel.add(nameField);
-        namePanel.setMinimumSize(namePanel.getPreferredSize());
-        this.add(namePanel);
-
-        JPanel descriptionPanel = new JPanel(new GridBagLayout());
-        descriptionPanel.add(new JLabel("Description:"));
-        descriptionPanel.add(descriptionField);
-        descriptionPanel.setMinimumSize(descriptionPanel.getPreferredSize());
-        this.add(descriptionPanel);
-
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.add(createButton);
-        buttonPanel.setMinimumSize(buttonPanel.getPreferredSize());
-        this.add(buttonPanel);
+        JPanel groupInfoPanel = new JPanel(new GridBagLayout());
+        groupInfoPanel.add(new JLabel("Name:"));
+        groupInfoPanel.add(nameField);
+        groupInfoPanel.add(new JLabel("Description:"));
+        groupInfoPanel.add(descriptionField);
+        groupInfoPanel.add(createButton);
+        groupInfoPanel.setMinimumSize(groupInfoPanel.getPreferredSize());
+        this.add(groupInfoPanel);
     }
 
     private class CreateActionListener implements ActionListener {

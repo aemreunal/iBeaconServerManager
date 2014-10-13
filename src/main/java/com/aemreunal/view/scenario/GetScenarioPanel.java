@@ -16,7 +16,6 @@ package com.aemreunal.view.scenario;
  ***************************
  */
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -32,7 +31,6 @@ public class GetScenarioPanel extends JPanel {
     private JButton    getButton;
 
     public GetScenarioPanel(ResponsePanel responsePanel) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
     }
@@ -47,16 +45,11 @@ public class GetScenarioPanel extends JPanel {
     }
 
     private void addComponents() {
-        JPanel projectIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        projectIdPanel.add(new JLabel("Project ID:"));
-        projectIdPanel.add(projectIdField);
-        this.add(projectIdPanel);
-
-        JPanel scenarioIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        scenarioIdPanel.add(new JLabel("Scenario ID (Leave blank to get all):"));
-        scenarioIdPanel.add(scenarioIdField);
-        scenarioIdPanel.add(getButton);
-        this.add(scenarioIdPanel);
+        add(new JLabel("Project ID:"));
+        add(projectIdField);
+        add(new JLabel("Scenario ID (Leave blank to get all):"));
+        add(scenarioIdField);
+        add(getButton);
     }
 
     private class GetActionListener implements ActionListener {

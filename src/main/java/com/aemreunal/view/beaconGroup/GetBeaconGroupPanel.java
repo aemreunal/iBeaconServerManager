@@ -53,20 +53,16 @@ public class GetBeaconGroupPanel extends JPanel {
         JPanel projectIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
-        projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
+        projectIdPanel.add(new JLabel("Beacon group ID (leave blank to get all):"));
+        projectIdPanel.add(beaconGroupIdField);
+        projectIdPanel.add(getButton);
+        projectIdPanel.setMaximumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
-
-        JPanel beaconGroupIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        beaconGroupIdPanel.add(new JLabel("Beacon group ID (leave blank to get all):"));
-        beaconGroupIdPanel.add(beaconGroupIdField);
-        beaconGroupIdPanel.add(getButton);
-        beaconGroupIdPanel.setMinimumSize(beaconGroupIdPanel.getPreferredSize());
-        this.add(beaconGroupIdPanel);
 
         JPanel beaconGroupNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         beaconGroupNamePanel.add(new JLabel("Search by Name:"));
         beaconGroupNamePanel.add(beaconGroupNameField);
-        beaconGroupNamePanel.setMinimumSize(beaconGroupNamePanel.getPreferredSize());
+        beaconGroupNamePanel.setMaximumSize(beaconGroupNamePanel.getPreferredSize());
         this.add(beaconGroupNamePanel);
     }
 

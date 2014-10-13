@@ -16,7 +16,6 @@ package com.aemreunal.view.beaconGroup;
  ***************************
  */
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -33,7 +32,6 @@ public class GetMembersPanel extends JPanel {
     private JButton    getButton;
 
     public GetMembersPanel(ResponsePanel responsePanel) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
     }
@@ -48,18 +46,11 @@ public class GetMembersPanel extends JPanel {
     }
 
     private void addComponents() {
-        JPanel idPanel = new JPanel(new GridBagLayout());
-        idPanel.add(new JLabel("Project ID:"));
-        idPanel.add(projectIdField);
-        idPanel.add(new JLabel("Beacon group ID:"));
-        idPanel.add(beaconGroupIdField);
-        idPanel.setMaximumSize(idPanel.getPreferredSize());
-        this.add(idPanel);
-
-        JPanel beaconIdPanel = new JPanel(new GridBagLayout());
-        beaconIdPanel.add(getButton);
-        beaconIdPanel.setMaximumSize(beaconIdPanel.getPreferredSize());
-        this.add(beaconIdPanel);
+        add(new JLabel("Project ID:"));
+        add(projectIdField);
+        add(new JLabel("Beacon group ID:"));
+        add(beaconGroupIdField);
+        add(getButton);
     }
 
     private class GetActionListener implements ActionListener {

@@ -41,10 +41,10 @@ public class QueryBeaconPanel extends JPanel {
 
     private void createComponents(ResponsePanel responsePanel) {
         QueryActionListener actionListener = new QueryActionListener(responsePanel);
-        uuidField = new JTextField(10);
-        majorField = new JTextField(10);
-        minorField = new JTextField(10);
-        secretField = new JTextField(10);
+        uuidField = new JTextField(20);
+        majorField = new JTextField(20);
+        minorField = new JTextField(20);
+        secretField = new JTextField(20);
         secretField.addActionListener(actionListener);
         queryButton = new JButton("Query");
         queryButton.addActionListener(actionListener);
@@ -96,7 +96,6 @@ public class QueryBeaconPanel extends JPanel {
                                                                      secretField.getText().trim());
             responsePanel.showResponseCode(response.getCode());
             if (response.getCode() == 200) {
-                // Normal response
                 String[][] queryResponse = APITab.convertQueryJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
             }

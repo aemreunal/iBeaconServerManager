@@ -16,7 +16,6 @@ package com.aemreunal.view.user;
  ***************************
  */
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -41,7 +40,6 @@ public class RegisterPanel extends JPanel {
     private JButton registerButton;
 
     public RegisterPanel(final ResponsePanel responsePanel) {
-        super(new GridBagLayout());
         createComponents(responsePanel);
         addComponents();
     }

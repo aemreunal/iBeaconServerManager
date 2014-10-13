@@ -27,7 +27,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
 public class CreateScenarioPanel extends JPanel {
-    public static final int FIELD_WIDTH = 12;
     private JTextField projectIdField;
     private JTextField nameField;
     private JTextField descriptionField;
@@ -40,46 +39,52 @@ public class CreateScenarioPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
+        setMaximumSize(getPreferredSize());
     }
 
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
-        nameField = new JTextField(FIELD_WIDTH);
-        descriptionField = new JTextField(FIELD_WIDTH);
-        shortMsgField = new JTextField(FIELD_WIDTH);
-        longMsgField = new JTextField(FIELD_WIDTH);
-        urlField = new JTextField(FIELD_WIDTH);
+        nameField = new JTextField(12);
+        descriptionField = new JTextField(12);
+        shortMsgField = new JTextField(12);
+        longMsgField = new JTextField(12);
+        urlField = new JTextField(12);
         createButton = new JButton("Create");
         createButton.addActionListener(new CreateActionListener(responsePanel));
     }
 
     private void addComponents() {
-        JPanel projectIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel projectIdPanel = new JPanel(new GridBagLayout());
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
+        projectIdPanel.setMaximumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel nameDescPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel nameDescPanel = new JPanel(new GridBagLayout());
         nameDescPanel.add(new JLabel("Name:"));
         nameDescPanel.add(nameField);
         nameDescPanel.add(new JLabel("Description:"));
         nameDescPanel.add(descriptionField);
+        nameDescPanel.setMaximumSize(nameDescPanel.getPreferredSize());
         this.add(nameDescPanel);
 
-        JPanel msgPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel msgPanel = new JPanel(new GridBagLayout());
         msgPanel.add(new JLabel("Short Msg:"));
         msgPanel.add(shortMsgField);
         msgPanel.add(new JLabel("Long Msg:"));
         msgPanel.add(longMsgField);
+        msgPanel.setMaximumSize(msgPanel.getPreferredSize());
         this.add(msgPanel);
 
-        JPanel urlPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel urlPanel = new JPanel(new GridBagLayout());
         urlPanel.add(new JLabel("URL:"));
         urlPanel.add(urlField);
+        urlPanel.setMaximumSize(urlPanel.getPreferredSize());
         this.add(urlPanel);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.add(createButton);
+        buttonPanel.setMaximumSize(buttonPanel.getPreferredSize());
         this.add(buttonPanel);
     }
 

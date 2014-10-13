@@ -27,7 +27,7 @@ public abstract class CommonTab extends JPanel {
         this.tabbedPane = new JTabbedPane();
         this.setLayout(new BorderLayout());
         addPanels();
-        add(tabbedPane);
+        add(tabbedPane, BorderLayout.CENTER);
     }
 
     protected abstract void addPanels();
