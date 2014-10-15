@@ -19,12 +19,7 @@ repositories {
 
 dependencies {
     compile group: 'com.mashape.unirest', name: 'unirest-java', version: unirestVersion
-
-//    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonCoreVersion
-//    compile group: 'com.jayway.jsonpath', name: 'json-path', version: jsonPathVersion
     compile group: 'org.json', name: 'json', version: jsonVersion
-
-    testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
 task wrapper(type: Wrapper) {
