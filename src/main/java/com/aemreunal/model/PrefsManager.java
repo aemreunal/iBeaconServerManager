@@ -23,7 +23,7 @@ public class PrefsManager {
     public static final String SERVER_URL_KEY      = "ServerAddress";
     public static final String DEFAULT_SERVER_URL  = "localhost";
     public static final String SERVER_PORT_KEY     = "ServerPort";
-    public static final String DEFAULT_SERVER_PORT = "8080";
+    public static final String DEFAULT_SERVER_PORT = "80";
     public static final String USERNAME_KEY        = "Username";
     public static final String DEFAULT_USERNAME    = "_";
     public static final String PASSWORD_KEY        = "Password";

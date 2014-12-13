@@ -94,7 +94,7 @@ public class PreferencesTab extends JPanel {
     private class UpdateActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch (((JButton) e.getSource()).getText().substring(7)) {
+            switch (((JButton) e.getSource()).getText().substring(7).toLowerCase()) {
                 case "url":
                     PrefsManager.setServerUrl(urlField.getText());
                     break;
