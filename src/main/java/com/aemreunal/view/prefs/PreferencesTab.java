@@ -23,8 +23,10 @@ import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
 
 public class PreferencesTab extends JPanel {
-    private JTextField addressField;
-    private JButton    updateAddressButton;
+    private JTextField urlField;
+    private JButton    updateUrlButton;
+    private JTextField portField;
+    private JButton    updatePortButton;
     private JTextField usernameField;
     private JButton    updateUsernameButton;
     private JTextField passwordField;
@@ -37,31 +39,42 @@ public class PreferencesTab extends JPanel {
     }
 
     private void createComponents() {
-        addressField = new JTextField(15);
-        updateAddressButton = new JButton("Update address");
-        updateAddressButton.addActionListener(new UpdateActionListener());
-        usernameField = new JTextField(15);
+        urlField = new JTextField(17);
+        updateUrlButton = new JButton("Update URL");
+        updateUrlButton.addActionListener(new UpdateActionListener());
+        portField = new JTextField(17);
+        updatePortButton = new JButton("Update port");
+        updatePortButton.addActionListener(new UpdateActionListener());
+        usernameField = new JTextField(17);
         updateUsernameButton = new JButton("Update username");
         updateUsernameButton.addActionListener(new UpdateActionListener());
-        passwordField = new JTextField(15);
+        passwordField = new JTextField(17);
         updatePasswordButton = new JButton("Update password");
         updatePasswordButton.addActionListener(new UpdateActionListener());
         refreshTextFields();
     }
 
     private void refreshTextFields() {
-        addressField.setText(PrefsManager.getServerAddress());
+        urlField.setText(PrefsManager.getServerUrl());
+        portField.setText(PrefsManager.getServerPort());
         usernameField.setText(PrefsManager.getUsername());
         passwordField.setText(PrefsManager.getPassword());
     }
 
     private void addComponents() {
-        JPanel addressPanel = new JPanel(new GridBagLayout());
-        addressPanel.add(new JLabel("Server address:"));
-        addressPanel.add(addressField);
-        addressPanel.add(updateAddressButton);
-        addressPanel.setMaximumSize(addressPanel.getPreferredSize());
-        this.add(addressPanel);
+        JPanel urlPanel = new JPanel(new GridBagLayout());
+        urlPanel.add(new JLabel("Server URL:"));
+        urlPanel.add(urlField);
+        urlPanel.add(updateUrlButton);
+        urlPanel.setMaximumSize(urlPanel.getPreferredSize());
+        this.add(urlPanel);
+
+        JPanel portPanel = new JPanel(new GridBagLayout());
+        portPanel.add(new JLabel("Server port:"));
+        portPanel.add(portField);
+        portPanel.add(updatePortButton);
+        portPanel.setMaximumSize(portPanel.getPreferredSize());
+        this.add(portPanel);
 
         JPanel usernamePanel = new JPanel(new GridBagLayout());
         usernamePanel.add(new JLabel("Username:"));
@@ -82,8 +95,11 @@ public class PreferencesTab extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch (((JButton) e.getSource()).getText().substring(7)) {
-                case "address":
-                    PrefsManager.setServerAddress(addressField.getText());
+                case "url":
+                    PrefsManager.setServerUrl(urlField.getText());
+                    break;
+                case "port":
+                    PrefsManager.setServerPort(portField.getText());
                     break;
                 case "username":
                     PrefsManager.setUsername(usernameField.getText());

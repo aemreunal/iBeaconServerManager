@@ -25,7 +25,7 @@ import com.mashape.unirest.request.HttpRequest;
 public class APIManager extends RestManager {
 
     public static HttpResponse<JsonNode> queryBeacon(String uuid, String major, String minor, String secret) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/robot/querybeacon")
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/robot/querybeacon")
                                      .body(getQueryBeaconJson(uuid, major, minor, secret))
                                      .getHttpRequest();
         return performRequest(request);

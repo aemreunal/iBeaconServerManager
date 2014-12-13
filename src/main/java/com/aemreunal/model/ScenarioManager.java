@@ -25,7 +25,7 @@ import com.mashape.unirest.request.HttpRequest;
 public class ScenarioManager extends RestManager {
 
     public static HttpResponse<JsonNode> createScenario(String name, String description, String shortMsg, String longMsg, String url, String projectId) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios")
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios")
                                      .body(getScenarioCreateJson(name, description, shortMsg, longMsg, url))
                                      .getHttpRequest();
         return performRequest(request);
@@ -40,55 +40,55 @@ public class ScenarioManager extends RestManager {
     }
 
     public static HttpResponse<JsonNode> getAllScenarios(String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios")
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios")
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> getScenario(String scenarioId, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId)
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> getScenarioMemberBeacons(String scenarioId, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/beacons")
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/beacons")
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> getScenarioMemberBeaconGroups(String scenarioId, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/beacongroups")
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/beacongroups")
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> addBeacon(String beaconId, String scenarioId, String projectId) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/addbeacon?beaconId=" + beaconId)
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/addbeacon?beaconId=" + beaconId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> addBeaconGroup(String beaconGroupId, String scenarioId, String projectId) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/addbeacongroup?beaconGroupId=" + beaconGroupId)
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/addbeacongroup?beaconGroupId=" + beaconGroupId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> removeBeacon(String beaconId, String scenarioId, String projectId) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/removebeacon?beaconId=" + beaconId)
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/removebeacon?beaconId=" + beaconId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> removeBeaconGroup(String beaconGroupId, String scenarioId, String projectId) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/removebeacongroup?beaconGroupId=" + beaconGroupId)
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/removebeacongroup?beaconGroupId=" + beaconGroupId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteScenario(String scenarioId, String projectId) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "?confirm=yes")
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "?confirm=yes")
                                      .getHttpRequest();
         return performRequest(request);
     }

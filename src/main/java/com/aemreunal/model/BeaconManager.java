@@ -25,27 +25,27 @@ import com.mashape.unirest.request.HttpRequest;
 public class BeaconManager extends RestManager {
 
     public static HttpResponse<JsonNode> createBeacon(String uuid, String major, String minor, String description, String projectId) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons")
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons")
                                      .body(getBeaconCreateJson(uuid, major, minor, description))
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> getAllBeacons(String uuid, String major, String minor, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons"
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons"
                                                   + "?uuid=" + uuid + "&major=" + major + "&minor=" + minor)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> getBeacon(String beaconId, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId)
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteBeacon(String beaconId, String projectId) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId + "?confirm=yes")
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons/" + beaconId + "?confirm=yes")
                                      .getHttpRequest();
         return performRequest(request);
     }

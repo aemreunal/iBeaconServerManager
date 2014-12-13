@@ -24,7 +24,7 @@ import com.mashape.unirest.request.HttpRequest;
 public class ProjectManager extends RestManager {
 
     public static HttpResponse<JsonNode> createProject(String name, String description) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects")
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects")
                                      .body(getProjectCreateJson(name, description))
                                      .getHttpRequest();
         return performRequest(request);
@@ -35,19 +35,19 @@ public class ProjectManager extends RestManager {
     }
 
     public static HttpResponse<JsonNode> getAllProjects(String projectName) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects?name=" + projectName)
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects?name=" + projectName)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> getProject(String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId)
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId)
                                      .getHttpRequest();
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteProject(String projectId) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "?confirm=yes")
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "?confirm=yes")
                                      .getHttpRequest();
         return performRequest(request);
     }

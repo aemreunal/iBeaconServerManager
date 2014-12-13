@@ -23,7 +23,7 @@ import com.mashape.unirest.request.HttpRequest;
 
 public class UserManager extends RestManager {
     public static HttpResponse<JsonNode> registerUser(String username, String password) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/iBeacon/human/register")
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/register")
                                      .body(getUserRegisterJson(username, password))
                                      .getHttpRequest();
         return performRequest(request);
@@ -34,12 +34,12 @@ public class UserManager extends RestManager {
     }
 
     public static HttpResponse<JsonNode> getUser(String username) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/iBeacon/human/" + username);
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + username);
         return performRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteUser(String username) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/iBeacon/human/" + username + "?confirm=yes")
+        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + username + "?confirm=yes")
                                      .getHttpRequest();
         return performRequest(request);
     }

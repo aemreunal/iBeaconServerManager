@@ -20,20 +20,43 @@ import javax.swing.*;
 import com.aemreunal.iBeaconServerManager;
 
 public class PrefsManager {
-    public static final String SERVER_ADDRESS_KEY     = "ServerAddress";
-    public static final String DEFAULT_SERVER_ADDRESS = "http://localhost:8080";
-    public static final String USERNAME_KEY           = "Username";
-    public static final String DEFAULT_USERNAME       = "_";
-    public static final String PASSWORD_KEY           = "Password";
-    public static final String DEFAULT_PASSWORD       = "_";
+    public static final String SERVER_URL_KEY      = "ServerAddress";
+    public static final String DEFAULT_SERVER_URL  = "localhost";
+    public static final String SERVER_PORT_KEY     = "ServerPort";
+    public static final String DEFAULT_SERVER_PORT = "8080";
+    public static final String USERNAME_KEY        = "Username";
+    public static final String DEFAULT_USERNAME    = "_";
+    public static final String PASSWORD_KEY        = "Password";
+    public static final String DEFAULT_PASSWORD    = "_";
 
     public static String getServerAddress() {
-        return iBeaconServerManager.getPreferences().get(SERVER_ADDRESS_KEY, DEFAULT_SERVER_ADDRESS);
+        return "http://" + getServerUrl() + ":" + getServerPort();
     }
 
-    public static void setServerAddress(String serverAddress) {
-        iBeaconServerManager.getPreferences().put(SERVER_ADDRESS_KEY, serverAddress);
-        JOptionPane.showMessageDialog(null, "Server address updated.");
+    public static String getServerUrl() {
+        return removeTrailingSlashes(iBeaconServerManager.getPreferences().get(SERVER_URL_KEY, DEFAULT_SERVER_URL));
+    }
+
+    public static void setServerUrl(String serverUrl) {
+        serverUrl = removeTrailingSlashes(serverUrl);
+        iBeaconServerManager.getPreferences().put(SERVER_URL_KEY, serverUrl);
+        JOptionPane.showMessageDialog(null, "Server URL updated.");
+    }
+
+    public static String getServerPort() {
+        return iBeaconServerManager.getPreferences().get(SERVER_PORT_KEY, DEFAULT_SERVER_PORT);
+    }
+
+    public static void setServerPort(String serverPort) {
+        iBeaconServerManager.getPreferences().put(SERVER_PORT_KEY, serverPort);
+        JOptionPane.showMessageDialog(null, "Server port updated.");
+    }
+
+    private static String removeTrailingSlashes(String serverAddress) {
+        while (serverAddress.charAt(serverAddress.length() - 1) == '/') {
+            serverAddress = serverAddress.substring(0, serverAddress.length() - 1);
+        }
+        return serverAddress;
     }
 
     public static String getUsername() {
