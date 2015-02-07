@@ -23,7 +23,7 @@ import com.mashape.unirest.request.HttpRequest;
 
 public class UserManager extends RestManager {
     public static HttpResponse<JsonNode> registerUser(String username, String password) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/register")
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/register")
                                      .body(getUserRegisterJson(username, password))
                                      .getHttpRequest();
         return performRequest(request);
