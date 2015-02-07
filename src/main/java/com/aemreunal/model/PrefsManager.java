@@ -20,6 +20,7 @@ import javax.swing.*;
 import com.aemreunal.iBeaconServerManager;
 
 public class PrefsManager {
+    public static final String HTTP_PROTOCOL       = "https://";
     public static final String SERVER_URL_KEY      = "ServerAddress";
     public static final String DEFAULT_SERVER_URL  = "localhost";
     public static final String SERVER_PORT_KEY     = "ServerPort";
@@ -30,7 +31,7 @@ public class PrefsManager {
     public static final String DEFAULT_PASSWORD    = "_";
 
     public static String getServerAddress() {
-        return "http://" + getServerUrl() + ":" + getServerPort();
+        return HTTP_PROTOCOL + getServerUrl() + ":" + getServerPort();
     }
 
     public static String getServerUrl() {
