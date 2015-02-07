@@ -27,7 +27,9 @@ public class RestManager {
 
     protected static HttpResponse<JsonNode> performRequest(HttpRequest request) {
         try {
-            request.basicAuth(PrefsManager.getUsername(), PrefsManager.getPassword());
+            if (!isRegisterRequest(request)) {
+                request.basicAuth(PrefsManager.getUsername(), PrefsManager.getPassword());
+            }
             HttpResponse<JsonNode> jsonResponse = request.asJson();
             if (jsonResponse.getCode() >= 400 && jsonResponse.getCode() < 500) {
                 JOptionPane.showMessageDialog(null, getErrorMessage(jsonResponse.getBody().getObject()), "An error ocurred!", JOptionPane.ERROR_MESSAGE);
@@ -39,6 +41,10 @@ public class RestManager {
             e.printStackTrace();
             throw new NullPointerException();
         }
+    }
+
+    private static boolean isRegisterRequest(HttpRequest request) {
+        return request.getUrl().equals(PrefsManager.getServerAddress() + "/register");
     }
 
     private static String getErrorMessage(JSONObject object) {
