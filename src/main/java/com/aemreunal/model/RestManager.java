@@ -31,7 +31,7 @@ public class RestManager {
                 request.basicAuth(PrefsManager.getUsername(), PrefsManager.getPassword());
             }
             HttpResponse<JsonNode> jsonResponse = request.asJson();
-            if (jsonResponse.getCode() >= 400 && jsonResponse.getCode() < 500) {
+            if (jsonResponse.getStatus() >= 400 && jsonResponse.getStatus() < 500) {
                 JOptionPane.showMessageDialog(null, getErrorMessage(jsonResponse.getBody().getObject()), "An error ocurred!", JOptionPane.ERROR_MESSAGE);
             }
             return jsonResponse;

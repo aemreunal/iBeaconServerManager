@@ -63,8 +63,8 @@ public class DeleteBeaconPanel extends JPanel {
             String projectId = projectIdField.getText().trim();
             if (!beaconId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = BeaconManager.deleteBeacon(beaconId, projectId);
-                responsePanel.showResponseCode(response.getCode());
-                if (response.getCode() == 200) {
+                responsePanel.showResponseCode(response.getStatus());
+                if (response.getStatus() == 200) {
                     // Normal response
                     String[][] beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
                     responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);

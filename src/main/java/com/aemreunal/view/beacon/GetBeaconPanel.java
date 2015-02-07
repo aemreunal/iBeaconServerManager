@@ -111,8 +111,8 @@ public class GetBeaconPanel extends JPanel {
             } else {
                 response = BeaconManager.getBeacon(beaconId, projectId);
             }
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] beaconResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {

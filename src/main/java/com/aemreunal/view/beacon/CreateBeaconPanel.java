@@ -101,8 +101,8 @@ public class CreateBeaconPanel extends JPanel {
                                                                          minorField.getText().trim(),
                                                                          descriptionField.getText().trim(),
                                                                          projectIdField.getText().trim());
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 201) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 201) {
                 // Normal response
                 String[][] createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);

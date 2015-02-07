@@ -79,8 +79,8 @@ public class CreateBeaconGroupPanel extends JPanel {
             HttpResponse<JsonNode> response = BeaconGroupManager.createGroup(nameField.getText().trim(),
                                                                              descriptionField.getText().trim(),
                                                                              projectId);
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 201) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 201) {
                 // Normal response
                 String[][] createResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, createResponse);

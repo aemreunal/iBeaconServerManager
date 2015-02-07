@@ -63,8 +63,8 @@ public class GetUserPanel extends JPanel {
                 return;
             }
             HttpResponse<JsonNode> response = UserManager.getUser(username);
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 // Normal response
                 String[][] userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);

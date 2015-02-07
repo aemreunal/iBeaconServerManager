@@ -94,8 +94,8 @@ public class QueryBeaconPanel extends JPanel {
                                                                      majorField.getText().trim(),
                                                                      minorField.getText().trim(),
                                                                      secretField.getText().trim());
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] queryResponse = APITab.convertQueryJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
             }

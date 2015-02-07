@@ -72,8 +72,8 @@ public class GetScenarioPanel extends JPanel {
             } else {
                 response = ScenarioManager.getScenario(scenarioId, projectId);
             }
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] scenarioResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {

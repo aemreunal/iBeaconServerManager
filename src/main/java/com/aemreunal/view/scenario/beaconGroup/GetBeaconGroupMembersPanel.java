@@ -68,8 +68,8 @@ public class GetBeaconGroupMembersPanel extends JPanel {
                 return;
             }
             HttpResponse<JsonNode> response = ScenarioManager.getScenarioMemberBeaconGroups(scenarioId, projectId);
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] beaconGroupResponse = BeaconGroupTab.convertBeaconGroupsJsonToTable(response.getBody().getArray());
                 responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
             }

@@ -89,8 +89,8 @@ public class ModifyBeaconGroupMembersPanel extends JPanel {
             } else {
                 response = ScenarioManager.removeBeaconGroup(beaconGroupId, scenarioId, projectId);
             }
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] beaconGroupResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
             }

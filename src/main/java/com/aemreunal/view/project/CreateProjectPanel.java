@@ -62,8 +62,8 @@ public class CreateProjectPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = ProjectManager.createProject(nameField.getText().trim(), descriptionField.getText().trim());
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 201) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 201) {
                 // Normal response
                 String[][] projectResponse = ProjectTab.convertProjectCreateJsonToTable(response.getBody().getObject());
                 showSecret(projectResponse[0][1], response.getBody().getObject().get("secret").toString());

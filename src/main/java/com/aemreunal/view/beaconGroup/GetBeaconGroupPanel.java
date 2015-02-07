@@ -87,8 +87,8 @@ public class GetBeaconGroupPanel extends JPanel {
             } else {
                 response = BeaconGroupManager.getGroup(beaconGroupId, projectId);
             }
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] beaconGroupResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {

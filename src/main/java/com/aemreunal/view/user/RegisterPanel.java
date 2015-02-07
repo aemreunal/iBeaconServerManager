@@ -69,8 +69,8 @@ public class RegisterPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = UserManager.registerUser(usernameField.getText().trim(), passwordField.getText().trim());
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 201) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 201) {
                 // Normal response
                 String[][] userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);

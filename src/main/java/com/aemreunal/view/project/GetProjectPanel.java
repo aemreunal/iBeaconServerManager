@@ -76,8 +76,8 @@ public class GetProjectPanel extends JPanel {
             } else {
                 response = ProjectManager.getProject(projectIdField.getText().trim());
             }
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 // Normal response
                 String[][] projectResponse;
                 if (response.getBody().isArray()) {

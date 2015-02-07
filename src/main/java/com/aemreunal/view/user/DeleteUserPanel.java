@@ -56,8 +56,8 @@ public class DeleteUserPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = UserManager.deleteUser(usernameField.getText().trim());
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 // Normal response
                 String[][] userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);

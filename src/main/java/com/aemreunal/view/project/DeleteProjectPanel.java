@@ -58,8 +58,8 @@ public class DeleteProjectPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = ProjectManager.deleteProject(projectIdField.getText().trim());
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 // Normal response
                 String[][] projectResponse = ProjectTab.convertProjectJsonToTable(response.getBody().getObject());
                 responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);

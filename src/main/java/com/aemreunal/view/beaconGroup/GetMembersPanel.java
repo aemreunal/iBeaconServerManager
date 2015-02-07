@@ -68,8 +68,8 @@ public class GetMembersPanel extends JPanel {
                 return;
             }
             HttpResponse<JsonNode> response = BeaconGroupManager.getGroupMembers(beaconGroupId, projectId);
-            responsePanel.showResponseCode(response.getCode());
-            if (response.getCode() == 200) {
+            responsePanel.showResponseCode(response.getStatus());
+            if (response.getStatus() == 200) {
                 String[][] beaconResponse;
                 JsonNode responseBody = response.getBody();
                 beaconResponse = BeaconTab.convertBeaconsJsonToTable(responseBody.getArray());
