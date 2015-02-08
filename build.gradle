@@ -7,9 +7,7 @@ def vendor = 'Ahmet Emre Unal'
 def mainClass = 'com.aemreunal.iBeaconServerManager'
 
 def unirestVersion = '1.4.4'
-def jacksonCoreVersion = '2.4.1.1'
 def wrapperGradleVersion = '2.0'
-def jsonPathVersion = '0.9.1'
 def jsonVersion = '20140107'
 
 repositories {
