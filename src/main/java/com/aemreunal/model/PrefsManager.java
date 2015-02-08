@@ -41,7 +41,6 @@ public class PrefsManager {
     public static void setServerUrl(String serverUrl) {
         serverUrl = removeTrailingSlashes(serverUrl);
         iBeaconServerManager.getPreferences().put(SERVER_URL_KEY, serverUrl);
-        JOptionPane.showMessageDialog(null, "Server URL updated.");
     }
 
     public static String getServerPort() {
@@ -50,7 +49,6 @@ public class PrefsManager {
 
     public static void setServerPort(String serverPort) {
         iBeaconServerManager.getPreferences().put(SERVER_PORT_KEY, serverPort);
-        JOptionPane.showMessageDialog(null, "Server port updated.");
     }
 
     private static String removeTrailingSlashes(String serverAddress) {
@@ -90,15 +88,13 @@ public class PrefsManager {
 
     public static void setUsername(String username) {
         iBeaconServerManager.getPreferences().put(USERNAME_KEY, username);
-        JOptionPane.showMessageDialog(null, "Username updated.");
     }
 
     public static String getPassword() {
         return iBeaconServerManager.getPreferences().get(PASSWORD_KEY, DEFAULT_PASSWORD);
     }
 
-    public static void setPassword(String password) {
-        iBeaconServerManager.getPreferences().put(PASSWORD_KEY, password);
-        JOptionPane.showMessageDialog(null, "Password updated.");
+    public static void setPassword(char[] password) {
+        iBeaconServerManager.getPreferences().put(PASSWORD_KEY, password.toString());
     }
 }

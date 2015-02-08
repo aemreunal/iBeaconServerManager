@@ -19,18 +19,25 @@ package com.aemreunal.view.prefs;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
+import com.aemreunal.model.UserManager;
+import com.aemreunal.view.ItemTable;
+import com.aemreunal.view.user.UserTab;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequest;
 
 public class PreferencesTab extends JPanel {
     private JTextField urlField;
-    private JButton    updateUrlButton;
     private JTextField portField;
-    private JButton    updatePortButton;
     private JTextField usernameField;
-    private JButton    updateUsernameButton;
-    private JTextField passwordField;
-    private JButton    updatePasswordButton;
+    private JPasswordField passwordField;
+    private JButton    saveSettingsButton;
+    private JButton    checkCredentialsButton;
 
     public PreferencesTab() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -40,17 +47,15 @@ public class PreferencesTab extends JPanel {
 
     private void createComponents() {
         urlField = new JTextField(17);
-        updateUrlButton = new JButton("Update URL");
-        updateUrlButton.addActionListener(new UpdateActionListener());
         portField = new JTextField(17);
-        updatePortButton = new JButton("Update port");
-        updatePortButton.addActionListener(new UpdateActionListener());
         usernameField = new JTextField(17);
-        updateUsernameButton = new JButton("Update username");
-        updateUsernameButton.addActionListener(new UpdateActionListener());
-        passwordField = new JTextField(17);
-        updatePasswordButton = new JButton("Update password");
-        updatePasswordButton.addActionListener(new UpdateActionListener());
+        passwordField = new JPasswordField(17);
+        saveSettingsButton = new JButton("Save settings");
+        saveSettingsButton.setActionCommand("save");
+        saveSettingsButton.addActionListener(new UpdateActionListener());
+        checkCredentialsButton = new JButton("Test credentials");
+        checkCredentialsButton.setActionCommand("test");
+        checkCredentialsButton.addActionListener(new UpdateActionListener());
         refreshTextFields();
     }
 
@@ -65,51 +70,63 @@ public class PreferencesTab extends JPanel {
         JPanel urlPanel = new JPanel(new GridBagLayout());
         urlPanel.add(new JLabel("Server URL:"));
         urlPanel.add(urlField);
-        urlPanel.add(updateUrlButton);
         urlPanel.setMaximumSize(urlPanel.getPreferredSize());
         this.add(urlPanel);
 
         JPanel portPanel = new JPanel(new GridBagLayout());
         portPanel.add(new JLabel("Server port:"));
         portPanel.add(portField);
-        portPanel.add(updatePortButton);
         portPanel.setMaximumSize(portPanel.getPreferredSize());
         this.add(portPanel);
 
         JPanel usernamePanel = new JPanel(new GridBagLayout());
         usernamePanel.add(new JLabel("Username:"));
         usernamePanel.add(usernameField);
-        usernamePanel.add(updateUsernameButton);
         usernamePanel.setMaximumSize(usernamePanel.getPreferredSize());
         this.add(usernamePanel);
 
         JPanel passwordPanel = new JPanel(new GridBagLayout());
         passwordPanel.add(new JLabel("Password:"));
         passwordPanel.add(passwordField);
-        passwordPanel.add(updatePasswordButton);
         passwordPanel.setMaximumSize(passwordPanel.getPreferredSize());
         this.add(passwordPanel);
+
+        this.add(saveSettingsButton);
+        this.add(checkCredentialsButton);
     }
 
     private class UpdateActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch (((JButton) e.getSource()).getText().substring(7).toLowerCase()) {
-                case "url":
-                    PrefsManager.setServerUrl(urlField.getText());
-                    break;
-                case "port":
-                    PrefsManager.setServerPort(portField.getText());
-                    break;
-                case "username":
-                    PrefsManager.setUsername(usernameField.getText());
-                    break;
-                case "password":
-                    PrefsManager.setPassword(passwordField.getText());
-                    break;
-                default:
-                    break;
+            saveSettings();
+            if(e.getActionCommand().equals("test")) {
+                testCredentials();
             }
+        }
+    }
+
+    private void saveSettings() {
+        PrefsManager.setServerUrl(urlField.getText());
+        PrefsManager.setServerPort(portField.getText());
+        PrefsManager.setUsername(usernameField.getText());
+        PrefsManager.setPassword(passwordField.getPassword());
+        JOptionPane.showMessageDialog(null, "Settings have been saved.");
+    }
+
+    private void testCredentials() {
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername());
+        request.basicAuth(PrefsManager.getUsername(), PrefsManager.getPassword());
+        HttpResponse<InputStream> inputStreamHttpResponse;
+        try {
+            inputStreamHttpResponse = request.asBinary();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (inputStreamHttpResponse.getStatus() == 200) {
+            JOptionPane.showMessageDialog(null, "Credentials are correct.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Credentials are incorrect! Please re-enter your username and password.");
         }
     }
 }

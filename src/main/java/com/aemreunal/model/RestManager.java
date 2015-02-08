@@ -36,6 +36,7 @@ public class RestManager {
             }
             return jsonResponse;
         } catch (UnirestException e) {
+            JOptionPane.showMessageDialog(null, "Request failed. Please check the server and account settings.");
             System.err.println("A Unirest exception ocurred!");
             System.err.println(e.getMessage());
             e.printStackTrace();

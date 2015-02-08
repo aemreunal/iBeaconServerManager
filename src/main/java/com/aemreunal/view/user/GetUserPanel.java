@@ -19,6 +19,7 @@ package com.aemreunal.view.user;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import com.aemreunal.model.PrefsManager;
 import com.aemreunal.model.UserManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
@@ -26,7 +27,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
 public class GetUserPanel extends JPanel {
-    private JTextField usernameField;
     private JButton getUserButton;
 
     public GetUserPanel(final ResponsePanel responsePanel) {
@@ -37,15 +37,11 @@ public class GetUserPanel extends JPanel {
 
     private void createComponents(ResponsePanel responsePanel) {
         GetUserActionListener actionListener = new GetUserActionListener(responsePanel);
-        usernameField = new JTextField(10);
-        usernameField.addActionListener(actionListener);
         getUserButton = new JButton("Get user");
         getUserButton.addActionListener(actionListener);
     }
 
     private void addComponents() {
-        this.add(new JLabel("Username:"));
-        this.add(usernameField);
         this.add(getUserButton);
     }
 
@@ -58,11 +54,7 @@ public class GetUserPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String username = usernameField.getText().trim();
-            if (username.isEmpty()) {
-                return;
-            }
-            HttpResponse<JsonNode> response = UserManager.getUser(username);
+            HttpResponse<JsonNode> response = UserManager.getUser(PrefsManager.getUsername());
             responsePanel.showResponseCode(response.getStatus());
             if (response.getStatus() == 200) {
                 // Normal response
