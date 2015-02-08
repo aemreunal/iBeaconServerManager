@@ -1,8 +1,8 @@
 apply plugin: 'java'
 
-sourceCompatibility = 1.7
-version = '1.0'
-def manifestVersion = '1.0'
+sourceCompatibility = 1.8
+version = 'b1.1'
+def manifestVersion = version
 def vendor = 'Ahmet Emre Unal'
 def mainClass = 'com.aemreunal.iBeaconServerManager'
 
