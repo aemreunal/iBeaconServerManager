@@ -26,9 +26,9 @@ public class PrefsManager {
     public static final String SERVER_PORT_KEY     = "ServerPort";
     public static final String DEFAULT_SERVER_PORT = "8443";
     public static final String USERNAME_KEY        = "Username";
-    public static final String DEFAULT_USERNAME    = "_";
+    public static final String DEFAULT_USERNAME    = "";
     public static final String PASSWORD_KEY        = "Password";
-    public static final String DEFAULT_PASSWORD    = "_";
+    public static final String DEFAULT_PASSWORD    = "";
 
     public static String getServerAddress() {
         return HTTP_PROTOCOL + getServerUrl() + ":" + getServerPort();
