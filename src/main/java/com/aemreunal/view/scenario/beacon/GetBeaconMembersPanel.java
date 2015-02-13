@@ -69,10 +69,11 @@ public class GetBeaconMembersPanel extends JPanel {
             }
             HttpResponse<JsonNode> response = ScenarioManager.getScenarioMemberBeacons(scenarioId, projectId);
             responsePanel.showResponseCode(response.getStatus());
+            String[][] beaconResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconResponse = BeaconTab.convertBeaconsJsonToTable(response.getBody().getArray());
-                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+                beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getArray());
             }
+            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
         }
     }
 }

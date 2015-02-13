@@ -1,4 +1,4 @@
-package com.aemreunal.view.beaconGroup;
+package com.aemreunal.view.region;
 
 /*
  ***************************
@@ -20,19 +20,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconGroupManager;
+import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class CreateBeaconGroupPanel extends JPanel {
+public class CreateRegionPanel extends JPanel {
     private JTextField nameField;
     private JTextField descriptionField;
     private JTextField projectIdField;
     private JButton    createButton;
 
-    public CreateBeaconGroupPanel(ResponsePanel responsePanel) {
+    public CreateRegionPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
@@ -53,14 +53,14 @@ public class CreateBeaconGroupPanel extends JPanel {
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel groupInfoPanel = new JPanel(new GridBagLayout());
-        groupInfoPanel.add(new JLabel("Name:"));
-        groupInfoPanel.add(nameField);
-        groupInfoPanel.add(new JLabel("Description:"));
-        groupInfoPanel.add(descriptionField);
-        groupInfoPanel.add(createButton);
-        groupInfoPanel.setMinimumSize(groupInfoPanel.getPreferredSize());
-        this.add(groupInfoPanel);
+        JPanel regionInfoPanel = new JPanel(new GridBagLayout());
+        regionInfoPanel.add(new JLabel("Name:"));
+        regionInfoPanel.add(nameField);
+        regionInfoPanel.add(new JLabel("Description:"));
+        regionInfoPanel.add(descriptionField);
+        regionInfoPanel.add(createButton);
+        regionInfoPanel.setMinimumSize(regionInfoPanel.getPreferredSize());
+        this.add(regionInfoPanel);
     }
 
     private class CreateActionListener implements ActionListener {
@@ -76,14 +76,14 @@ public class CreateBeaconGroupPanel extends JPanel {
             if (projectId.isEmpty()) {
                 return;
             }
-            HttpResponse<JsonNode> response = BeaconGroupManager.createGroup(nameField.getText().trim(),
-                                                                             descriptionField.getText().trim(),
-                                                                             projectId);
+            HttpResponse<JsonNode> response = RegionManager.createRegion(nameField.getText().trim(),
+                                                                         descriptionField.getText().trim(),
+                                                                         projectId);
             responsePanel.showResponseCode(response.getStatus());
             if (response.getStatus() == 201) {
                 // Normal response
-                String[][] createResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, createResponse);
+                String[][] createResponse = RegionTab.convertRegionJsonToTable(response.getBody().getObject());
+                responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, createResponse);
             }
         }
     }

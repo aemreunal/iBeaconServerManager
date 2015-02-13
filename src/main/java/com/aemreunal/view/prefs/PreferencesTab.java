@@ -22,22 +22,18 @@ import java.awt.event.ActionListener;
 import java.io.InputStream;
 import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
-import com.aemreunal.model.UserManager;
-import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.user.UserTab;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 
 public class PreferencesTab extends JPanel {
-    private JTextField urlField;
-    private JTextField portField;
-    private JTextField usernameField;
+    private JTextField     urlField;
+    private JTextField     portField;
+    private JTextField     usernameField;
     private JPasswordField passwordField;
-    private JButton    saveSettingsButton;
-    private JButton    checkCredentialsButton;
+    private JButton        saveSettingsButton;
+    private JButton        checkCredentialsButton;
 
     public PreferencesTab() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -99,8 +95,8 @@ public class PreferencesTab extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             saveSettings();
-            if(e.getActionCommand().equals("test")) {
-                testCredentials();
+            if (e.getActionCommand().equals("test")) {
+                PrefsManager.testCredentials();
             }
         }
     }
@@ -111,22 +107,5 @@ public class PreferencesTab extends JPanel {
         PrefsManager.setUsername(usernameField.getText());
         PrefsManager.setPassword(passwordField.getPassword());
         JOptionPane.showMessageDialog(null, "Settings have been saved.");
-    }
-
-    private void testCredentials() {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername());
-        request.basicAuth(PrefsManager.getUsername(), PrefsManager.getPassword());
-        HttpResponse<InputStream> inputStreamHttpResponse;
-        try {
-            inputStreamHttpResponse = request.asBinary();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-            return;
-        }
-        if (inputStreamHttpResponse.getStatus() == 200) {
-            JOptionPane.showMessageDialog(null, "Credentials are correct.");
-        } else {
-            JOptionPane.showMessageDialog(null, "Credentials are incorrect! Please re-enter your username and password.");
-        }
     }
 }

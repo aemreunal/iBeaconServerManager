@@ -102,11 +102,11 @@ public class CreateBeaconPanel extends JPanel {
                                                                          descriptionField.getText().trim(),
                                                                          projectIdField.getText().trim());
             responsePanel.showResponseCode(response.getStatus());
+            String[][] createResponse = null;
             if (response.getStatus() == 201) {
-                // Normal response
-                String[][] createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
+                createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
         }
     }
 }

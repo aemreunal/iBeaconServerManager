@@ -65,10 +65,11 @@ public class DeleteScenarioPanel extends JPanel {
             if (!scenarioId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = ScenarioManager.deleteScenario(scenarioId, projectId);
                 responsePanel.showResponseCode(response.getStatus());
+                String[][] beaconResponse = null;
                 if (response.getStatus() == 200) {
-                    String[][] beaconResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
-                    responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, beaconResponse);
+                    beaconResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
                 }
+                responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, beaconResponse);
             }
         }
     }

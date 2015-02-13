@@ -1,4 +1,4 @@
-package com.aemreunal.view.beaconGroup;
+package com.aemreunal.view.region;
 
 /*
  ***************************
@@ -20,19 +20,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconGroupManager;
+import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class GetBeaconGroupPanel extends JPanel {
+public class GetRegionPanel extends JPanel {
     private JTextField projectIdField;
-    private JTextField beaconGroupIdField;
-    private JTextField beaconGroupNameField;
+    private JTextField regionIdField;
+    private JTextField regionNameField;
     private JButton    getButton;
 
-    public GetBeaconGroupPanel(ResponsePanel responsePanel) {
+    public GetRegionPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
@@ -41,10 +41,10 @@ public class GetBeaconGroupPanel extends JPanel {
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
         projectIdField.addActionListener(new GetActionListener(responsePanel));
-        beaconGroupIdField = new JTextField(5);
-        beaconGroupIdField.addActionListener(new GetActionListener(responsePanel));
-        beaconGroupNameField = new JTextField(10);
-        beaconGroupNameField.addActionListener(new GetActionListener(responsePanel));
+        regionIdField = new JTextField(5);
+        regionIdField.addActionListener(new GetActionListener(responsePanel));
+        regionNameField = new JTextField(10);
+        regionNameField.addActionListener(new GetActionListener(responsePanel));
         getButton = new JButton("Get");
         getButton.addActionListener(new GetActionListener(responsePanel));
     }
@@ -53,17 +53,17 @@ public class GetBeaconGroupPanel extends JPanel {
         JPanel projectIdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
-        projectIdPanel.add(new JLabel("Beacon group ID (leave blank to get all):"));
-        projectIdPanel.add(beaconGroupIdField);
+        projectIdPanel.add(new JLabel("Region ID (leave blank to get all):"));
+        projectIdPanel.add(regionIdField);
         projectIdPanel.add(getButton);
         projectIdPanel.setMaximumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
-        JPanel beaconGroupNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        beaconGroupNamePanel.add(new JLabel("Search by Name:"));
-        beaconGroupNamePanel.add(beaconGroupNameField);
-        beaconGroupNamePanel.setMaximumSize(beaconGroupNamePanel.getPreferredSize());
-        this.add(beaconGroupNamePanel);
+        JPanel regionNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        regionNamePanel.add(new JLabel("Search by Name:"));
+        regionNamePanel.add(regionNameField);
+        regionNamePanel.setMaximumSize(regionNamePanel.getPreferredSize());
+        this.add(regionNamePanel);
     }
 
     private class GetActionListener implements ActionListener {
@@ -80,24 +80,24 @@ public class GetBeaconGroupPanel extends JPanel {
             if (projectId.isEmpty()) {
                 return;
             }
-            String beaconGroupId = beaconGroupIdField.getText().trim();
-            if (beaconGroupId.isEmpty()) {
-                response = BeaconGroupManager.getAllGroups(beaconGroupNameField.getText().trim(),
-                                                           projectId);
+            String regionId = regionIdField.getText().trim();
+            if (regionId.isEmpty()) {
+                response = RegionManager.getAllRegion(regionNameField.getText().trim(),
+                                                      projectId);
             } else {
-                response = BeaconGroupManager.getGroup(beaconGroupId, projectId);
+                response = RegionManager.getRegion(regionId, projectId);
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] regionResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconGroupResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {
-                    beaconGroupResponse = BeaconGroupTab.convertBeaconGroupsJsonToTable(responseBody.getArray());
+                    regionResponse = RegionTab.convertRegionJsonToTable(responseBody.getArray());
                 } else {
-                    beaconGroupResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(responseBody.getObject());
+                    regionResponse = RegionTab.convertRegionJsonToTable(responseBody.getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
             }
+            responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
         }
     }
 }

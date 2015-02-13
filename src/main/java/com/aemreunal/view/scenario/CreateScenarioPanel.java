@@ -110,10 +110,11 @@ public class CreateScenarioPanel extends JPanel {
 
             HttpResponse<JsonNode> response = ScenarioManager.createScenario(name, description, shortMsg, longMsg, url, projectId);
             responsePanel.showResponseCode(response.getStatus());
+            String[][] createResponse = null;
             if (response.getStatus() == 201) {
-                String[][] createResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, createResponse);
+                createResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, createResponse);
         }
     }
 }

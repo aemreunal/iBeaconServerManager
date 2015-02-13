@@ -64,11 +64,11 @@ public class DeleteBeaconPanel extends JPanel {
             if (!beaconId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = BeaconManager.deleteBeacon(beaconId, projectId);
                 responsePanel.showResponseCode(response.getStatus());
+                String[][] beaconResponse = null;
                 if (response.getStatus() == 200) {
-                    // Normal response
-                    String[][] beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
-                    responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+                    beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
                 }
+                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
             }
         }
     }

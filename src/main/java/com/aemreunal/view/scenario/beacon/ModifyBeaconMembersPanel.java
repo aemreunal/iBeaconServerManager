@@ -90,10 +90,11 @@ public class ModifyBeaconMembersPanel extends JPanel {
                 response = ScenarioManager.removeBeacon(beaconId, scenarioId, projectId);
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] beaconResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+                beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
         }
     }
 

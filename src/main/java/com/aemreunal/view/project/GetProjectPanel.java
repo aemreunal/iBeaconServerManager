@@ -29,7 +29,7 @@ import com.mashape.unirest.http.JsonNode;
 public class GetProjectPanel extends JPanel {
     private JTextField projectIdField;
     private JTextField projectNameField;
-    private JButton getButton;
+    private JButton    getButton;
 
     public GetProjectPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -77,16 +77,16 @@ public class GetProjectPanel extends JPanel {
                 response = ProjectManager.getProject(projectIdField.getText().trim());
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] projectResponse = null;
             if (response.getStatus() == 200) {
                 // Normal response
-                String[][] projectResponse;
                 if (response.getBody().isArray()) {
                     projectResponse = ProjectTab.convertProjectsJsonToTable(response.getBody().getArray());
                 } else {
                     projectResponse = ProjectTab.convertProjectJsonToTable(response.getBody().getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
             }
+            responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
         }
     }
 }

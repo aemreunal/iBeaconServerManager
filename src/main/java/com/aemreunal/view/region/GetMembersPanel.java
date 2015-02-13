@@ -1,4 +1,4 @@
-package com.aemreunal.view.scenario.beaconGroup;
+package com.aemreunal.view.region;
 
 /*
  ***************************
@@ -19,19 +19,19 @@ package com.aemreunal.view.scenario.beaconGroup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.ScenarioManager;
+import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
-import com.aemreunal.view.beaconGroup.BeaconGroupTab;
+import com.aemreunal.view.beacon.BeaconTab;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class GetBeaconGroupMembersPanel extends JPanel {
+public class GetMembersPanel extends JPanel {
     private JTextField projectIdField;
-    private JTextField scenarioIdField;
+    private JTextField regionIdField;
     private JButton    getButton;
 
-    public GetBeaconGroupMembersPanel(ResponsePanel responsePanel) {
+    public GetMembersPanel(ResponsePanel responsePanel) {
         createComponents(responsePanel);
         addComponents();
     }
@@ -39,18 +39,18 @@ public class GetBeaconGroupMembersPanel extends JPanel {
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
         projectIdField.addActionListener(new GetActionListener(responsePanel));
-        scenarioIdField = new JTextField(5);
-        scenarioIdField.addActionListener(new GetActionListener(responsePanel));
-        getButton = new JButton("Get");
+        regionIdField = new JTextField(5);
+        regionIdField.addActionListener(new GetActionListener(responsePanel));
+        getButton = new JButton("Get members");
         getButton.addActionListener(new GetActionListener(responsePanel));
     }
 
     private void addComponents() {
-        this.add(new JLabel("Project ID:"));
-        this.add(projectIdField);
-        this.add(new JLabel("Scenario ID:"));
-        this.add(scenarioIdField);
-        this.add(getButton);
+        add(new JLabel("Project ID:"));
+        add(projectIdField);
+        add(new JLabel("Region ID:"));
+        add(regionIdField);
+        add(getButton);
     }
 
     private class GetActionListener implements ActionListener {
@@ -63,16 +63,18 @@ public class GetBeaconGroupMembersPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
-            String scenarioId = scenarioIdField.getText().trim();
-            if (projectId.isEmpty() || scenarioId.isEmpty()) {
+            String regionId = regionIdField.getText().trim();
+            if (projectId.isEmpty() || regionId.isEmpty()) {
                 return;
             }
-            HttpResponse<JsonNode> response = ScenarioManager.getScenarioMemberBeaconGroups(scenarioId, projectId);
+            HttpResponse<JsonNode> response = RegionManager.getRegionMembers(regionId, projectId);
             responsePanel.showResponseCode(response.getStatus());
+            String[][] beaconResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconGroupResponse = BeaconGroupTab.convertBeaconGroupsJsonToTable(response.getBody().getArray());
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
+                JsonNode responseBody = response.getBody();
+                beaconResponse = BeaconTab.convertBeaconJsonToTable(responseBody.getArray());
             }
+            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
         }
     }
 }

@@ -59,11 +59,11 @@ public class DeleteProjectPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = ProjectManager.deleteProject(projectIdField.getText().trim());
             responsePanel.showResponseCode(response.getStatus());
+            String[][] projectResponse = null;
             if (response.getStatus() == 200) {
-                // Normal response
-                String[][] projectResponse = ProjectTab.convertProjectJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
+                projectResponse = ProjectTab.convertProjectJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
         }
     }
 }

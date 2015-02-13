@@ -20,14 +20,14 @@ import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ResponsePanel;
 import com.aemreunal.view.scenario.beacon.ModifyBeaconMembersPanel;
-import com.aemreunal.view.scenario.beaconGroup.ModifyBeaconGroupMembersPanel;
+import com.aemreunal.view.scenario.region.ModifyRegionMembersPanel;
 
 public class ModifyMembersPanel extends CommonTab {
 
     @Override
     protected void addPanels() {
         addModifyBeaconMembersTab();
-        addModifyBeaconGroupMembersTab();
+        addModifyRegionMembersTab();
     }
 
     private void addModifyBeaconMembersTab() {
@@ -36,9 +36,9 @@ public class ModifyMembersPanel extends CommonTab {
         this.tabbedPane.addTab("Beacon", commonPanel);
     }
 
-    private void addModifyBeaconGroupMembersTab() {
+    private void addModifyRegionMembersTab() {
         ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new ModifyBeaconGroupMembersPanel(responsePanel), responsePanel);
-        this.tabbedPane.addTab("Beacon Group", commonPanel);
+        CommonPanel commonPanel = new CommonPanel(new ModifyRegionMembersPanel(responsePanel), responsePanel);
+        this.tabbedPane.addTab("Region", commonPanel);
     }
 }

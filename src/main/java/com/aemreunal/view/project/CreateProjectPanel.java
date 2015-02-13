@@ -29,7 +29,7 @@ import com.mashape.unirest.http.JsonNode;
 public class CreateProjectPanel extends JPanel {
     private JTextField nameField;
     private JTextField descriptionField;
-    private JButton createButton;
+    private JButton    createButton;
 
     public CreateProjectPanel(ResponsePanel responsePanel) {
         super(new GridBagLayout());
@@ -63,12 +63,12 @@ public class CreateProjectPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = ProjectManager.createProject(nameField.getText().trim(), descriptionField.getText().trim());
             responsePanel.showResponseCode(response.getStatus());
+            String[][] projectResponse = null;
             if (response.getStatus() == 201) {
-                // Normal response
-                String[][] projectResponse = ProjectTab.convertProjectCreateJsonToTable(response.getBody().getObject());
+                projectResponse = ProjectTab.convertProjectCreateJsonToTable(response.getBody().getObject());
                 showSecret(projectResponse[0][1], response.getBody().getObject().get("secret").toString());
-                responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
             }
+            responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
         }
 
         private void showSecret(String id, String secret) {

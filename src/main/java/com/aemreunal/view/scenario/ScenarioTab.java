@@ -25,15 +25,6 @@ import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 
 public class ScenarioTab extends CommonTab {
-
-    /*
-     * addBeaconToScenario
-     * removeBeaconFromScenario
-     *
-     * addBeaconGroupToScenario
-     * removeBeaconGroupFromScenario
-     */
-
     @Override
     protected void addPanels() {
         addCreateScenarioPanel();
@@ -75,7 +66,7 @@ public class ScenarioTab extends CommonTab {
         return scenarioTable;
     }
 
-    public static String[][] convertScenariosJsonToTable(JSONArray scenarios) {
+    public static String[][] convertScenarioJsonToTable(JSONArray scenarios) {
         String[][] scenarioTable = new String[scenarios.length()][ItemTable.SCENARIO_TABLE_COL_NAMES.length];
         for (int i = 0; i < scenarios.length(); i++) {
             JSONObject scenario = scenarios.getJSONObject(i);

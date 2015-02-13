@@ -95,10 +95,11 @@ public class QueryBeaconPanel extends JPanel {
                                                                      minorField.getText().trim(),
                                                                      secretField.getText().trim());
             responsePanel.showResponseCode(response.getStatus());
+            String[][] queryResponse = null;
             if (response.getStatus() == 200) {
-                String[][] queryResponse = APITab.convertQueryJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
+                queryResponse = APITab.convertQueryJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
         }
     }
 }

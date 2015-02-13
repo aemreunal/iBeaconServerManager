@@ -1,4 +1,4 @@
-package com.aemreunal.view.beaconGroup;
+package com.aemreunal.view.region;
 
 /*
  ***************************
@@ -19,7 +19,7 @@ package com.aemreunal.view.beaconGroup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconGroupManager;
+import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
@@ -27,7 +27,7 @@ import com.mashape.unirest.http.JsonNode;
 
 public class ModifyMembersPanel extends JPanel {
     private JTextField projectIdField;
-    private JTextField beaconGroupIdField;
+    private JTextField regionIdField;
     private JTextField beaconIdField;
     private JButton    addButton;
     private JButton    removeButton;
@@ -40,7 +40,7 @@ public class ModifyMembersPanel extends JPanel {
 
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
-        beaconGroupIdField = new JTextField(5);
+        regionIdField = new JTextField(5);
         beaconIdField = new JTextField(5);
         addButton = new JButton("Add");
         addButton.addActionListener(new ModifyActionListener(responsePanel));
@@ -52,8 +52,8 @@ public class ModifyMembersPanel extends JPanel {
         JPanel idPanel = new JPanel();
         idPanel.add(new JLabel("Project ID:"));
         idPanel.add(projectIdField);
-        idPanel.add(new JLabel("Group ID:"));
-        idPanel.add(beaconGroupIdField);
+        idPanel.add(new JLabel("Region ID:"));
+        idPanel.add(regionIdField);
         idPanel.add(new JLabel("Beacon ID:"));
         idPanel.add(beaconIdField);
         this.add(idPanel);
@@ -74,22 +74,23 @@ public class ModifyMembersPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
-            String groupId = beaconGroupIdField.getText().trim();
+            String regionId = regionIdField.getText().trim();
             String beaconId = beaconIdField.getText().trim();
-            if (projectId.isEmpty() || groupId.isEmpty() || beaconId.isEmpty()) {
+            if (projectId.isEmpty() || regionId.isEmpty() || beaconId.isEmpty()) {
                 return;
             }
             HttpResponse<JsonNode> response;
             if (e.getSource().equals(addButton)) {
-                response = BeaconGroupManager.addMember(beaconId, groupId, projectId);
+                response = RegionManager.addMember(beaconId, regionId, projectId);
             } else {
-                response = BeaconGroupManager.removeMember(beaconId, groupId, projectId);
+                response = RegionManager.removeMember(beaconId, regionId, projectId);
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] regionResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconGroupResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
+                regionResponse = RegionTab.convertRegionJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
         }
     }
 }

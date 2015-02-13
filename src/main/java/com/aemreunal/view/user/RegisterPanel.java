@@ -37,7 +37,7 @@ import com.mashape.unirest.http.JsonNode;
 public class RegisterPanel extends JPanel {
     private JTextField usernameField;
     private JTextField passwordField;
-    private JButton registerButton;
+    private JButton    registerButton;
 
     public RegisterPanel(final ResponsePanel responsePanel) {
         createComponents(responsePanel);
@@ -70,11 +70,12 @@ public class RegisterPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = UserManager.registerUser(usernameField.getText().trim(), passwordField.getText().trim());
             responsePanel.showResponseCode(response.getStatus());
+            String[][] userResponse = null;
             if (response.getStatus() == 201) {
                 // Normal response
-                String[][] userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
+                userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
         }
     }
 }

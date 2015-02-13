@@ -57,7 +57,7 @@ public class BeaconTab extends CommonTab {
         return beaconTable;
     }
 
-    public static String[][] convertBeaconsJsonToTable(JSONArray beacons) {
+    public static String[][] convertBeaconJsonToTable(JSONArray beacons) {
         String[][] beaconTable = new String[beacons.length()][ItemTable.BEACONS_TABLE_COL_NAMES.length];
         for (int i = 0; i < beacons.length(); i++) {
             JSONObject beacon = beacons.getJSONObject(i);
@@ -72,13 +72,13 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][2] = beacon.get("major").toString();
         beaconTable[index][3] = beacon.get("minor").toString();
         beaconTable[index][4] = beacon.get("description").toString();
-        String groupID = getSubObjectID("beaconGroup", beacon.optJSONObject("group"));
-        beaconTable[index][5] = groupID;
-        if (groupID.equals("-")) {
+        String regionID = getSubObjectID("region", beacon.optJSONObject("region"));
+        beaconTable[index][5] = regionID;
+        if (regionID.equals("-")) {
             beaconTable[index][6] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
         } else {
-            String groupScenarioID = getSubObjectID("scenario", beacon.optJSONObject("group").optJSONObject("scenario"));
-            beaconTable[index][6] = groupScenarioID + " (via group)";
+            String regionScenarioID = getSubObjectID("scenario", beacon.optJSONObject("region").optJSONObject("scenario"));
+            beaconTable[index][6] = regionScenarioID + " (via region)";
         }
         beaconTable[index][7] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
     }

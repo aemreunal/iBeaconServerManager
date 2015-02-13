@@ -99,7 +99,7 @@ public class GetBeaconPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
             String projectId = projectIdField.getText().trim();
-            if(projectId.isEmpty()) {
+            if (projectId.isEmpty()) {
                 return;
             }
             String beaconId = beaconIdField.getText().trim();
@@ -112,16 +112,16 @@ public class GetBeaconPanel extends JPanel {
                 response = BeaconManager.getBeacon(beaconId, projectId);
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] beaconResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {
-                    beaconResponse = BeaconTab.convertBeaconsJsonToTable(responseBody.getArray());
+                    beaconResponse = BeaconTab.convertBeaconJsonToTable(responseBody.getArray());
                 } else {
                     beaconResponse = BeaconTab.convertBeaconJsonToTable(responseBody.getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
             }
+            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
         }
     }
 }

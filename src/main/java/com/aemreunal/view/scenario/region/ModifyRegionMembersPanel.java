@@ -1,4 +1,4 @@
-package com.aemreunal.view.scenario.beaconGroup;
+package com.aemreunal.view.scenario.region;
 
 /*
  ***************************
@@ -23,18 +23,18 @@ import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.ResponsePanel;
-import com.aemreunal.view.beaconGroup.BeaconGroupTab;
+import com.aemreunal.view.region.RegionTab;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
-public class ModifyBeaconGroupMembersPanel extends JPanel {
+public class ModifyRegionMembersPanel extends JPanel {
     private JTextField projectIdField;
     private JTextField scenarioIdField;
-    private JTextField beaconGroupIdField;
+    private JTextField regionIdField;
     private JButton    addButton;
     private JButton    removeButton;
 
-    public ModifyBeaconGroupMembersPanel(ResponsePanel responsePanel) {
+    public ModifyRegionMembersPanel(ResponsePanel responsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createComponents(responsePanel);
         addComponents();
@@ -43,7 +43,7 @@ public class ModifyBeaconGroupMembersPanel extends JPanel {
     private void createComponents(ResponsePanel responsePanel) {
         projectIdField = new JTextField(5);
         scenarioIdField = new JTextField(5);
-        beaconGroupIdField = new JTextField(5);
+        regionIdField = new JTextField(5);
         addButton = new JButton("Add");
         addButton.addActionListener(new ModifyActionListener(responsePanel));
         removeButton = new JButton("Remove");
@@ -59,13 +59,13 @@ public class ModifyBeaconGroupMembersPanel extends JPanel {
         idPanel.setMaximumSize(idPanel.getPreferredSize());
         this.add(idPanel);
 
-        JPanel beaconGroupIdPanel = new JPanel(new GridBagLayout());
-        beaconGroupIdPanel.add(new JLabel("Beacon Group ID:"));
-        beaconGroupIdPanel.add(beaconGroupIdField);
-        beaconGroupIdPanel.add(addButton);
-        beaconGroupIdPanel.add(removeButton);
-        beaconGroupIdPanel.setMaximumSize(beaconGroupIdPanel.getPreferredSize());
-        this.add(beaconGroupIdPanel);
+        JPanel regionIdPanel = new JPanel(new GridBagLayout());
+        regionIdPanel.add(new JLabel("Region ID:"));
+        regionIdPanel.add(regionIdField);
+        regionIdPanel.add(addButton);
+        regionIdPanel.add(removeButton);
+        regionIdPanel.setMaximumSize(regionIdPanel.getPreferredSize());
+        this.add(regionIdPanel);
     }
 
     private class ModifyActionListener implements ActionListener {
@@ -79,21 +79,22 @@ public class ModifyBeaconGroupMembersPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
             String scenarioId = scenarioIdField.getText().trim();
-            String beaconGroupId = beaconGroupIdField.getText().trim();
-            if (projectId.isEmpty() || scenarioId.isEmpty() || beaconGroupId.isEmpty()) {
+            String regionId = regionIdField.getText().trim();
+            if (projectId.isEmpty() || scenarioId.isEmpty() || regionId.isEmpty()) {
                 return;
             }
             HttpResponse<JsonNode> response;
             if (e.getSource().equals(addButton)) {
-                response = ScenarioManager.addBeaconGroup(beaconGroupId, scenarioId, projectId);
+                response = ScenarioManager.addRegion(regionId, scenarioId, projectId);
             } else {
-                response = ScenarioManager.removeBeaconGroup(beaconGroupId, scenarioId, projectId);
+                response = ScenarioManager.removeRegion(regionId, scenarioId, projectId);
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] regionResponse = null;
             if (response.getStatus() == 200) {
-                String[][] beaconGroupResponse = BeaconGroupTab.convertBeaconGroupJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.BEACONGROUPS_TABLE_COL_NAMES, beaconGroupResponse);
+                regionResponse = RegionTab.convertRegionJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
         }
     }
 

@@ -16,8 +16,14 @@ package com.aemreunal.model;
  ***************************
  */
 
+import java.io.InputStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 import com.aemreunal.iBeaconServerManager;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequest;
 
 public class PrefsManager {
     public static final String HTTP_PROTOCOL       = "https://";
@@ -95,6 +101,27 @@ public class PrefsManager {
     }
 
     public static void setPassword(char[] password) {
-        iBeaconServerManager.getPreferences().put(PASSWORD_KEY, password.toString());
+        iBeaconServerManager.getPreferences().put(PASSWORD_KEY, String.valueOf(password));
+        // For security, it is recommended to clear the char array
+        for (int i = 0; i < password.length; i++) {
+            password[i] = 0;
+        }
+    }
+
+    public static void testCredentials() {
+        HttpRequest request = Unirest.get(getServerAddress() + "/human/" + getUsername());
+        request.basicAuth(getUsername(), getPassword());
+        HttpResponse<InputStream> inputStreamHttpResponse;
+        try {
+            inputStreamHttpResponse = request.asBinary();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (inputStreamHttpResponse.getStatus() == 200) {
+            JOptionPane.showMessageDialog(null, "Credentials are correct.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Credentials are incorrect! Please re-enter your username and password.");
+        }
     }
 }

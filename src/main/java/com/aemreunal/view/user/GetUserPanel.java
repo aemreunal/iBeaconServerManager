@@ -56,11 +56,12 @@ public class GetUserPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = UserManager.getUser(PrefsManager.getUsername());
             responsePanel.showResponseCode(response.getStatus());
+            String[][] userResponse = null;
             if (response.getStatus() == 200) {
                 // Normal response
-                String[][] userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
+                userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
             }
+            responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
         }
     }
 }

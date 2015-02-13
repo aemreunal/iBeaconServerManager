@@ -34,7 +34,7 @@ public class APITab extends CommonTab {
         CommonPanel commonPanel = new CommonPanel(new QueryBeaconPanel(responsePanel), responsePanel);
         this.tabbedPane.addTab("Query", commonPanel);
     }
-    
+
     public static String[][] convertQueryJsonToTable(JSONObject project) {
         String[] queryTable = new String[ItemTable.API_QUERY_TABLE_COL_NAMES.length];
         queryTable[0] = project.get("short").toString();

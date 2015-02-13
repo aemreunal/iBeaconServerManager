@@ -73,16 +73,16 @@ public class GetScenarioPanel extends JPanel {
                 response = ScenarioManager.getScenario(scenarioId, projectId);
             }
             responsePanel.showResponseCode(response.getStatus());
+            String[][] scenarioResponse = null;
             if (response.getStatus() == 200) {
-                String[][] scenarioResponse;
                 JsonNode responseBody = response.getBody();
                 if (responseBody.isArray()) {
-                    scenarioResponse = ScenarioTab.convertScenariosJsonToTable(responseBody.getArray());
+                    scenarioResponse = ScenarioTab.convertScenarioJsonToTable(responseBody.getArray());
                 } else {
                     scenarioResponse = ScenarioTab.convertScenarioJsonToTable(responseBody.getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, scenarioResponse);
             }
+            responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, scenarioResponse);
         }
     }
 }

@@ -40,6 +40,9 @@ public class ResponsePanel extends JPanel {
     }
 
     public void showResponseTable(String[] columnNames, String[][] items) {
+        if (items == null) {
+            items = new String[0][0];
+        }
         this.itemTable = new ItemTable(items, columnNames);
         this.itemTable.getTableHeader().setReorderingAllowed(false);
         scrollPane.setViewportView(this.itemTable);
