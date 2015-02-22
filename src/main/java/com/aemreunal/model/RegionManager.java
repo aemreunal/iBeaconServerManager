@@ -16,6 +16,7 @@ package com.aemreunal.model;
  ***************************
  */
 
+import java.io.File;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -61,6 +62,18 @@ public class RegionManager extends RestManager {
 
     public static HttpResponse<JsonNode> removeMember(String beaconId, String regionId, String projectId) {
         HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/removemember?beaconId=" + beaconId)
+                                     .getHttpRequest();
+        return performRequest(request);
+    }
+
+    public static HttpResponse<JsonNode> uploadRegionMapImage(String regionId, String projectId) {
+        File imageFile = new File("/Users/aemreunal/IntelliJ/iBeacon/DevResources/test1.jpg");
+        if (!imageFile.exists()) {
+            System.err.println("Unable to read image!");
+            return null;
+        }
+        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/uploadmapimage")
+                                     .field("mapImage", imageFile, "image/jpeg")
                                      .getHttpRequest();
         return performRequest(request);
     }
