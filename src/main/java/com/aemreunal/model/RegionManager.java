@@ -34,7 +34,7 @@ public class RegionManager extends RestManager {
         return "{\"name\":\"" + name + "\",\"description\":\"" + description + "\"}";
     }
 
-    public static HttpResponse<JsonNode> getAllRegion(String name, String projectId) {
+    public static HttpResponse<JsonNode> getAllRegions(String name, String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions?name=" + name)
                                      .getHttpRequest();
         return performRequest(request);

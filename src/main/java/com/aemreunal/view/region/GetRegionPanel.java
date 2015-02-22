@@ -82,8 +82,7 @@ public class GetRegionPanel extends JPanel {
             }
             String regionId = regionIdField.getText().trim();
             if (regionId.isEmpty()) {
-                response = RegionManager.getAllRegion(regionNameField.getText().trim(),
-                                                      projectId);
+                response = RegionManager.getAllRegions(regionNameField.getText().trim(), projectId);
             } else {
                 response = RegionManager.getRegion(regionId, projectId);
             }
