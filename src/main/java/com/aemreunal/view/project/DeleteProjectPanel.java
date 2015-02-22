@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ProjectManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -30,16 +30,16 @@ public class DeleteProjectPanel extends JPanel {
     private JTextField projectIdField;
     private JButton    deleteProjectButton;
 
-    public DeleteProjectPanel(final ResponsePanel responsePanel) {
+    public DeleteProjectPanel(final TableResponsePanel tableResponsePanel) {
         super(new GridBagLayout());
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(10);
         deleteProjectButton = new JButton("Delete");
-        deleteProjectButton.addActionListener(new DeleteUserActionListener(responsePanel));
+        deleteProjectButton.addActionListener(new DeleteUserActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -49,21 +49,21 @@ public class DeleteProjectPanel extends JPanel {
     }
 
     private class DeleteUserActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public DeleteUserActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public DeleteUserActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = ProjectManager.deleteProject(projectIdField.getText().trim());
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] projectResponse = null;
             if (response.getStatus() == 200) {
                 projectResponse = ProjectTab.convertProjectJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
+            tableResponsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
         }
     }
 }

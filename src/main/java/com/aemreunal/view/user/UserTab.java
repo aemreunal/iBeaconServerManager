@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 
 public class UserTab extends CommonTab {
 
@@ -32,20 +32,20 @@ public class UserTab extends CommonTab {
     }
 
     private void addRegisterPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new RegisterPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new RegisterPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Register", commonPanel);
     }
 
     private void addGetUserPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetUserPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetUserPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteUserPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new DeleteUserPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new DeleteUserPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

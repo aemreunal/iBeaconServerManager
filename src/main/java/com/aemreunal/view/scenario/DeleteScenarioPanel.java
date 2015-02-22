@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -30,17 +30,17 @@ public class DeleteScenarioPanel extends JPanel {
     private JTextField scenarioIdField;
     private JButton    deleteButton;
 
-    public DeleteScenarioPanel(final ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public DeleteScenarioPanel(final TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
         setSize(getPreferredSize());
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
         scenarioIdField = new JTextField(5);
         deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new DeleteScenarioActionListener(responsePanel));
+        deleteButton.addActionListener(new DeleteScenarioActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -52,10 +52,10 @@ public class DeleteScenarioPanel extends JPanel {
     }
 
     private class DeleteScenarioActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public DeleteScenarioActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public DeleteScenarioActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -64,12 +64,12 @@ public class DeleteScenarioPanel extends JPanel {
             String projectId = projectIdField.getText().trim();
             if (!scenarioId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = ScenarioManager.deleteScenario(scenarioId, projectId);
-                responsePanel.showResponseCode(response.getStatus());
+                tableResponsePanel.showResponseCode(response.getStatus());
                 String[][] beaconResponse = null;
                 if (response.getStatus() == 200) {
                     beaconResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, beaconResponse);
+                tableResponsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, beaconResponse);
             }
         }
     }

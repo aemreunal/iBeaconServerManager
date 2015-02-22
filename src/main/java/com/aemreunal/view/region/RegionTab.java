@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 
 public class RegionTab extends CommonTab {
 
@@ -36,32 +36,32 @@ public class RegionTab extends CommonTab {
     }
 
     private void addCreateRegionPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new CreateRegionPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new CreateRegionPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetRegionPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetRegionPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetRegionPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addGetMembersPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetMembersPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetMembersPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Members", commonPanel);
     }
 
     private void addModifyMemberPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new ModifyMembersPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new ModifyMembersPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Modify", commonPanel);
     }
 
     private void addDeleteRegionPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new DeleteRegionPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new DeleteRegionPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

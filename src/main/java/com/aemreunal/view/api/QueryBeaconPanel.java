@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.APIManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -33,14 +33,14 @@ public class QueryBeaconPanel extends JPanel {
     private JTextField secretField;
     private JButton    queryButton;
 
-    public QueryBeaconPanel(ResponsePanel responsePanel) {
+    public QueryBeaconPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
-        QueryActionListener actionListener = new QueryActionListener(responsePanel);
+    private void createComponents(TableResponsePanel tableResponsePanel) {
+        QueryActionListener actionListener = new QueryActionListener(tableResponsePanel);
         uuidField = new JTextField(20);
         majorField = new JTextField(20);
         minorField = new JTextField(20);
@@ -82,10 +82,10 @@ public class QueryBeaconPanel extends JPanel {
     }
 
     private class QueryActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public QueryActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public QueryActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -94,12 +94,12 @@ public class QueryBeaconPanel extends JPanel {
                                                                      majorField.getText().trim(),
                                                                      minorField.getText().trim(),
                                                                      secretField.getText().trim());
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] queryResponse = null;
             if (response.getStatus() == 200) {
                 queryResponse = APITab.convertQueryJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
+            tableResponsePanel.showResponseTable(ItemTable.API_QUERY_TABLE_COL_NAMES, queryResponse);
         }
     }
 }

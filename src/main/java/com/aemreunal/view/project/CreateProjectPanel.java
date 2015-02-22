@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ProjectManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -31,17 +31,17 @@ public class CreateProjectPanel extends JPanel {
     private JTextField descriptionField;
     private JButton    createButton;
 
-    public CreateProjectPanel(ResponsePanel responsePanel) {
+    public CreateProjectPanel(TableResponsePanel tableResponsePanel) {
         super(new GridBagLayout());
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         nameField = new JTextField(10);
         descriptionField = new JTextField(10);
         createButton = new JButton("Create");
-        createButton.addActionListener(new CreateActionListener(responsePanel));
+        createButton.addActionListener(new CreateActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -53,22 +53,22 @@ public class CreateProjectPanel extends JPanel {
     }
 
     private class CreateActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public CreateActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public CreateActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = ProjectManager.createProject(nameField.getText().trim(), descriptionField.getText().trim());
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] projectResponse = null;
             if (response.getStatus() == 201) {
                 projectResponse = ProjectTab.convertProjectCreateJsonToTable(response.getBody().getObject());
                 showSecret(projectResponse[0][1], response.getBody().getObject().get("secret").toString());
             }
-            responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
+            tableResponsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
         }
 
         private void showSecret(String id, String secret) {
@@ -80,7 +80,7 @@ public class CreateProjectPanel extends JPanel {
             textArea.setLineWrap(true);
             textArea.setCaretPosition(0);
             textArea.setEditable(false);
-            JOptionPane.showMessageDialog(responsePanel, new JScrollPane(textArea), "Project created!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(tableResponsePanel, new JScrollPane(textArea), "Project created!", JOptionPane.WARNING_MESSAGE);
         }
     }
 }

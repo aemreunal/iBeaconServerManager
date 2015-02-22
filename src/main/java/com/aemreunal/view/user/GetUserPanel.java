@@ -22,21 +22,21 @@ import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
 import com.aemreunal.model.UserManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
 public class GetUserPanel extends JPanel {
     private JButton getUserButton;
 
-    public GetUserPanel(final ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public GetUserPanel(final TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
         setMaximumSize(getPreferredSize());
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
-        GetUserActionListener actionListener = new GetUserActionListener(responsePanel);
+    private void createComponents(TableResponsePanel tableResponsePanel) {
+        GetUserActionListener actionListener = new GetUserActionListener(tableResponsePanel);
         getUserButton = new JButton("Get user");
         getUserButton.addActionListener(actionListener);
     }
@@ -46,22 +46,22 @@ public class GetUserPanel extends JPanel {
     }
 
     private class GetUserActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public GetUserActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public GetUserActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = UserManager.getUser(PrefsManager.getUsername());
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] userResponse = null;
             if (response.getStatus() == 200) {
                 // Normal response
                 userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
+            tableResponsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
         }
     }
 }

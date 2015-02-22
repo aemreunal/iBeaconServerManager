@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -32,21 +32,21 @@ public class GetRegionPanel extends JPanel {
     private JTextField regionNameField;
     private JButton    getButton;
 
-    public GetRegionPanel(ResponsePanel responsePanel) {
+    public GetRegionPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
-        projectIdField.addActionListener(new GetActionListener(responsePanel));
+        projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
         regionIdField = new JTextField(5);
-        regionIdField.addActionListener(new GetActionListener(responsePanel));
+        regionIdField.addActionListener(new GetActionListener(tableResponsePanel));
         regionNameField = new JTextField(10);
-        regionNameField.addActionListener(new GetActionListener(responsePanel));
+        regionNameField.addActionListener(new GetActionListener(tableResponsePanel));
         getButton = new JButton("Get");
-        getButton.addActionListener(new GetActionListener(responsePanel));
+        getButton.addActionListener(new GetActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -67,10 +67,10 @@ public class GetRegionPanel extends JPanel {
     }
 
     private class GetActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public GetActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public GetActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -86,7 +86,7 @@ public class GetRegionPanel extends JPanel {
             } else {
                 response = RegionManager.getRegion(regionId, projectId);
             }
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] regionResponse = null;
             if (response.getStatus() == 200) {
                 JsonNode responseBody = response.getBody();
@@ -96,7 +96,7 @@ public class GetRegionPanel extends JPanel {
                     regionResponse = RegionTab.convertRegionJsonToTable(responseBody.getObject());
                 }
             }
-            responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
+            tableResponsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
         }
     }
 }

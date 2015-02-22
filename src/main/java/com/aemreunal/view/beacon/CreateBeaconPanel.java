@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.BeaconManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -34,20 +34,20 @@ public class CreateBeaconPanel extends JPanel {
     private JTextField projectIdField;
     private JButton    createButton;
 
-    public CreateBeaconPanel(ResponsePanel responsePanel) {
+    public CreateBeaconPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         uuidField = new JTextField(10);
         majorField = new JTextField(10);
         minorField = new JTextField(10);
         descriptionField = new JTextField(10);
         projectIdField = new JTextField(5);
         createButton = new JButton("Create");
-        createButton.addActionListener(new CreateActionListener(responsePanel));
+        createButton.addActionListener(new CreateActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -88,10 +88,10 @@ public class CreateBeaconPanel extends JPanel {
     }
 
     private class CreateActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public CreateActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public CreateActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -101,12 +101,12 @@ public class CreateBeaconPanel extends JPanel {
                                                                          minorField.getText().trim(),
                                                                          descriptionField.getText().trim(),
                                                                          projectIdField.getText().trim());
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] createResponse = null;
             if (response.getStatus() == 201) {
                 createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
+            tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
         }
     }
 }

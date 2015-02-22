@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -30,16 +30,16 @@ public class DeleteRegionPanel extends JPanel {
     private JTextField regionIdField;
     private JButton    deleteButton;
 
-    public DeleteRegionPanel(final ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public DeleteRegionPanel(final TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
         regionIdField = new JTextField(5);
         deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new DeleteBeaconActionListener(responsePanel));
+        deleteButton.addActionListener(new DeleteBeaconActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -51,10 +51,10 @@ public class DeleteRegionPanel extends JPanel {
     }
 
     private class DeleteBeaconActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public DeleteBeaconActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public DeleteBeaconActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -63,10 +63,10 @@ public class DeleteRegionPanel extends JPanel {
             String projectId = projectIdField.getText().trim();
             if (!regionId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = RegionManager.deleteRegion(regionId, projectId);
-                responsePanel.showResponseCode(response.getStatus());
+                tableResponsePanel.showResponseCode(response.getStatus());
                 if (response.getStatus() == 200) {
                     String[][] regionResponse = RegionTab.convertRegionJsonToTable(response.getBody().getObject());
-                    responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
+                    tableResponsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
                 }
             }
         }

@@ -18,7 +18,7 @@ package com.aemreunal.view.scenario;
 
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.aemreunal.view.scenario.beacon.GetBeaconMembersPanel;
 import com.aemreunal.view.scenario.region.GetRegionMembersPanel;
 
@@ -31,14 +31,14 @@ public class GetMembersPanel extends CommonTab {
     }
 
     private void addGetBeaconMembersTab() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetBeaconMembersPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetBeaconMembersPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Beacon", commonPanel);
     }
 
     private void addGetRegionMembersTab() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetRegionMembersPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetRegionMembersPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Region", commonPanel);
     }
 }

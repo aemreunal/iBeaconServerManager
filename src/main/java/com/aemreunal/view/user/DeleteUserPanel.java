@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.UserManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -29,15 +29,15 @@ public class DeleteUserPanel extends JPanel {
     private JTextField usernameField;
     private JButton    deleteUserButton;
 
-    public DeleteUserPanel(final ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public DeleteUserPanel(final TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         usernameField = new JTextField(10);
         deleteUserButton = new JButton("Delete user");
-        deleteUserButton.addActionListener(new DeleteUserActionListener(responsePanel));
+        deleteUserButton.addActionListener(new DeleteUserActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -47,21 +47,21 @@ public class DeleteUserPanel extends JPanel {
     }
 
     private class DeleteUserActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public DeleteUserActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public DeleteUserActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = UserManager.deleteUser(usernameField.getText().trim());
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] userResponse = null;
             if (response.getStatus() == 200) {
                 userResponse = UserTab.convertUserJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
+            tableResponsePanel.showResponseTable(ItemTable.USER_TABLE_COL_NAMES, userResponse);
         }
     }
 }

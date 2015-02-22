@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -35,14 +35,14 @@ public class CreateScenarioPanel extends JPanel {
     private JTextField urlField;
     private JButton    createButton;
 
-    public CreateScenarioPanel(ResponsePanel responsePanel) {
+    public CreateScenarioPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
         setMaximumSize(getPreferredSize());
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
         nameField = new JTextField(12);
         descriptionField = new JTextField(12);
@@ -50,7 +50,7 @@ public class CreateScenarioPanel extends JPanel {
         longMsgField = new JTextField(12);
         urlField = new JTextField(12);
         createButton = new JButton("Create");
-        createButton.addActionListener(new CreateActionListener(responsePanel));
+        createButton.addActionListener(new CreateActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -89,10 +89,10 @@ public class CreateScenarioPanel extends JPanel {
     }
 
     private class CreateActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public CreateActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public CreateActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -109,12 +109,12 @@ public class CreateScenarioPanel extends JPanel {
             }
 
             HttpResponse<JsonNode> response = ScenarioManager.createScenario(name, description, shortMsg, longMsg, url, projectId);
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] createResponse = null;
             if (response.getStatus() == 201) {
                 createResponse = ScenarioTab.convertScenarioJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, createResponse);
+            tableResponsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, createResponse);
         }
     }
 }

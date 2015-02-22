@@ -19,12 +19,12 @@ package com.aemreunal.view;
 import java.awt.*;
 import javax.swing.*;
 
-public class ResponsePanel extends JPanel {
+public class TableResponsePanel extends JPanel {
     private JLabel      statusCodeLabel;
     private JScrollPane scrollPane;
     private ItemTable   itemTable;
 
-    public ResponsePanel() {
+    public TableResponsePanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         scrollPane = new JScrollPane();
         this.statusCodeLabel = new JLabel("Response code: -");

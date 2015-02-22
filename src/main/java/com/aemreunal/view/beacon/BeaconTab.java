@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 
 public class BeaconTab extends CommonTab {
 
@@ -34,20 +34,20 @@ public class BeaconTab extends CommonTab {
     }
 
     private void addCreateBeaconPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new CreateBeaconPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new CreateBeaconPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetBeaconPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetBeaconPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetBeaconPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteBeaconPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new DeleteBeaconPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new DeleteBeaconPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

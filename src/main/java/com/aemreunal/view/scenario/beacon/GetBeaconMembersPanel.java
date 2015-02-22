@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.aemreunal.view.beacon.BeaconTab;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -31,18 +31,18 @@ public class GetBeaconMembersPanel extends JPanel {
     private JTextField scenarioIdField;
     private JButton    getButton;
 
-    public GetBeaconMembersPanel(ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public GetBeaconMembersPanel(TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
-        projectIdField.addActionListener(new GetActionListener(responsePanel));
+        projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
         scenarioIdField = new JTextField(5);
-        scenarioIdField.addActionListener(new GetActionListener(responsePanel));
+        scenarioIdField.addActionListener(new GetActionListener(tableResponsePanel));
         getButton = new JButton("Get");
-        getButton.addActionListener(new GetActionListener(responsePanel));
+        getButton.addActionListener(new GetActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -54,10 +54,10 @@ public class GetBeaconMembersPanel extends JPanel {
     }
 
     private class GetActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public GetActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public GetActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -68,12 +68,12 @@ public class GetBeaconMembersPanel extends JPanel {
                 return;
             }
             HttpResponse<JsonNode> response = ScenarioManager.getScenarioMemberBeacons(scenarioId, projectId);
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] beaconResponse = null;
             if (response.getStatus() == 200) {
                 beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getArray());
             }
-            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+            tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
         }
     }
 }

@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.BeaconManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -30,16 +30,16 @@ public class DeleteBeaconPanel extends JPanel {
     private JTextField beaconIdField;
     private JButton    deleteBeaconButton;
 
-    public DeleteBeaconPanel(final ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public DeleteBeaconPanel(final TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         beaconIdField = new JTextField(5);
         projectIdField = new JTextField(5);
         deleteBeaconButton = new JButton("Delete");
-        deleteBeaconButton.addActionListener(new DeleteBeaconActionListener(responsePanel));
+        deleteBeaconButton.addActionListener(new DeleteBeaconActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -51,10 +51,10 @@ public class DeleteBeaconPanel extends JPanel {
     }
 
     private class DeleteBeaconActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public DeleteBeaconActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public DeleteBeaconActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -63,12 +63,12 @@ public class DeleteBeaconPanel extends JPanel {
             String projectId = projectIdField.getText().trim();
             if (!beaconId.isEmpty() && !projectId.isEmpty()) {
                 HttpResponse<JsonNode> response = BeaconManager.deleteBeacon(beaconId, projectId);
-                responsePanel.showResponseCode(response.getStatus());
+                tableResponsePanel.showResponseCode(response.getStatus());
                 String[][] beaconResponse = null;
                 if (response.getStatus() == 200) {
                     beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
                 }
-                responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+                tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
             }
         }
     }

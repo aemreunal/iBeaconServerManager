@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.aemreunal.view.beacon.BeaconTab;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -34,20 +34,20 @@ public class ModifyBeaconMembersPanel extends JPanel {
     private JButton    addButton;
     private JButton    removeButton;
 
-    public ModifyBeaconMembersPanel(ResponsePanel responsePanel) {
+    public ModifyBeaconMembersPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
         scenarioIdField = new JTextField(5);
         beaconIdField = new JTextField(5);
         addButton = new JButton("Add");
-        addButton.addActionListener(new ModifyActionListener(responsePanel));
+        addButton.addActionListener(new ModifyActionListener(tableResponsePanel));
         removeButton = new JButton("Remove");
-        removeButton.addActionListener(new ModifyActionListener(responsePanel));
+        removeButton.addActionListener(new ModifyActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -69,10 +69,10 @@ public class ModifyBeaconMembersPanel extends JPanel {
     }
 
     private class ModifyActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public ModifyActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public ModifyActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -89,12 +89,12 @@ public class ModifyBeaconMembersPanel extends JPanel {
             } else {
                 response = ScenarioManager.removeBeacon(beaconId, scenarioId, projectId);
             }
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] beaconResponse = null;
             if (response.getStatus() == 200) {
                 beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             }
-            responsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+            tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
         }
     }
 

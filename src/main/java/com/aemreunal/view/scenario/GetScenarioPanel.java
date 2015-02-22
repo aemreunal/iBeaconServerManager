@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -30,18 +30,18 @@ public class GetScenarioPanel extends JPanel {
     private JTextField scenarioIdField;
     private JButton    getButton;
 
-    public GetScenarioPanel(ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public GetScenarioPanel(TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
-        projectIdField.addActionListener(new GetActionListener(responsePanel));
+        projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
         scenarioIdField = new JTextField(5);
-        scenarioIdField.addActionListener(new GetActionListener(responsePanel));
+        scenarioIdField.addActionListener(new GetActionListener(tableResponsePanel));
         getButton = new JButton("Get");
-        getButton.addActionListener(new GetActionListener(responsePanel));
+        getButton.addActionListener(new GetActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -53,10 +53,10 @@ public class GetScenarioPanel extends JPanel {
     }
 
     private class GetActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public GetActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public GetActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -72,7 +72,7 @@ public class GetScenarioPanel extends JPanel {
             } else {
                 response = ScenarioManager.getScenario(scenarioId, projectId);
             }
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] scenarioResponse = null;
             if (response.getStatus() == 200) {
                 JsonNode responseBody = response.getBody();
@@ -82,7 +82,7 @@ public class GetScenarioPanel extends JPanel {
                     scenarioResponse = ScenarioTab.convertScenarioJsonToTable(responseBody.getObject());
                 }
             }
-            responsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, scenarioResponse);
+            tableResponsePanel.showResponseTable(ItemTable.SCENARIO_TABLE_COL_NAMES, scenarioResponse);
         }
     }
 }

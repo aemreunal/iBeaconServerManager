@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ProjectManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -31,19 +31,19 @@ public class GetProjectPanel extends JPanel {
     private JTextField projectNameField;
     private JButton    getButton;
 
-    public GetProjectPanel(ResponsePanel responsePanel) {
+    public GetProjectPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
-        projectIdField.addActionListener(new GetActionListener(responsePanel));
+        projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
         projectNameField = new JTextField(10);
-        projectNameField.addActionListener(new GetActionListener(responsePanel));
+        projectNameField.addActionListener(new GetActionListener(tableResponsePanel));
         getButton = new JButton("Get");
-        getButton.addActionListener(new GetActionListener(responsePanel));
+        getButton.addActionListener(new GetActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -62,10 +62,10 @@ public class GetProjectPanel extends JPanel {
     }
 
     private class GetActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public GetActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public GetActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -76,7 +76,7 @@ public class GetProjectPanel extends JPanel {
             } else {
                 response = ProjectManager.getProject(projectIdField.getText().trim());
             }
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] projectResponse = null;
             if (response.getStatus() == 200) {
                 // Normal response
@@ -86,7 +86,7 @@ public class GetProjectPanel extends JPanel {
                     projectResponse = ProjectTab.convertProjectJsonToTable(response.getBody().getObject());
                 }
             }
-            responsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
+            tableResponsePanel.showResponseTable(ItemTable.PROJECT_TABLE_COL_NAMES, projectResponse);
         }
     }
 }

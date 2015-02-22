@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 
 public class ScenarioTab extends CommonTab {
     @Override
@@ -35,14 +35,14 @@ public class ScenarioTab extends CommonTab {
     }
 
     private void addCreateScenarioPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new CreateScenarioPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new CreateScenarioPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetScenarioPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetScenarioPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetScenarioPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
@@ -55,8 +55,8 @@ public class ScenarioTab extends CommonTab {
     }
 
     private void addDeleteScenarioPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new DeleteScenarioPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new DeleteScenarioPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 

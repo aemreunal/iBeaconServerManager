@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.RegionManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
@@ -32,18 +32,18 @@ public class CreateRegionPanel extends JPanel {
     private JTextField projectIdField;
     private JButton    createButton;
 
-    public CreateRegionPanel(ResponsePanel responsePanel) {
+    public CreateRegionPanel(TableResponsePanel tableResponsePanel) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        createComponents(responsePanel);
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         nameField = new JTextField(10);
         descriptionField = new JTextField(10);
         projectIdField = new JTextField(5);
         createButton = new JButton("Create");
-        createButton.addActionListener(new CreateActionListener(responsePanel));
+        createButton.addActionListener(new CreateActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -64,10 +64,10 @@ public class CreateRegionPanel extends JPanel {
     }
 
     private class CreateActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public CreateActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public CreateActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -79,11 +79,11 @@ public class CreateRegionPanel extends JPanel {
             HttpResponse<JsonNode> response = RegionManager.createRegion(nameField.getText().trim(),
                                                                          descriptionField.getText().trim(),
                                                                          projectId);
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             if (response.getStatus() == 201) {
                 // Normal response
                 String[][] createResponse = RegionTab.convertRegionJsonToTable(response.getBody().getObject());
-                responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, createResponse);
+                tableResponsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, createResponse);
             }
         }
     }

@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 
 public class APITab extends CommonTab {
 
@@ -30,8 +30,8 @@ public class APITab extends CommonTab {
     }
 
     private void addQueryBeaconPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new QueryBeaconPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new QueryBeaconPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Query", commonPanel);
     }
 

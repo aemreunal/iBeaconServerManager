@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.ScenarioManager;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 import com.aemreunal.view.region.RegionTab;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -31,18 +31,18 @@ public class GetRegionMembersPanel extends JPanel {
     private JTextField scenarioIdField;
     private JButton    getButton;
 
-    public GetRegionMembersPanel(ResponsePanel responsePanel) {
-        createComponents(responsePanel);
+    public GetRegionMembersPanel(TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
         addComponents();
     }
 
-    private void createComponents(ResponsePanel responsePanel) {
+    private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
-        projectIdField.addActionListener(new GetActionListener(responsePanel));
+        projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
         scenarioIdField = new JTextField(5);
-        scenarioIdField.addActionListener(new GetActionListener(responsePanel));
+        scenarioIdField.addActionListener(new GetActionListener(tableResponsePanel));
         getButton = new JButton("Get");
-        getButton.addActionListener(new GetActionListener(responsePanel));
+        getButton.addActionListener(new GetActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
@@ -54,10 +54,10 @@ public class GetRegionMembersPanel extends JPanel {
     }
 
     private class GetActionListener implements ActionListener {
-        private final ResponsePanel responsePanel;
+        private final TableResponsePanel tableResponsePanel;
 
-        public GetActionListener(ResponsePanel responsePanel) {
-            this.responsePanel = responsePanel;
+        public GetActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
@@ -68,12 +68,12 @@ public class GetRegionMembersPanel extends JPanel {
                 return;
             }
             HttpResponse<JsonNode> response = ScenarioManager.getScenarioMemberRegions(scenarioId, projectId);
-            responsePanel.showResponseCode(response.getStatus());
+            tableResponsePanel.showResponseCode(response.getStatus());
             String[][] regionResponse = null;
             if (response.getStatus() == 200) {
                 regionResponse = RegionTab.convertRegionJsonToTable(response.getBody().getArray());
             }
-            responsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
+            tableResponsePanel.showResponseTable(ItemTable.REGIONS_TABLE_COL_NAMES, regionResponse);
         }
     }
 }

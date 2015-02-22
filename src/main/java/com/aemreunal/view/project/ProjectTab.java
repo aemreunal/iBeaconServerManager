@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
 import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.ResponsePanel;
+import com.aemreunal.view.TableResponsePanel;
 
 public class ProjectTab extends CommonTab {
 
@@ -34,20 +34,20 @@ public class ProjectTab extends CommonTab {
     }
 
     private void addCreateProjectPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new CreateProjectPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new CreateProjectPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Create", commonPanel);
     }
 
     private void addGetProjectPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetProjectPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetProjectPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
     }
 
     private void addDeleteProjectPanel() {
-        ResponsePanel responsePanel = new ResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new DeleteProjectPanel(responsePanel), responsePanel);
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new DeleteProjectPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Delete", commonPanel);
     }
 
