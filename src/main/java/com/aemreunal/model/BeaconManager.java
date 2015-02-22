@@ -26,6 +26,7 @@ public class BeaconManager extends RestManager {
 
     public static HttpResponse<JsonNode> createBeacon(String uuid, String major, String minor, String description, String projectId) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/beacons")
+                                     .header("Content-Type", "application/json")
                                      .body(getBeaconCreateJson(uuid, major, minor, description))
                                      .getHttpRequest();
         return performRequest(request);

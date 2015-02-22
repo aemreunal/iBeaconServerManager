@@ -25,6 +25,7 @@ public class RegionManager extends RestManager {
 
     public static HttpResponse<JsonNode> createRegion(String name, String description, String projectId) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions")
+                                     .header("Content-Type", "application/json")
                                      .body(getRegionCreateJson(name, description))
                                      .getHttpRequest();
         return performRequest(request);

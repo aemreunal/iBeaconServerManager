@@ -25,6 +25,7 @@ public class ProjectManager extends RestManager {
 
     public static HttpResponse<JsonNode> createProject(String name, String description) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects")
+                                     .header("Content-Type", "application/json")
                                      .body(getProjectCreateJson(name, description))
                                      .getHttpRequest();
         return performRequest(request);

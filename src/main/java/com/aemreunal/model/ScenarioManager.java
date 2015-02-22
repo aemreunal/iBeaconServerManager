@@ -26,6 +26,7 @@ public class ScenarioManager extends RestManager {
 
     public static HttpResponse<JsonNode> createScenario(String name, String description, String shortMsg, String longMsg, String url, String projectId) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios")
+                                     .header("Content-Type", "application/json")
                                      .body(getScenarioCreateJson(name, description, shortMsg, longMsg, url))
                                      .getHttpRequest();
         return performRequest(request);

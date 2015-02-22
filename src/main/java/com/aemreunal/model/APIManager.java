@@ -26,6 +26,7 @@ public class APIManager extends RestManager {
 
     public static HttpResponse<JsonNode> queryBeacon(String uuid, String major, String minor, String secret) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/robot/querybeacon")
+                                     .header("Content-Type", "application/json")
                                      .body(getQueryBeaconJson(uuid, major, minor, secret))
                                      .getHttpRequest();
         return performRequest(request);
