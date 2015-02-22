@@ -1,4 +1,25 @@
+buildscript {
+    def gradleVersionsPluginVersion = '0.8'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "http://download.java.net/maven/2"
+        }
+        maven {
+            url 'http://repo.spring.io/plugins-release'
+        }
+    }
+
+    // Dependencies used for building the gradle script itself
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:${gradleVersionsPluginVersion}"
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'com.github.ben-manes.versions' // https://github.com/ben-manes/gradle-versions-plugin
 
 sourceCompatibility = 1.8
 version = 'b1.1'
@@ -6,9 +27,9 @@ def manifestVersion = version
 def vendor = 'Ahmet Emre Unal'
 def mainClass = 'com.aemreunal.iBeaconServerManager'
 
-def unirestVersion = '1.4.4'
-def wrapperGradleVersion = '2.0'
-def jsonVersion = '20140107'
+def unirestVersion = '1.4.5'
+def wrapperGradleVersion = '2.3'
+def jsonVersion = '20141113'
 
 repositories {
     mavenCentral()
