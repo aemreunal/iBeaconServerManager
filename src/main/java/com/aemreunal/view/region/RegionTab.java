@@ -80,11 +80,13 @@ public class RegionTab extends CommonTab {
         return regionTable;
     }
 
-    private static void parseRegionJson(JSONObject region, int index, String[][] regionTable) {
-        regionTable[index][0] = region.get("regionId").toString();
-        regionTable[index][1] = region.get("name").toString();
-        regionTable[index][2] = region.get("description").toString();
-        regionTable[index][3] = getSubObjectID("scenario", region.optJSONObject("scenario"));
-        regionTable[index][4] = new Date(Long.parseLong(region.get("creationDate").toString())).toString();
+    private static void parseRegionJson(JSONObject regionJson, int index, String[][] regionTable) {
+        regionTable[index][0] = regionJson.get("regionId").toString();
+        regionTable[index][1] = regionJson.get("name").toString();
+        regionTable[index][2] = regionJson.get("description").toString();
+        regionTable[index][3] = getSubObjectID("scenario", regionJson.optJSONObject("scenario"));
+        regionTable[index][4] = regionJson.get("mapImageIsSet").toString();
+        regionTable[index][5] = new Date(Long.parseLong(regionJson.get("lastUpdatedDate").toString())).toString();
+        regionTable[index][6] = new Date(Long.parseLong(regionJson.get("creationDate").toString())).toString();
     }
 }
