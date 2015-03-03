@@ -47,11 +47,15 @@ public class ScenarioTab extends CommonTab {
     }
 
     private void addGetMembersPanel() {
-        this.tabbedPane.addTab("Members", new GetMembersPanel());
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new GetMembersPanel(tableResponsePanel), tableResponsePanel);
+        this.tabbedPane.addTab("Members", commonPanel);
     }
 
     private void addModifyMembersPanel() {
-        this.tabbedPane.addTab("Modify", new ModifyMembersPanel());
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new ModifyMembersPanel(tableResponsePanel), tableResponsePanel);
+        this.tabbedPane.addTab("Modify", commonPanel);
     }
 
     private void addDeleteScenarioPanel() {

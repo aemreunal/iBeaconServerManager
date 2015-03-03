@@ -32,6 +32,7 @@ public class CreateBeaconPanel extends JPanel {
     private JTextField minorField;
     private JTextField descriptionField;
     private JTextField projectIdField;
+    private JTextField regionIdField;
     private JButton    createButton;
 
     public CreateBeaconPanel(TableResponsePanel tableResponsePanel) {
@@ -46,6 +47,7 @@ public class CreateBeaconPanel extends JPanel {
         minorField = new JTextField(10);
         descriptionField = new JTextField(10);
         projectIdField = new JTextField(5);
+        regionIdField = new JTextField(5);
         createButton = new JButton("Create");
         createButton.addActionListener(new CreateActionListener(tableResponsePanel));
     }
@@ -54,6 +56,8 @@ public class CreateBeaconPanel extends JPanel {
         JPanel projectIdPanel = new JPanel(new GridBagLayout());
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
+        projectIdPanel.add(new JLabel("Region ID:"));
+        projectIdPanel.add(regionIdField);
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
@@ -100,7 +104,8 @@ public class CreateBeaconPanel extends JPanel {
                                                                          majorField.getText().trim(),
                                                                          minorField.getText().trim(),
                                                                          descriptionField.getText().trim(),
-                                                                         projectIdField.getText().trim());
+                                                                         projectIdField.getText().trim(),
+                                                                         regionIdField.getText().trim());
             tableResponsePanel.showResponseCode(response.getStatus());
             String[][] createResponse = null;
             if (response.getStatus() == 201) {

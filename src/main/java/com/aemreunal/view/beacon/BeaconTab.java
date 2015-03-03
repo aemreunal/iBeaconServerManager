@@ -72,14 +72,7 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][2] = beacon.get("major").toString();
         beaconTable[index][3] = beacon.get("minor").toString();
         beaconTable[index][4] = beacon.get("description").toString();
-        String regionID = getSubObjectID("region", beacon.optJSONObject("region"));
-        beaconTable[index][5] = regionID;
-        if (regionID.equals("-")) {
-            beaconTable[index][6] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
-        } else {
-            String regionScenarioID = getSubObjectID("scenario", beacon.optJSONObject("region").optJSONObject("scenario"));
-            beaconTable[index][6] = regionScenarioID + " (via region)";
-        }
-        beaconTable[index][7] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
+        beaconTable[index][5] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
+        beaconTable[index][6] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
     }
 }

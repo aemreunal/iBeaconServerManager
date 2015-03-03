@@ -54,18 +54,6 @@ public class RegionManager extends RestManager {
         return performRequest(request);
     }
 
-    public static HttpResponse<JsonNode> addMember(String beaconId, String regionId, String projectId) {
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/addmember?beaconId=" + beaconId)
-                                     .getHttpRequest();
-        return performRequest(request);
-    }
-
-    public static HttpResponse<JsonNode> removeMember(String beaconId, String regionId, String projectId) {
-        HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/removemember?beaconId=" + beaconId)
-                                     .getHttpRequest();
-        return performRequest(request);
-    }
-
     public static HttpResponse<JsonNode> uploadRegionMapImage(String regionId, String projectId) {
         File imageFile = new File("/Users/aemreunal/IntelliJ/iBeacon/DevResources/test1.jpg");
         if (!imageFile.exists()) {

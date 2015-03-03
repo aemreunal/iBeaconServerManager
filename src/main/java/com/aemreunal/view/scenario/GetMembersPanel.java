@@ -16,29 +16,64 @@ package com.aemreunal.view.scenario;
  ***************************
  */
 
-import com.aemreunal.view.CommonPanel;
-import com.aemreunal.view.CommonTab;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+import com.aemreunal.model.ScenarioManager;
+import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.TableResponsePanel;
-import com.aemreunal.view.scenario.beacon.GetBeaconMembersPanel;
-import com.aemreunal.view.scenario.region.GetRegionMembersPanel;
+import com.aemreunal.view.beacon.BeaconTab;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 
-public class GetMembersPanel extends CommonTab {
+public class GetMembersPanel extends JPanel {
+    private JTextField projectIdField;
+    private JTextField scenarioIdField;
+    private JButton    getButton;
 
-    @Override
-    protected void addPanels() {
-        addGetBeaconMembersTab();
-        addGetRegionMembersTab();
+    public GetMembersPanel(TableResponsePanel tableResponsePanel) {
+        createComponents(tableResponsePanel);
+        addComponents();
     }
 
-    private void addGetBeaconMembersTab() {
-        TableResponsePanel tableResponsePanel = new TableResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetBeaconMembersPanel(tableResponsePanel), tableResponsePanel);
-        this.tabbedPane.addTab("Beacon", commonPanel);
+    private void createComponents(TableResponsePanel tableResponsePanel) {
+        projectIdField = new JTextField(5);
+        projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
+        scenarioIdField = new JTextField(5);
+        scenarioIdField.addActionListener(new GetActionListener(tableResponsePanel));
+        getButton = new JButton("Get");
+        getButton.addActionListener(new GetActionListener(tableResponsePanel));
     }
 
-    private void addGetRegionMembersTab() {
-        TableResponsePanel tableResponsePanel = new TableResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new GetRegionMembersPanel(tableResponsePanel), tableResponsePanel);
-        this.tabbedPane.addTab("Region", commonPanel);
+    private void addComponents() {
+        this.add(new JLabel("Project ID:"));
+        this.add(projectIdField);
+        this.add(new JLabel("Scenario ID:"));
+        this.add(scenarioIdField);
+        this.add(getButton);
+    }
+
+    private class GetActionListener implements ActionListener {
+        private final TableResponsePanel tableResponsePanel;
+
+        public GetActionListener(TableResponsePanel tableResponsePanel) {
+            this.tableResponsePanel = tableResponsePanel;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String projectId = projectIdField.getText().trim();
+            String scenarioId = scenarioIdField.getText().trim();
+            if (projectId.isEmpty() || scenarioId.isEmpty()) {
+                return;
+            }
+            HttpResponse<JsonNode> response = ScenarioManager.getScenarioMemberBeacons(scenarioId, projectId);
+            tableResponsePanel.showResponseCode(response.getStatus());
+            String[][] beaconResponse = null;
+            if (response.getStatus() == 200) {
+                beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getArray());
+            }
+            tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, beaconResponse);
+        }
     }
 }

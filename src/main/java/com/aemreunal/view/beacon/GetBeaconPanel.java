@@ -28,8 +28,9 @@ import com.mashape.unirest.http.JsonNode;
 
 public class GetBeaconPanel extends JPanel {
     private JTextField projectIdField;
+    private JTextField regionIdField;
     private JTextField beaconIdField;
-    private JTextField beaconUUIDField;
+    private JTextField beaconUuidField;
     private JTextField beaconMajorField;
     private JTextField beaconMinorField;
     private JButton    getButton;
@@ -43,10 +44,12 @@ public class GetBeaconPanel extends JPanel {
     private void createComponents(TableResponsePanel tableResponsePanel) {
         projectIdField = new JTextField(5);
         projectIdField.addActionListener(new GetActionListener(tableResponsePanel));
+        regionIdField = new JTextField(5);
+        regionIdField.addActionListener(new GetActionListener(tableResponsePanel));
         beaconIdField = new JTextField(5);
         beaconIdField.addActionListener(new GetActionListener(tableResponsePanel));
-        beaconUUIDField = new JTextField(10);
-        beaconUUIDField.addActionListener(new GetActionListener(tableResponsePanel));
+        beaconUuidField = new JTextField(10);
+        beaconUuidField.addActionListener(new GetActionListener(tableResponsePanel));
         beaconMajorField = new JTextField(10);
         beaconMajorField.addActionListener(new GetActionListener(tableResponsePanel));
         beaconMinorField = new JTextField(10);
@@ -59,16 +62,23 @@ public class GetBeaconPanel extends JPanel {
         JPanel idPanel = new JPanel(new GridBagLayout());
         idPanel.add(new JLabel("Project ID:"));
         idPanel.add(projectIdField);
-        idPanel.add(new JLabel("Beacon ID (leave blank to get all):"));
-        idPanel.add(beaconIdField);
+        idPanel.add(new JLabel("Region ID:"));
+        idPanel.add(regionIdField);
         idPanel.setMaximumSize(idPanel.getPreferredSize());
         this.add(idPanel);
 
-        JPanel projectNamePanel = new JPanel(new GridBagLayout());
-        projectNamePanel.add(new JLabel("Search by UUID:"));
-        projectNamePanel.add(beaconUUIDField);
-        projectNamePanel.setMaximumSize(projectNamePanel.getPreferredSize());
-        this.add(projectNamePanel);
+        JPanel beaconIdPanel = new JPanel(new GridBagLayout());
+        beaconIdPanel.add(new JLabel("Beacon ID (blank for all):"));
+        beaconIdPanel.add(beaconIdField);
+        beaconIdPanel.setMaximumSize(beaconIdPanel.getPreferredSize());
+        this.add(beaconIdPanel);
+
+
+        JPanel beaconUuidPanel = new JPanel(new GridBagLayout());
+        beaconUuidPanel.add(new JLabel("Search by UUID:"));
+        beaconUuidPanel.add(beaconUuidField);
+        beaconUuidPanel.setMaximumSize(beaconUuidPanel.getPreferredSize());
+        this.add(beaconUuidPanel);
 
         JPanel beaconMajorPanel = new JPanel(new GridBagLayout());
         beaconMajorPanel.add(new JLabel("Search by Major:"));
@@ -99,17 +109,19 @@ public class GetBeaconPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response;
             String projectId = projectIdField.getText().trim();
-            if (projectId.isEmpty()) {
+            String regionId = regionIdField.getText().trim();
+            if (projectId.isEmpty() || regionId.isEmpty()) {
                 return;
             }
             String beaconId = beaconIdField.getText().trim();
             if (beaconId.isEmpty()) {
-                response = BeaconManager.getAllBeacons(beaconUUIDField.getText().trim(),
+                response = BeaconManager.getAllBeacons(beaconUuidField.getText().trim(),
                                                        beaconMajorField.getText().trim(),
                                                        beaconMinorField.getText().trim(),
-                                                       projectId);
+                                                       projectId,
+                                                       regionId);
             } else {
-                response = BeaconManager.getBeacon(beaconId, projectId);
+                response = BeaconManager.getBeacon(beaconId, projectId, regionId);
             }
             tableResponsePanel.showResponseCode(response.getStatus());
             String[][] beaconResponse = null;

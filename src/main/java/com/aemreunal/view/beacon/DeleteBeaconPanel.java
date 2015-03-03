@@ -27,6 +27,7 @@ import com.mashape.unirest.http.JsonNode;
 
 public class DeleteBeaconPanel extends JPanel {
     private JTextField projectIdField;
+    private JTextField regionIdField;
     private JTextField beaconIdField;
     private JButton    deleteBeaconButton;
 
@@ -38,6 +39,7 @@ public class DeleteBeaconPanel extends JPanel {
     private void createComponents(TableResponsePanel tableResponsePanel) {
         beaconIdField = new JTextField(5);
         projectIdField = new JTextField(5);
+        regionIdField = new JTextField(5);
         deleteBeaconButton = new JButton("Delete");
         deleteBeaconButton.addActionListener(new DeleteBeaconActionListener(tableResponsePanel));
     }
@@ -45,6 +47,8 @@ public class DeleteBeaconPanel extends JPanel {
     private void addComponents() {
         this.add(new JLabel("Project ID:"));
         this.add(projectIdField);
+        this.add(new JLabel("Region ID:"));
+        this.add(regionIdField);
         this.add(new JLabel("Beacon ID:"));
         this.add(beaconIdField);
         this.add(deleteBeaconButton);
@@ -60,9 +64,10 @@ public class DeleteBeaconPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String beaconId = beaconIdField.getText().trim();
+            String regionId = regionIdField.getText().trim();
             String projectId = projectIdField.getText().trim();
-            if (!beaconId.isEmpty() && !projectId.isEmpty()) {
-                HttpResponse<JsonNode> response = BeaconManager.deleteBeacon(beaconId, projectId);
+            if (!beaconId.isEmpty() && !projectId.isEmpty() && !regionId.isEmpty()) {
+                HttpResponse<JsonNode> response = BeaconManager.deleteBeacon(beaconId, projectId, regionId);
                 tableResponsePanel.showResponseCode(response.getStatus());
                 String[][] beaconResponse = null;
                 if (response.getStatus() == 200) {

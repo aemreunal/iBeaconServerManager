@@ -31,7 +31,6 @@ public class RegionTab extends CommonTab {
         addCreateRegionPanel();
         addGetRegionPanel();
         addGetMembersPanel();
-        addModifyMemberPanel();
         addDeleteRegionPanel();
     }
 
@@ -51,12 +50,6 @@ public class RegionTab extends CommonTab {
         TableResponsePanel tableResponsePanel = new TableResponsePanel();
         CommonPanel commonPanel = new CommonPanel(new GetMembersPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Members", commonPanel);
-    }
-
-    private void addModifyMemberPanel() {
-        TableResponsePanel tableResponsePanel = new TableResponsePanel();
-        CommonPanel commonPanel = new CommonPanel(new ModifyMembersPanel(tableResponsePanel), tableResponsePanel);
-        this.tabbedPane.addTab("Modify", commonPanel);
     }
 
     private void addDeleteRegionPanel() {
