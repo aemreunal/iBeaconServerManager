@@ -26,11 +26,11 @@ public class TableResponsePanel extends JPanel {
 
     public TableResponsePanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        scrollPane = new JScrollPane();
         this.statusCodeLabel = new JLabel("Response code: -");
         this.statusCodeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         add(this.statusCodeLabel, BorderLayout.NORTH);
         this.itemTable = new ItemTable(new String[0][0], new String[0]);
+        scrollPane = new JScrollPane();
         scrollPane.setViewportView(this.itemTable);
         add(scrollPane, BorderLayout.CENTER);
     }

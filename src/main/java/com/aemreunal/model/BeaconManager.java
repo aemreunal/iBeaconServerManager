@@ -33,25 +33,25 @@ public class BeaconManager extends RestManager {
                                      .header("Content-Type", "application/json")
                                      .body(getBeaconCreateJson(uuid, major, minor, description))
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> getAllBeacons(String uuid, String major, String minor, String projectId, String regionId) {
         HttpRequest request = Unirest.get(beaconUrl(projectId, regionId) + "?uuid=" + uuid + "&major=" + major + "&minor=" + minor)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> getBeacon(String beaconId, String projectId, String regionId) {
         HttpRequest request = Unirest.get(beaconUrl(projectId, regionId) + "/" + beaconId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteBeacon(String beaconId, String projectId, String regionId) {
         HttpRequest request = Unirest.delete(beaconUrl(projectId, regionId) + "/" + beaconId + "?confirm=yes")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static String getBeaconCreateJson(String uuid, String major, String minor, String description) {

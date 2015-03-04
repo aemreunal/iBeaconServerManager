@@ -28,7 +28,7 @@ public class ProjectManager extends RestManager {
                                      .header("Content-Type", "application/json")
                                      .body(getProjectCreateJson(name, description))
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     private static String getProjectCreateJson(String name, String description) {
@@ -38,18 +38,18 @@ public class ProjectManager extends RestManager {
     public static HttpResponse<JsonNode> getAllProjects(String projectName) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects?name=" + projectName)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> getProject(String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteProject(String projectId) {
         HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "?confirm=yes")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 }

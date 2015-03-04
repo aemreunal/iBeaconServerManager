@@ -19,10 +19,7 @@ package com.aemreunal.view.region;
 import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.aemreunal.view.CommonPanel;
-import com.aemreunal.view.CommonTab;
-import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.TableResponsePanel;
+import com.aemreunal.view.*;
 
 public class RegionTab extends CommonTab {
 
@@ -31,6 +28,7 @@ public class RegionTab extends CommonTab {
         addCreateRegionPanel();
         addGetRegionPanel();
         addGetMembersPanel();
+        addRegionImagePanel();
         addDeleteRegionPanel();
     }
 
@@ -50,6 +48,12 @@ public class RegionTab extends CommonTab {
         TableResponsePanel tableResponsePanel = new TableResponsePanel();
         CommonPanel commonPanel = new CommonPanel(new GetMembersPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Members", commonPanel);
+    }
+
+    private void addRegionImagePanel() {
+        ImageResponsePanel imageResponsePanel = new ImageResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new RegionImagePanel(imageResponsePanel), imageResponsePanel);
+        this.tabbedPane.addTab("Image", commonPanel);
     }
 
     private void addDeleteRegionPanel() {

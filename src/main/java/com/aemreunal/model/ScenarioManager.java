@@ -29,7 +29,7 @@ public class ScenarioManager extends RestManager {
                                      .header("Content-Type", "application/json")
                                      .body(getScenarioCreateJson(name, description, shortMsg, longMsg, url))
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     private static String getScenarioCreateJson(String name, String description, String shortMsg, String longMsg, String url) {
@@ -43,54 +43,54 @@ public class ScenarioManager extends RestManager {
     public static HttpResponse<JsonNode> getAllScenarios(String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> getScenario(String scenarioId, String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> getScenarioMemberBeacons(String scenarioId, String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/beacons")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> getScenarioMemberRegions(String scenarioId, String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/regions")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> addBeacon(String beaconId, String scenarioId, String projectId) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/addbeacon?beaconId=" + beaconId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> addRegion(String regionId, String scenarioId, String projectId) {
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/addregion?regionId=" + regionId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> removeBeacon(String beaconId, String scenarioId, String projectId) {
         HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/removebeacon?beaconId=" + beaconId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> removeRegion(String regionId, String scenarioId, String projectId) {
         HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "/removeregion?regionId=" + regionId)
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteScenario(String scenarioId, String projectId) {
         HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/scenarios/" + scenarioId + "?confirm=yes")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 }

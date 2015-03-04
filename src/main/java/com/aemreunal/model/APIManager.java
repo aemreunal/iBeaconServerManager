@@ -29,7 +29,7 @@ public class APIManager extends RestManager {
                                      .header("Content-Type", "application/json")
                                      .body(getQueryBeaconJson(uuid, major, minor, secret))
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     private static String getQueryBeaconJson(String uuid, String major, String minor, String secret) {

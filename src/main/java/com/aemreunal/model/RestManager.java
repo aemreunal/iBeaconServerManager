@@ -16,6 +16,7 @@ package com.aemreunal.model;
  ***************************
  */
 
+import java.io.InputStream;
 import javax.swing.*;
 import org.json.JSONObject;
 import com.mashape.unirest.http.HttpResponse;
@@ -24,11 +25,18 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 
 public class RestManager {
-    protected static HttpResponse<JsonNode> performRequest(HttpRequest request) {
+    protected static HttpResponse<JsonNode> performJsonRequest(HttpRequest request) {
         authenticateRequest(request);
         HttpResponse<JsonNode> jsonResponse = makeJsonRequest(request);
         checkResponseForErrorCode(jsonResponse);
         return jsonResponse;
+    }
+
+    protected static HttpResponse<InputStream> performBinaryRequest(HttpRequest request) {
+        authenticateRequest(request);
+        HttpResponse<InputStream> binaryResponse = makeBinaryRequest(request);
+//        checkResponseForErrorCode(binaryResponse);
+        return binaryResponse;
     }
 
     private static void authenticateRequest(HttpRequest request) {
@@ -44,6 +52,17 @@ public class RestManager {
     private static HttpResponse<JsonNode> makeJsonRequest(HttpRequest request) {
         try {
             return request.asJson();
+        } catch (UnirestException e) {
+            JOptionPane.showMessageDialog(null, "Request failed. Please check the server and account settings.");
+            System.err.println("A Unirest exception ocurred!");
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    private static HttpResponse<InputStream> makeBinaryRequest(HttpRequest request) {
+        try {
+            return request.asBinary();
         } catch (UnirestException e) {
             JOptionPane.showMessageDialog(null, "Request failed. Please check the server and account settings.");
             System.err.println("A Unirest exception ocurred!");

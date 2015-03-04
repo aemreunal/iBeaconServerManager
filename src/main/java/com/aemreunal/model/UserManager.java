@@ -27,7 +27,7 @@ public class UserManager extends RestManager {
                                      .header("Content-Type", "application/json")
                                      .body(getUserRegisterJson(username, password))
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     private static String getUserRegisterJson(String username, String password) {
@@ -36,12 +36,12 @@ public class UserManager extends RestManager {
 
     public static HttpResponse<JsonNode> getUser(String username) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + username);
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 
     public static HttpResponse<JsonNode> deleteUser(String username) {
         HttpRequest request = Unirest.delete(PrefsManager.getServerAddress() + "/human/" + username + "?confirm=yes")
                                      .getHttpRequest();
-        return performRequest(request);
+        return performJsonRequest(request);
     }
 }
