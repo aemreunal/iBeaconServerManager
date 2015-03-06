@@ -19,6 +19,7 @@ package com.aemreunal.view.user;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import com.aemreunal.model.PrefsManager;
 import com.aemreunal.model.UserManager;
 import com.aemreunal.view.ItemTable;
 import com.aemreunal.view.TableResponsePanel;
@@ -26,7 +27,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
 public class DeleteUserPanel extends JPanel {
-    private JTextField usernameField;
     private JButton    deleteUserButton;
 
     public DeleteUserPanel(final TableResponsePanel tableResponsePanel) {
@@ -35,14 +35,11 @@ public class DeleteUserPanel extends JPanel {
     }
 
     private void createComponents(TableResponsePanel tableResponsePanel) {
-        usernameField = new JTextField(10);
         deleteUserButton = new JButton("Delete user");
         deleteUserButton.addActionListener(new DeleteUserActionListener(tableResponsePanel));
     }
 
     private void addComponents() {
-        this.add(new JLabel("Username:"));
-        this.add(usernameField);
         this.add(deleteUserButton);
     }
 
@@ -55,7 +52,7 @@ public class DeleteUserPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            HttpResponse<JsonNode> response = UserManager.deleteUser(usernameField.getText().trim());
+            HttpResponse<JsonNode> response = UserManager.deleteUser(PrefsManager.getUsername());
             tableResponsePanel.showResponseCode(response.getStatus());
             String[][] userResponse = null;
             if (response.getStatus() == 200) {
