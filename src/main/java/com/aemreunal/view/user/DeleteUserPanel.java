@@ -21,8 +21,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
 import com.aemreunal.model.UserManager;
-import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.TableResponsePanel;
+import com.aemreunal.view.response.table.ItemTable;
+import com.aemreunal.view.response.table.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 

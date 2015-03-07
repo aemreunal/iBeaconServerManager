@@ -1,4 +1,4 @@
-package com.aemreunal.view;
+package com.aemreunal.view.response.table;
 
 /*
  ***************************
@@ -17,7 +17,6 @@ package com.aemreunal.view;
  */
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 public class ItemTable extends JTable {
     public static final String[] USER_TABLE_COL_NAMES      = { "User ID", "Username" };
@@ -32,14 +31,3 @@ public class ItemTable extends JTable {
         super(new ItemTableModel(tableData, columnNames));
     }
 }
-
-class ItemTableModel extends DefaultTableModel {
-    public ItemTableModel(String[][] tableData, String[] columnNames) {
-        super(tableData, columnNames);
-    }
-
-    public boolean isCellEditable(int row, int column) {
-        return false;
-    }
-}
-

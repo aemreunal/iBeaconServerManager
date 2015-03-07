@@ -19,8 +19,8 @@ package com.aemreunal.view.user;
 import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
-import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.TableResponsePanel;
+import com.aemreunal.view.response.table.ItemTable;
+import com.aemreunal.view.response.table.TableResponsePanel;
 
 public class UserTab extends CommonTab {
 

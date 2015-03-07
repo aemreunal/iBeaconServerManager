@@ -20,6 +20,9 @@ import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.aemreunal.view.*;
+import com.aemreunal.view.response.image.ImageResponsePanel;
+import com.aemreunal.view.response.table.ItemTable;
+import com.aemreunal.view.response.table.TableResponsePanel;
 
 public class RegionTab extends CommonTab {
 

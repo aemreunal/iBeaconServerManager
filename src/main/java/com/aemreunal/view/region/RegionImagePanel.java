@@ -26,7 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.aemreunal.model.RegionManager;
-import com.aemreunal.view.ImageResponsePanel;
+import com.aemreunal.view.response.image.ImageResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 

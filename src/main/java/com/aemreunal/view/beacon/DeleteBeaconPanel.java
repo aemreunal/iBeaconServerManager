@@ -20,8 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.aemreunal.model.BeaconManager;
-import com.aemreunal.view.ItemTable;
-import com.aemreunal.view.TableResponsePanel;
+import com.aemreunal.view.response.table.ItemTable;
+import com.aemreunal.view.response.table.TableResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
