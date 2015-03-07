@@ -50,8 +50,8 @@ public class ManagerWindow extends JFrame {
     private void addPanels() {
         this.tabbedPane.addTab("User", new UserTab());
         this.tabbedPane.addTab("Project", new ProjectTab());
-        this.tabbedPane.addTab("Beacon", new BeaconTab());
         this.tabbedPane.addTab("Region", new RegionTab());
+        this.tabbedPane.addTab("Beacon", new BeaconTab());
         this.tabbedPane.addTab("Scenario", new ScenarioTab());
         this.tabbedPane.addTab("API", new APITab());
         this.tabbedPane.addTab("Preferences", new PreferencesTab());
