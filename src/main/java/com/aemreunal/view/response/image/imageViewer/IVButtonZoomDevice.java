@@ -21,10 +21,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
-public class ButtonZoomDevice extends MouseAdapter {
+class IVButtonZoomDevice extends MouseAdapter {
     private final ImageViewer imageViewer;
 
-    public ButtonZoomDevice(ImageViewer imageViewer) {
+    public IVButtonZoomDevice(ImageViewer imageViewer) {
         this.imageViewer = imageViewer;
     }
 

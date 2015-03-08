@@ -17,11 +17,11 @@ package com.aemreunal.view.response.image.imageViewer;
  */
 
 //This class is required for high precision image coordinates translation.
-public class Coords {
+class IVCoords {
     public double x;
     public double y;
 
-    public Coords(double x, double y) {
+    public IVCoords(double x, double y) {
         this.x = x;
         this.y = y;
     }

@@ -21,10 +21,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
-public class ImageViewerMouseAdapter extends MouseAdapter {
+class IVMouseAdapter extends MouseAdapter {
     private final ImageViewer imageViewer;
 
-    public ImageViewerMouseAdapter(ImageViewer imageViewer) {
+    public IVMouseAdapter(ImageViewer imageViewer) {
         this.imageViewer = imageViewer;
     }
 

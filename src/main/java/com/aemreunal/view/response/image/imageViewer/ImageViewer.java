@@ -101,7 +101,7 @@ public class ImageViewer extends JPanel {
     /**
      * <p>Defines the default zoom device to use for the panel.</p>
      */
-    public static final ZoomDevice DEFAULT_ZOOM_DEVICE = ZoomDevice.MOUSE_WHEEL;
+    public static final IVZoomDevice DEFAULT_ZOOM_DEVICE = IVZoomDevice.MOUSE_WHEEL;
 
     /**
      * <p>Defines whether the navigation image should be zoomable or not.</p>
@@ -135,42 +135,35 @@ public class ImageViewer extends JPanel {
     private boolean navigationImageEnabled      = true;
     private boolean highQualityRenderingEnabled = true;
 
-    private WheelZoomDevice  wheelZoomDevice  = null;
-    private ButtonZoomDevice buttonZoomDevice = null;
-
-    /**
-     * <p>Creates a new navigable image panel with no default image and the mouse scroll
-     * wheel as the zooming device.</p>
-     */
-    public ImageViewer() {
-        setOpaque(false);
-
-        addComponentListener(new ImageViewerComponentAdapter(this));
-        addMouseListener(new ImageViewerMouseAdapter(this));
-        addMouseMotionListener(new ImageViewerMouseMotionListener(this));
-
-        setZoomDevice(DEFAULT_ZOOM_DEVICE);
-    }
+    private IVWheelZoomDevice  wheelZoomDevice  = null;
+    private IVButtonZoomDevice buttonZoomDevice = null;
 
     /**
      * <p>Creates a new navigable image panel with the specified image and the mouse
      * scroll wheel as the zooming device.</p>
      */
     public ImageViewer(BufferedImage image) throws IOException {
-        this();
+        setOpaque(false);
+
+        addComponentListener(new IVComponentAdapter(this));
+        addMouseListener(new IVMouseAdapter(this));
+        addMouseMotionListener(new IVMouseMotionListener(this));
+
+        setZoomDevice(DEFAULT_ZOOM_DEVICE);
+
         setImage(image);
     }
 
     private void addWheelZoomDevice() {
         if (wheelZoomDevice == null) {
-            wheelZoomDevice = new WheelZoomDevice(this);
+            wheelZoomDevice = new IVWheelZoomDevice(this);
             addMouseWheelListener(wheelZoomDevice);
         }
     }
 
     private void addButtonZoomDevice() {
         if (buttonZoomDevice == null) {
-            buttonZoomDevice = new ButtonZoomDevice(this);
+            buttonZoomDevice = new IVButtonZoomDevice(this);
             addMouseListener(buttonZoomDevice);
         }
     }
@@ -195,14 +188,14 @@ public class ImageViewer extends JPanel {
      * @param newZoomDevice
      *         specifies the type of a new zoom device.
      */
-    void setZoomDevice(ZoomDevice newZoomDevice) {
-        if (newZoomDevice == ZoomDevice.NONE) {
+    void setZoomDevice(IVZoomDevice newZoomDevice) {
+        if (newZoomDevice == IVZoomDevice.NONE) {
             removeWheelZoomDevice();
             removeButtonZoomDevice();
-        } else if (newZoomDevice == ZoomDevice.MOUSE_BUTTON) {
+        } else if (newZoomDevice == IVZoomDevice.MOUSE_BUTTON) {
             removeWheelZoomDevice();
             addButtonZoomDevice();
-        } else if (newZoomDevice == ZoomDevice.MOUSE_WHEEL) {
+        } else if (newZoomDevice == IVZoomDevice.MOUSE_WHEEL) {
             removeButtonZoomDevice();
             addWheelZoomDevice();
         }
@@ -211,13 +204,13 @@ public class ImageViewer extends JPanel {
     /**
      * <p>Gets the current zoom device.</p>
      */
-    ZoomDevice getZoomDevice() {
+    IVZoomDevice getZoomDevice() {
         if (buttonZoomDevice != null) {
-            return ZoomDevice.MOUSE_BUTTON;
+            return IVZoomDevice.MOUSE_BUTTON;
         } else if (wheelZoomDevice != null) {
-            return ZoomDevice.MOUSE_WHEEL;
+            return IVZoomDevice.MOUSE_WHEEL;
         } else {
-            return ZoomDevice.NONE;
+            return IVZoomDevice.NONE;
         }
     }
 
@@ -281,13 +274,13 @@ public class ImageViewer extends JPanel {
 
     // TODO click to place beacon
     //Converts this panel's coordinates into the original image coordinates
-    private Coords panelToImageCoords(Point p) {
-        return new Coords((p.x - originX) / scale, (p.y - originY) / scale);
+    private IVCoords panelToImageCoords(Point p) {
+        return new IVCoords((p.x - originX) / scale, (p.y - originY) / scale);
     }
 
     //Converts the original image coordinates into this panel's coordinates
-    private Coords imageToPanelCoords(Coords p) {
-        return new Coords((p.x * scale) + originX, (p.y * scale) + originY);
+    private IVCoords imageToPanelCoords(IVCoords p) {
+        return new IVCoords((p.x * scale) + originX, (p.y * scale) + originY);
     }
 
     //Converts the navigation image coordinates into the zoomed image coordinates
@@ -309,7 +302,7 @@ public class ImageViewer extends JPanel {
 
     //Tests whether a given point in the panel falls within the image boundaries.
     boolean isInImage(Point p) {
-        Coords coords = panelToImageCoords(p);
+        IVCoords coords = panelToImageCoords(p);
         int x = coords.getIntX();
         int y = coords.getIntY();
         return (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight());
@@ -429,7 +422,7 @@ public class ImageViewer extends JPanel {
      *         the zoom level used to display this panel's image.
      */
     void setZoom(double newZoom, Point zoomingCenter) {
-        Coords imageP = panelToImageCoords(zoomingCenter);
+        IVCoords imageP = panelToImageCoords(zoomingCenter);
         if (imageP.x < 0.0) {
             imageP.x = 0.0;
         }
@@ -443,10 +436,10 @@ public class ImageViewer extends JPanel {
             imageP.y = image.getHeight() - 1.0;
         }
 
-        Coords correctedP = imageToPanelCoords(imageP);
+        IVCoords correctedP = imageToPanelCoords(imageP);
         double oldZoom = getZoom();
         scale = zoomToScale(newZoom);
-        Coords panelP = imageToPanelCoords(imageP);
+        IVCoords panelP = imageToPanelCoords(imageP);
 
         originX += (correctedP.getIntX() - (int) panelP.x);
         originY += (correctedP.getIntY() - (int) panelP.y);
@@ -480,10 +473,10 @@ public class ImageViewer extends JPanel {
     //Zooms an image in the panel by repainting it at the new zoom level.
     //The current mouse position is the zooming center.
     void zoomImage() {
-        Coords imageP = panelToImageCoords(mousePosition);
+        IVCoords imageP = panelToImageCoords(mousePosition);
         double oldZoom = getZoom();
         scale *= zoomFactor;
-        Coords panelP = imageToPanelCoords(imageP);
+        IVCoords panelP = imageToPanelCoords(imageP);
 
         originX += (mousePosition.x - (int) panelP.x);
         originY += (mousePosition.y - (int) panelP.y);
@@ -551,8 +544,8 @@ public class ImageViewer extends JPanel {
     //Gets the bounds of the image area currently displayed in the panel (in image
     //coordinates).
     private Rectangle getImageClipBounds() {
-        Coords startCoords = panelToImageCoords(new Point(0, 0));
-        Coords endCoords = panelToImageCoords(new Point(getWidth() - 1, getHeight() - 1));
+        IVCoords startCoords = panelToImageCoords(new Point(0, 0));
+        IVCoords endCoords = panelToImageCoords(new Point(getWidth() - 1, getHeight() - 1));
         int panelX1 = startCoords.getIntX();
         int panelY1 = startCoords.getIntY();
         int panelX2 = endCoords.getIntX();

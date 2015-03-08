@@ -20,10 +20,10 @@ import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-public class WheelZoomDevice implements MouseWheelListener {
+class IVWheelZoomDevice implements MouseWheelListener {
     private final ImageViewer imageViewer;
 
-    public WheelZoomDevice(ImageViewer imageViewer) {
+    public IVWheelZoomDevice(ImageViewer imageViewer) {
         this.imageViewer = imageViewer;
     }
 

@@ -21,10 +21,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
-public class ImageViewerMouseMotionListener implements MouseMotionListener {
+class IVMouseMotionListener implements MouseMotionListener {
     private final ImageViewer imageViewer;
 
-    public ImageViewerMouseMotionListener(ImageViewer imageViewer) {
+    public IVMouseMotionListener(ImageViewer imageViewer) {
         this.imageViewer = imageViewer;
     }
 

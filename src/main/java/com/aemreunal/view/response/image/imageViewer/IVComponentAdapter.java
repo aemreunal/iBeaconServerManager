@@ -19,10 +19,10 @@ package com.aemreunal.view.response.image.imageViewer;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class ImageViewerComponentAdapter extends ComponentAdapter {
+class IVComponentAdapter extends ComponentAdapter {
     private final ImageViewer imageViewer;
 
-    public ImageViewerComponentAdapter(ImageViewer imageViewer) {
+    public IVComponentAdapter(ImageViewer imageViewer) {
         this.imageViewer = imageViewer;
     }
 
