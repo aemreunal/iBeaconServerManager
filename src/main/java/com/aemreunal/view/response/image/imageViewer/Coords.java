@@ -1,4 +1,4 @@
-package com.aemreunal.view.response.image.helpers;
+package com.aemreunal.view.response.image.imageViewer;
 
 /*
  ***************************

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import com.aemreunal.view.response.image.imageViewer.ImageViewer;
 
 public class ImageResponsePanel extends JPanel {
     private JLabel      statusCodeLabel;
