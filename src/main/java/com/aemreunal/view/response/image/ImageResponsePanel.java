@@ -63,4 +63,8 @@ public class ImageResponsePanel extends JPanel {
     public void clickedOnImageAt(int x, int y) {
         System.out.println("Clicked on image coords: x = " + x + ", y = " + y);
     }
+
+    public void clickedOnBeaconWithId(int beaconId) {
+        System.out.println("Clicked on beacon with ID = " + beaconId);
+    }
 }

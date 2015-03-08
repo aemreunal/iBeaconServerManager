@@ -3,8 +3,7 @@ package com.aemreunal.view.response.image.imageViewer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
-import javax.imageio.ImageIO;
+import java.util.Set;
 import javax.swing.*;
 import com.aemreunal.view.response.image.ImageResponsePanel;
 
@@ -85,14 +84,14 @@ import com.aemreunal.view.response.image.ImageResponsePanel;
 public class ImageViewer extends JPanel {
 
     /**
+     * <p>Defines whether the high quality rendering is enabled or not.</p>
+     */
+    private static final boolean HIGH_QUALITY_RENDERING_ENABLED = true;
+
+    /**
      * <p>Identifies a change to the zoom level.</p>
      */
     public static final String ZOOM_LEVEL_CHANGED_PROPERTY = "zoomLevel";
-
-    /**
-     * <p>Identifies a change to the zoom increment.</p>
-     */
-    public static final String ZOOM_INCREMENT_CHANGED_PROPERTY = "zoomIncrement";
 
     /**
      * <p>Identifies that the image in the panel has changed.</p>
@@ -100,44 +99,53 @@ public class ImageViewer extends JPanel {
     public static final String IMAGE_CHANGED_PROPERTY = "image";
 
     /**
-     * <p>Defines the default zoom device to use for the panel.</p>
+     * <p>Defines whether the navigation image is enabled or not.</p>
      */
-    public static final IVZoomDevice DEFAULT_ZOOM_DEVICE = IVZoomDevice.MOUSE_WHEEL;
+    private static final boolean NAVIGATION_IMAGE_ENABLED = true;
 
     /**
      * <p>Defines whether the navigation image should be zoomable or not.</p>
      */
     public static final boolean ALLOW_NAV_IMG_ZOOM = false;
 
+    /**
+     * <p>Defines the sizes of beacon representations on the map.</p>
+     */
+    public static final int BEACON_OUTLINE_DIAMETER  = 16;
+    public static final int BEACON_INTERIOR_DIAMETER = BEACON_OUTLINE_DIAMETER - 4;
+    public static final int BEACON_CLICK_DIAMETER    = BEACON_OUTLINE_DIAMETER + 1;
+    public static final int BEACON_CLICK_RADIUS      = BEACON_CLICK_DIAMETER / 2;
+
     private static final double SCREEN_NAV_IMG_FACTOR                  = 0.15; // 15% of panel's width
     private static final double NAV_IMG_FACTOR                         = 0.3; // 30% of panel's width
     private static final double HIGH_QUALITY_RENDERING_SCALE_THRESHOLD = 1.0;
     private static final int    NAV_IMG_OUTLINE_PADDING                = 1;
-    private static final Object INTERPOLATION_TYPE = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
-    private double zoomIncrement = 0.2;
-
-    private double zoomFactor    = 1.0 + zoomIncrement;
-    private double navZoomFactor = 1.0 + zoomIncrement;
-    private BufferedImage image;
-
-    private BufferedImage navigationImage;
-    private int           navImageWidth;
-    private int           navImageHeight;
-    private double initialScale = 0.0;
-
-    private double scale        = 0.0;
-    private double navScale     = 0.0;
-    private int    originX      = 0;
-    private int    originY      = 0;
-    private Point     mousePosition;
-
-    private Dimension previousPanelSize;
-    private boolean navigationImageEnabled      = true;
-    private boolean highQualityRenderingEnabled = true;
-
-    private IVWheelZoomDevice  wheelZoomDevice  = null;
+    private static final Object INTERPOLATION_TYPE                     = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
 
     private final ImageResponsePanel imageResponsePanel;
+
+    private BufferedImage image;
+    private BufferedImage navigationImage;
+
+    private double zoomIncrement = 0.2;
+    private double zoomFactor    = 1.0 + zoomIncrement;
+    private double navZoomFactor = 1.0 + zoomIncrement;
+
+    private double initialScale = 0.0;
+    private double scale        = 0.0;
+    private double navScale     = 0.0;
+
+    private int originX = 0;
+    private int originY = 0;
+
+    private int navImageWidth;
+    private int navImageHeight;
+
+    private Point     mousePosition;
+    private Dimension previousPanelSize;
+
+    // A set of beacons which represent the locations of beacons
+    private Set<IVBeacon> beacons = null;
 
     /**
      * <p>Creates a new navigable image panel with the specified image and the mouse
@@ -156,41 +164,46 @@ public class ImageViewer extends JPanel {
         setImage(image);
     }
 
-    void clickedOnImageAt(IVCoords coords) {
-        imageResponsePanel.clickedOnImageAt(coords.getIntX(), coords.getIntY());
+    void clickedOnImageAt(IVCoords imageCoords) {
+        for (IVBeacon beacon : beacons) {
+            int radius = (int) Math.max((BEACON_CLICK_RADIUS * (1.0 / scale)), BEACON_CLICK_RADIUS);
+            if (beacon.hasBeenClicked(imageCoords, radius)) {
+                imageResponsePanel.clickedOnBeaconWithId(beacon.getBeaconId());
+                return;
+            }
+        }
+        imageResponsePanel.clickedOnImageAt(imageCoords.getIntX(), imageCoords.getIntY());
     }
 
-    //Called from paintComponent() when a new image is set.
+    // Called from paintComponent() when a new image is set.
     private void initializeParams() {
         double xScale = (double) getWidth() / image.getWidth();
         double yScale = (double) getHeight() / image.getHeight();
         initialScale = Math.min(xScale, yScale);
         scale = initialScale;
 
-        //An image is initially centered
+        // An image is initially centered
         centerImage();
         if (isNavigationImageEnabled()) {
             createNavigationImage();
         }
     }
 
-    //Centers the current image in the panel.
+    // Centers the current image in the panel.
     void centerImage() {
         originX = (getWidth() - getScreenImageWidth()) / 2;
         originY = (getHeight() - getScreenImageHeight()) / 2;
     }
 
-    //Creates and renders the navigation image in the upper let corner of the panel.
+    // Creates and renders the navigation image in the upper let corner of the panel.
     void createNavigationImage() {
-        //We keep the original navigation image larger than initially
-        //displayed to allow for zooming into it without pixellation effect.
+        // We keep the original navigation image larger than initially
+        // displayed to allow for zooming into it without pixellation effect.
         navImageWidth = (int) (getWidth() * NAV_IMG_FACTOR);
         navImageHeight = navImageWidth * image.getHeight() / image.getWidth();
         int scrNavImageWidth = (int) (getWidth() * SCREEN_NAV_IMG_FACTOR);
-        int scrNavImageHeight = scrNavImageWidth * image.getHeight() / image.getWidth();
         navScale = (double) scrNavImageWidth / navImageWidth;
-        navigationImage = new BufferedImage(navImageWidth, navImageHeight,
-                                            image.getType());
+        navigationImage = new BufferedImage(navImageWidth, navImageHeight, image.getType());
         Graphics g = navigationImage.getGraphics();
         g.drawImage(image, 0, 0, navImageWidth, navImageHeight, null);
     }
@@ -204,41 +217,33 @@ public class ImageViewer extends JPanel {
     void setImage(BufferedImage image) {
         BufferedImage oldImage = this.image;
         this.image = image;
-        //Reset scale so that initializeParameters() is called in paintComponent()
-        //for the new image.
+        // Reset scale so that initializeParameters() is called in paintComponent()
+        // for the new image.
         scale = 0.0;
         firePropertyChange(IMAGE_CHANGED_PROPERTY, oldImage, image);
         repaint();
     }
 
-    /**
-     * <p>Tests whether an image uses the standard RGB color space.</p>
-     */
-    static boolean isStandardRGBImage(BufferedImage bImage) {
-        return bImage.getColorModel().getColorSpace().isCS_sRGB();
-    }
-
-    // TODO click to place beacon
-    //Converts this panel's coordinates into the original image coordinates
+    // Converts this panel's coordinates into the original image coordinates
     IVCoords panelToImageCoords(Point p) {
         return new IVCoords((p.x - originX) / scale, (p.y - originY) / scale);
     }
 
-    //Converts the original image coordinates into this panel's coordinates
+    // Converts the original image coordinates into this panel's coordinates
     IVCoords imageToPanelCoords(IVCoords p) {
         return new IVCoords((p.x * scale) + originX, (p.y * scale) + originY);
     }
 
-    //Converts the navigation image coordinates into the zoomed image coordinates
+    // Converts the navigation image coordinates into the zoomed image coordinates
     private Point navToZoomedImageCoords(Point p) {
         int x = p.x * getScreenImageWidth() / getScreenNavImageWidth();
         int y = p.y * getScreenImageHeight() / getScreenNavImageHeight();
         return new Point(x, y);
     }
 
-    //The user clicked within the navigation image and this part of the image
-    //is displayed in the panel.
-    //The clicked point of the image is centered in the panel.
+    // The user clicked within the navigation image and this part of the image
+    // is displayed in the panel.
+    // The clicked point of the image is centered in the panel.
     void displayImageAt(Point p) {
         Point scrImagePoint = navToZoomedImageCoords(p);
         originX = -(scrImagePoint.x - getWidth() / 2);
@@ -246,7 +251,7 @@ public class ImageViewer extends JPanel {
         repaint();
     }
 
-    //Tests whether a given point in the panel falls within the image boundaries.
+    // Tests whether a given point in the panel falls within the image boundaries.
     boolean isInImage(Point p) {
         IVCoords coords = panelToImageCoords(p);
         int x = coords.getIntX();
@@ -254,54 +259,37 @@ public class ImageViewer extends JPanel {
         return (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight());
     }
 
-    //Tests whether a given point in the panel falls within the navigation image
-    //boundaries.
+    // Tests whether a given point in the panel falls within the navigation image
+    // boundaries.
     boolean isInNavigationImage(Point p) {
         return (isNavigationImageEnabled() && p.x < getScreenNavImageWidth()
                 && p.y < getScreenNavImageHeight());
     }
 
-    //Used when the image is resized.
+    // Used when the image is resized.
     boolean isImageEdgeInPanel() {
         if (previousPanelSize == null) {
             return false;
+        } else {
+            return (originX > 0 && originX < previousPanelSize.width
+                    || originY > 0 && originY < previousPanelSize.height);
         }
 
-        return (originX > 0 && originX < previousPanelSize.width
-                || originY > 0 && originY < previousPanelSize.height);
     }
 
-    //Tests whether the image is displayed in its entirety in the panel.
+    // Tests whether the image is displayed in its entirety in the panel.
     boolean isFullImageInPanel() {
         return (originX >= 0 && (originX + getScreenImageWidth()) < getWidth()
                 && originY >= 0 && (originY + getScreenImageHeight()) < getHeight());
     }
 
-    /**
-     * <p>Indicates whether the high quality rendering feature is enabled.</p>
-     *
-     * @return true if high quality rendering is enabled, false otherwise.
-     */
-    boolean isHighQualityRenderingEnabled() {
-        return highQualityRenderingEnabled;
-    }
-
-    /**
-     * <p>Enables/disables high quality rendering.</p>
-     *
-     * @param enabled
-     *         enables/disables high quality rendering
-     */
-    void setHighQualityRenderingEnabled(boolean enabled) {
-        highQualityRenderingEnabled = enabled;
-    }
-
-    //High quality rendering kicks in when when a scaled image is larger
-    //than the original image. In other words,
-    //when image decimation stops and interpolation starts.
+    // High quality rendering kicks in when when a scaled image is larger
+    // than the original image. In other words,
+    // when image decimation stops and interpolation starts.
     private boolean isHighQualityRendering() {
-        return (highQualityRenderingEnabled
-                && scale > HIGH_QUALITY_RENDERING_SCALE_THRESHOLD);
+        // Suppress 'pointless' inspection in IntelliJ
+        //noinspection PointlessBooleanExpression,ConstantConditions
+        return (HIGH_QUALITY_RENDERING_ENABLED && scale > HIGH_QUALITY_RENDERING_SCALE_THRESHOLD);
     }
 
     /**
@@ -310,19 +298,7 @@ public class ImageViewer extends JPanel {
      * @return true when navigation image is enabled, false otherwise.
      */
     boolean isNavigationImageEnabled() {
-        return navigationImageEnabled;
-    }
-
-    /**
-     * <p>Enables/disables navigation with the navigation image.</p> <p>Navigation image
-     * should be disabled when custom, programmatic navigation is implemented.</p>
-     *
-     * @param enabled
-     *         true when navigation image is enabled, false otherwise.
-     */
-    void setNavigationImageEnabled(boolean enabled) {
-        navigationImageEnabled = enabled;
-        repaint();
+        return NAVIGATION_IMAGE_ENABLED;
     }
 
     //Used when the panel is resized
@@ -330,11 +306,6 @@ public class ImageViewer extends JPanel {
         originX = originX * getWidth() / previousPanelSize.width;
         originY = originY * getHeight() / previousPanelSize.height;
         repaint();
-    }
-
-    //Converts the specified zoom level	to scale.
-    private double zoomToScale(double zoom) {
-        return initialScale * zoom;
     }
 
     /**
@@ -347,73 +318,12 @@ public class ImageViewer extends JPanel {
     }
 
     /**
-     * <p>Sets the zoom level used to display the image.</p> <p>This method is used in
-     * programmatic zooming. The zooming center is the point of the image closest to the
-     * center of the panel. After a new zoom level is set the image is repainted.</p>
-     *
-     * @param newZoom
-     *         the zoom level used to display this panel's image.
-     */
-    void setZoom(double newZoom) {
-        Point zoomingCenter = new Point(getWidth() / 2, getHeight() / 2);
-        setZoom(newZoom, zoomingCenter);
-    }
-
-    /**
-     * <p>Sets the zoom level used to display the image, and the zooming center, around
-     * which zooming is done.</p> <p>This method is used in programmatic zooming. After a
-     * new zoom level is set the image is repainted.</p>
-     *
-     * @param newZoom
-     *         the zoom level used to display this panel's image.
-     */
-    void setZoom(double newZoom, Point zoomingCenter) {
-        IVCoords imageP = panelToImageCoords(zoomingCenter);
-        if (imageP.x < 0.0) {
-            imageP.x = 0.0;
-        }
-        if (imageP.y < 0.0) {
-            imageP.y = 0.0;
-        }
-        if (imageP.x >= image.getWidth()) {
-            imageP.x = image.getWidth() - 1.0;
-        }
-        if (imageP.y >= image.getHeight()) {
-            imageP.y = image.getHeight() - 1.0;
-        }
-
-        IVCoords correctedP = imageToPanelCoords(imageP);
-        double oldZoom = getZoom();
-        scale = zoomToScale(newZoom);
-        IVCoords panelP = imageToPanelCoords(imageP);
-
-        originX += (correctedP.getIntX() - (int) panelP.x);
-        originY += (correctedP.getIntY() - (int) panelP.y);
-
-        firePropertyChange(ZOOM_LEVEL_CHANGED_PROPERTY, new Double(oldZoom), new Double(getZoom()));
-
-        repaint();
-    }
-
-    /**
      * <p>Gets the current zoom increment.</p>
      *
      * @return the current zoom increment
      */
     double getZoomIncrement() {
         return zoomIncrement;
-    }
-
-    /**
-     * <p>Sets a new zoom increment value.</p>
-     *
-     * @param newZoomIncrement
-     *         new zoom increment value
-     */
-    void setZoomIncrement(double newZoomIncrement) {
-        double oldZoomIncrement = zoomIncrement;
-        zoomIncrement = newZoomIncrement;
-        firePropertyChange(ZOOM_INCREMENT_CHANGED_PROPERTY, new Double(oldZoomIncrement), new Double(zoomIncrement));
     }
 
     //Zooms an image in the panel by repainting it at the new zoom level.
@@ -435,45 +345,6 @@ public class ImageViewer extends JPanel {
     //Zooms the navigation image
     void zoomNavigationImage() {
         navScale *= navZoomFactor;
-        repaint();
-    }
-
-    /**
-     * <p>Gets the image origin.</p> <p>Image origin is defined as the upper, left corner
-     * of the image in the panel's coordinate system.</p>
-     *
-     * @return the point of the upper, left corner of the image in the panel's coordinates
-     * system.
-     */
-    Point getImageOrigin() {
-        return new Point(originX, originY);
-    }
-
-    /**
-     * <p>Sets the image origin.</p> <p>Image origin is defined as the upper, left corner
-     * of the image in the panel's coordinate system. After a new origin is set, the image
-     * is repainted. This method is used for programmatic image navigation.</p>
-     *
-     * @param x
-     *         the x coordinate of the new image origin
-     * @param y
-     *         the y coordinate of the new image origin
-     */
-    void setImageOrigin(int x, int y) {
-        setImageOrigin(new Point(x, y));
-    }
-
-    /**
-     * <p>Sets the image origin.</p> <p>Image origin is defined as the upper, left corner
-     * of the image in the panel's coordinate system. After a new origin is set, the image
-     * is repainted. This method is used for programmatic image navigation.</p>
-     *
-     * @param newOrigin
-     *         the value of a new image origin
-     */
-    void setImageOrigin(Point newOrigin) {
-        originX = newOrigin.x;
-        originY = newOrigin.y;
         repaint();
     }
 
@@ -543,12 +414,44 @@ public class ImageViewer extends JPanel {
             g.drawImage(image, originX, originY, getScreenImageWidth(), getScreenImageHeight(), null);
         }
 
+        if (beacons != null) {
+            drawBeacons(g);
+        }
+
         //Draw navigation image
         if (isNavigationImageEnabled()) {
             g.drawImage(navigationImage, 0, 0, getScreenNavImageWidth(), getScreenNavImageHeight(), null);
             drawNavigationImageOutline(g);
             drawZoomAreaOutline(g);
         }
+    }
+
+    private void drawBeacons(Graphics g) {
+        Color previousColor = g.getColor();
+        for (IVBeacon beacon : beacons) {
+            IVCoords coords = imageToPanelCoords(beacon.getCoords());
+            int x = coords.getIntX();
+            int y = coords.getIntY();
+            drawBeaconOutline(g, x, y);
+            drawBeaconInterior(g, beacon.isDesignated(), x, y);
+        }
+        g.setColor(previousColor);
+    }
+
+    private void drawBeaconOutline(Graphics g, int x, int y) {
+        g.setColor(Color.DARK_GRAY);
+        int outlineDiameter = (int) Math.max((BEACON_OUTLINE_DIAMETER * scale), BEACON_OUTLINE_DIAMETER);
+        g.fillOval(x - (outlineDiameter / 2), y - (outlineDiameter / 2), outlineDiameter, outlineDiameter);
+    }
+
+    private void drawBeaconInterior(Graphics g, boolean isDesignated, int x, int y) {
+        if (isDesignated) {
+            g.setColor(Color.RED);
+        } else {
+            g.setColor(Color.BLUE);
+        }
+        int interiorDiameter = (int) Math.max((BEACON_INTERIOR_DIAMETER * scale), BEACON_INTERIOR_DIAMETER);
+        g.fillOval(x - (interiorDiameter / 2), y - (interiorDiameter / 2), interiorDiameter, interiorDiameter);
     }
 
     private void drawNavigationImageOutline(Graphics g) {
@@ -567,32 +470,12 @@ public class ImageViewer extends JPanel {
         if (isFullImageInPanel()) {
             return;
         }
-
         int x = -originX * getScreenNavImageWidth() / getScreenImageWidth();
         int y = -originY * getScreenNavImageHeight() / getScreenImageHeight();
         int width = getWidth() * getScreenNavImageWidth() / getScreenImageWidth();
         int height = getHeight() * getScreenNavImageHeight() / getScreenImageHeight();
         g.setColor(Color.RED);
         g.drawRect(x, y, width, height);
-    }
-
-    private static String[] getImageFormatExtensions() {
-        String[] names = ImageIO.getReaderFormatNames();
-        for (int i = 0; i < names.length; i++) {
-            names[i] = names[i].toLowerCase();
-        }
-        Arrays.sort(names);
-        return names;
-    }
-
-    private static boolean endsWithImageFormatExtension(String name) {
-        int dotIndex = name.lastIndexOf(".");
-        if (dotIndex == -1) {
-            return false;
-        }
-
-        String extension = name.substring(dotIndex + 1).toLowerCase();
-        return (Arrays.binarySearch(getImageFormatExtensions(), extension) >= 0);
     }
 
     private int getScreenImageWidth() {
@@ -629,5 +512,9 @@ public class ImageViewer extends JPanel {
 
     void setMousePosition(Point mousePosition) {
         this.mousePosition = mousePosition;
+    }
+
+    public void setBeacons(Set<IVBeacon> beacons) {
+        this.beacons = beacons;
     }
 }
