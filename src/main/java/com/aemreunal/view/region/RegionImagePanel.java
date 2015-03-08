@@ -89,7 +89,7 @@ public class RegionImagePanel extends JPanel {
 
         private File chooseFile() {
             final JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("JPEG, PNG, GIF", "jpg", "jpeg", "png", "gif"));
             fileChooser.setMultiSelectionEnabled(false);
             int openDialogResult = fileChooser.showOpenDialog(null);
             if (openDialogResult == JFileChooser.APPROVE_OPTION) {
