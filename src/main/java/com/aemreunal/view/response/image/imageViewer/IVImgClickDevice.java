@@ -17,27 +17,24 @@ package com.aemreunal.view.response.image.imageViewer;
  */
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
-class IVMouseMotionListener implements MouseMotionListener {
+class IVImgClickDevice extends MouseAdapter {
     private final ImageViewer imageViewer;
 
-    public IVMouseMotionListener(ImageViewer imageViewer) {
+    public IVImgClickDevice(ImageViewer imageViewer) {
         this.imageViewer = imageViewer;
     }
 
-    public void mouseDragged(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && !this.imageViewer.isInNavigationImage(e.getPoint())) {
-            Point p = e.getPoint();
-            this.imageViewer.moveImage(p);
+    public void mouseClicked(MouseEvent e) {
+        Point p = e.getPoint();
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            if (this.imageViewer.isInImage(p)) {
+                IVCoords coords = imageViewer.panelToImageCoords(p);
+                imageViewer.clickedOnImageAt(coords);
+            }
         }
-    }
-
-    public void mouseMoved(MouseEvent e) {
-        //we need the mouse position so that after zooming
-        //that position of the image is maintained
-        this.imageViewer.setMousePosition(e.getPoint());
     }
 }

@@ -45,7 +45,7 @@ public class ImageResponsePanel extends JPanel {
 
     public void showImage(BufferedImage image) {
         try {
-            showImage(new ImageViewer(image));
+            showImage(new ImageViewer(this, image));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,5 +58,9 @@ public class ImageResponsePanel extends JPanel {
         this.imageViewer = imageViewer;
         add(this.imageViewer, BorderLayout.CENTER);
         validate();
+    }
+
+    public void clickedOnImageAt(int x, int y) {
+        System.out.println("Clicked on image coords: x = " + x + ", y = " + y);
     }
 }

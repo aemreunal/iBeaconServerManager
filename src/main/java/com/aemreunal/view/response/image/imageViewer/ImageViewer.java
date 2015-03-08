@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import com.aemreunal.view.response.image.ImageResponsePanel;
 
 /**
  * <p> <code>NavigableImagePanel</code> is a lightweight container displaying an image
@@ -112,106 +113,51 @@ public class ImageViewer extends JPanel {
     private static final double NAV_IMG_FACTOR                         = 0.3; // 30% of panel's width
     private static final double HIGH_QUALITY_RENDERING_SCALE_THRESHOLD = 1.0;
     private static final int    NAV_IMG_OUTLINE_PADDING                = 1;
-    private static final Object INTERPOLATION_TYPE                     = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
-
+    private static final Object INTERPOLATION_TYPE = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
     private double zoomIncrement = 0.2;
+
     private double zoomFactor    = 1.0 + zoomIncrement;
     private double navZoomFactor = 1.0 + zoomIncrement;
-
     private BufferedImage image;
+
     private BufferedImage navigationImage;
     private int           navImageWidth;
     private int           navImageHeight;
-
     private double initialScale = 0.0;
+
     private double scale        = 0.0;
     private double navScale     = 0.0;
     private int    originX      = 0;
     private int    originY      = 0;
-
     private Point     mousePosition;
-    private Dimension previousPanelSize;
 
+    private Dimension previousPanelSize;
     private boolean navigationImageEnabled      = true;
     private boolean highQualityRenderingEnabled = true;
 
     private IVWheelZoomDevice  wheelZoomDevice  = null;
-    private IVButtonZoomDevice buttonZoomDevice = null;
+
+    private final ImageResponsePanel imageResponsePanel;
 
     /**
      * <p>Creates a new navigable image panel with the specified image and the mouse
      * scroll wheel as the zooming device.</p>
      */
-    public ImageViewer(BufferedImage image) throws IOException {
+    public ImageViewer(ImageResponsePanel imageResponsePanel, BufferedImage image) throws IOException {
+        this.imageResponsePanel = imageResponsePanel;
         setOpaque(false);
 
         addComponentListener(new IVComponentAdapter(this));
-        addMouseListener(new IVMouseAdapter(this));
-        addMouseMotionListener(new IVMouseMotionListener(this));
-
-        setZoomDevice(DEFAULT_ZOOM_DEVICE);
+        addMouseListener(new IVImgNavigationDevice(this)); // Used for jump-on-click at the navigation image
+        addMouseMotionListener(new IVImgPanningDevice(this)); // Used for image panning via dragging with the mouse
+        addMouseWheelListener(new IVWheelZoomDevice(this)); // Used for zooming to image with the mouse wheel
+        addMouseListener(new IVImgClickDevice(this)); // Used for placing a beacon on clicked area
 
         setImage(image);
     }
 
-    private void addWheelZoomDevice() {
-        if (wheelZoomDevice == null) {
-            wheelZoomDevice = new IVWheelZoomDevice(this);
-            addMouseWheelListener(wheelZoomDevice);
-        }
-    }
-
-    private void addButtonZoomDevice() {
-        if (buttonZoomDevice == null) {
-            buttonZoomDevice = new IVButtonZoomDevice(this);
-            addMouseListener(buttonZoomDevice);
-        }
-    }
-
-    private void removeWheelZoomDevice() {
-        if (wheelZoomDevice != null) {
-            removeMouseWheelListener(wheelZoomDevice);
-            wheelZoomDevice = null;
-        }
-    }
-
-    private void removeButtonZoomDevice() {
-        if (buttonZoomDevice != null) {
-            removeMouseListener(buttonZoomDevice);
-            buttonZoomDevice = null;
-        }
-    }
-
-    /**
-     * <p>Sets a new zoom device.</p>
-     *
-     * @param newZoomDevice
-     *         specifies the type of a new zoom device.
-     */
-    void setZoomDevice(IVZoomDevice newZoomDevice) {
-        if (newZoomDevice == IVZoomDevice.NONE) {
-            removeWheelZoomDevice();
-            removeButtonZoomDevice();
-        } else if (newZoomDevice == IVZoomDevice.MOUSE_BUTTON) {
-            removeWheelZoomDevice();
-            addButtonZoomDevice();
-        } else if (newZoomDevice == IVZoomDevice.MOUSE_WHEEL) {
-            removeButtonZoomDevice();
-            addWheelZoomDevice();
-        }
-    }
-
-    /**
-     * <p>Gets the current zoom device.</p>
-     */
-    IVZoomDevice getZoomDevice() {
-        if (buttonZoomDevice != null) {
-            return IVZoomDevice.MOUSE_BUTTON;
-        } else if (wheelZoomDevice != null) {
-            return IVZoomDevice.MOUSE_WHEEL;
-        } else {
-            return IVZoomDevice.NONE;
-        }
+    void clickedOnImageAt(IVCoords coords) {
+        imageResponsePanel.clickedOnImageAt(coords.getIntX(), coords.getIntY());
     }
 
     //Called from paintComponent() when a new image is set.
@@ -274,12 +220,12 @@ public class ImageViewer extends JPanel {
 
     // TODO click to place beacon
     //Converts this panel's coordinates into the original image coordinates
-    private IVCoords panelToImageCoords(Point p) {
+    IVCoords panelToImageCoords(Point p) {
         return new IVCoords((p.x - originX) / scale, (p.y - originY) / scale);
     }
 
     //Converts the original image coordinates into this panel's coordinates
-    private IVCoords imageToPanelCoords(IVCoords p) {
+    IVCoords imageToPanelCoords(IVCoords p) {
         return new IVCoords((p.x * scale) + originX, (p.y * scale) + originY);
     }
 
@@ -630,22 +576,6 @@ public class ImageViewer extends JPanel {
         g.drawRect(x, y, width, height);
     }
 
-    private int getScreenImageWidth() {
-        return (int) (scale * image.getWidth());
-    }
-
-    private int getScreenImageHeight() {
-        return (int) (scale * image.getHeight());
-    }
-
-    private int getScreenNavImageWidth() {
-        return (int) (navScale * navImageWidth);
-    }
-
-    private int getScreenNavImageHeight() {
-        return (int) (navScale * navImageHeight);
-    }
-
     private static String[] getImageFormatExtensions() {
         String[] names = ImageIO.getReaderFormatNames();
         for (int i = 0; i < names.length; i++) {
@@ -665,6 +595,26 @@ public class ImageViewer extends JPanel {
         return (Arrays.binarySearch(getImageFormatExtensions(), extension) >= 0);
     }
 
+    private int getScreenImageWidth() {
+        return (int) (scale * image.getWidth());
+    }
+
+    private int getScreenImageHeight() {
+        return (int) (scale * image.getHeight());
+    }
+
+    private int getScreenNavImageWidth() {
+        return (int) (navScale * navImageWidth);
+    }
+
+    private int getScreenNavImageHeight() {
+        return (int) (navScale * navImageHeight);
+    }
+
+    double getScale() {
+        return scale;
+    }
+
     void setZoomFactor(double zoomFactor) {
         this.zoomFactor = zoomFactor;
     }
@@ -675,10 +625,6 @@ public class ImageViewer extends JPanel {
 
     void setPreviousPanelSize(Dimension previousPanelSize) {
         this.previousPanelSize = previousPanelSize;
-    }
-
-    double getScale() {
-        return scale;
     }
 
     void setMousePosition(Point mousePosition) {
