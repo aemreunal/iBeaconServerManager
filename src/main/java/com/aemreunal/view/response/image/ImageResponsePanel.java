@@ -20,6 +20,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ImageResponsePanel extends JPanel {
@@ -38,11 +39,15 @@ public class ImageResponsePanel extends JPanel {
     }
 
     public void showImage(File mapImageFile) throws IOException {
-        showImage(new ImageViewer(mapImageFile));
+        showImage(ImageIO.read(mapImageFile));
     }
 
     public void showImage(BufferedImage image) {
-        showImage(new ImageViewer(image));
+        try {
+            showImage(new ImageViewer(image));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showImage(ImageViewer imageViewer) {
