@@ -27,10 +27,12 @@ import com.mashape.unirest.request.HttpRequest;
 
 public class RegionManager extends RestManager {
 
-    public static HttpResponse<JsonNode> createRegion(String name, String description, String projectId) {
+    public static HttpResponse<JsonNode> createRegion(String projectId, String name, String description, File imageFile) {
+        String imageContentType = URLConnection.guessContentTypeFromName(imageFile.getName());
+//        String imageContentType = Files.probeContentType(imageFile.toPath());
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions")
-                                     .header("Content-Type", "application/json")
-                                     .body(getRegionCreateJson(name, description))
+                                     .field("region", getRegionCreateJson(name, description), ContentType.APPLICATION_JSON.getMimeType())
+                                     .field("image", imageFile, imageContentType)
                                      .getHttpRequest();
         return performJsonRequest(request);
     }
@@ -53,15 +55,6 @@ public class RegionManager extends RestManager {
 
     public static HttpResponse<JsonNode> getRegionMembers(String regionId, String projectId) {
         HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/members")
-                                     .getHttpRequest();
-        return performJsonRequest(request);
-    }
-
-    public static HttpResponse<JsonNode> uploadRegionMapImage(String projectId, String regionId, File imageFile) {
-        String contentType = URLConnection.guessContentTypeFromName(imageFile.getName());
-//        String contentType = Files.probeContentType(imageFile.toPath());
-        HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/mapimage")
-                                     .field("mapImage", imageFile, contentType)
                                      .getHttpRequest();
         return performJsonRequest(request);
     }
