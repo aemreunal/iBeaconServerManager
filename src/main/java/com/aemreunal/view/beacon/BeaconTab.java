@@ -71,8 +71,10 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][1] = beacon.get("uuid").toString();
         beaconTable[index][2] = beacon.get("major").toString();
         beaconTable[index][3] = beacon.get("minor").toString();
-        beaconTable[index][4] = beacon.get("description").toString();
-        beaconTable[index][5] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
-        beaconTable[index][6] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
+        beaconTable[index][4] = beacon.get("xCoordinate").toString();
+        beaconTable[index][5] = beacon.get("yCoordinate").toString();
+        beaconTable[index][6] = beacon.get("description").toString();
+        beaconTable[index][7] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
+        beaconTable[index][8] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
     }
 }

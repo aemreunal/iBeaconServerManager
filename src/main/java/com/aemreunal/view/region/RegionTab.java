@@ -84,9 +84,8 @@ public class RegionTab extends CommonTab {
         regionTable[index][0] = regionJson.get("regionId").toString();
         regionTable[index][1] = regionJson.get("name").toString();
         regionTable[index][2] = regionJson.get("description").toString();
-        regionTable[index][3] = getSubObjectID("scenario", regionJson.optJSONObject("scenario"));
-        regionTable[index][4] = regionJson.get("mapImageIsSet").toString();
-        regionTable[index][5] = new Date(Long.parseLong(regionJson.get("lastUpdatedDate").toString())).toString();
-        regionTable[index][6] = new Date(Long.parseLong(regionJson.get("creationDate").toString())).toString();
+        regionTable[index][3] = regionJson.get("mapImageIsSet").toString();
+        regionTable[index][4] = new Date(Long.parseLong(regionJson.get("lastUpdatedDate").toString())).toString();
+        regionTable[index][5] = new Date(Long.parseLong(regionJson.get("creationDate").toString())).toString();
     }
 }
