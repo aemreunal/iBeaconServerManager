@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import com.aemreunal.view.beacon.overlay.CreateBeaconForm;
 import com.aemreunal.view.response.image.imageViewer.ImageViewer;
 
 public class ImageResponsePanel extends JPanel {
@@ -62,6 +63,7 @@ public class ImageResponsePanel extends JPanel {
 
     public void clickedOnImageAt(int x, int y) {
         System.out.println("Clicked on image coords: x = " + x + ", y = " + y);
+        new CreateBeaconForm("1", "2", x, y);
     }
 
     public void clickedOnBeaconWithId(int beaconId) {
