@@ -17,10 +17,12 @@ package com.aemreunal.view.beacon;
  */
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import com.aemreunal.view.CommonPanel;
 import com.aemreunal.view.CommonTab;
+import com.aemreunal.view.response.image.imageViewer.IVBeacon;
 import com.aemreunal.view.response.table.ItemTable;
 import com.aemreunal.view.response.table.TableResponsePanel;
 
@@ -63,7 +65,7 @@ public class BeaconTab extends CommonTab {
 
     public static String[][] convertBeaconJsonToTable(JSONObject beacon) {
         String[][] beaconTable = new String[1][ItemTable.BEACONS_TABLE_COL_NAMES.length];
-        parseBeaconJson(beacon, 0, beaconTable);
+        parseBeaconJsonToArray(beacon, 0, beaconTable);
         return beaconTable;
     }
 
@@ -71,12 +73,21 @@ public class BeaconTab extends CommonTab {
         String[][] beaconTable = new String[beacons.length()][ItemTable.BEACONS_TABLE_COL_NAMES.length];
         for (int i = 0; i < beacons.length(); i++) {
             JSONObject beacon = beacons.getJSONObject(i);
-            parseBeaconJson(beacon, i, beaconTable);
+            parseBeaconJsonToArray(beacon, i, beaconTable);
         }
         return beaconTable;
     }
 
-    private static void parseBeaconJson(JSONObject beacon, int index, String[][] beaconTable) {
+    public static LinkedHashSet<IVBeacon> convertBeaconJsonToIvBeacon(JSONArray beacons) {
+        LinkedHashSet<IVBeacon> ivBeacons = new LinkedHashSet<>();
+        for (int i = 0; i < beacons.length(); i++) {
+            JSONObject beacon = beacons.getJSONObject(i);
+            ivBeacons.add(parseBeaconJsonToIvBeacon(beacon));
+        }
+        return ivBeacons;
+    }
+
+    private static void parseBeaconJsonToArray(JSONObject beacon, int index, String[][] beaconTable) {
         beaconTable[index][BEACON_ID] = beacon.get("beaconId").toString();
         beaconTable[index][UUID] = beacon.get("uuid").toString();
         beaconTable[index][MAJOR] = beacon.get("major").toString();
@@ -86,5 +97,17 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][DESCRIPTION] = beacon.get("description").toString();
         beaconTable[index][SCENARIO] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
         beaconTable[index][CREATION_DATE] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
+    }
+
+    //    beacons.add(new IVBeacon(6, 1600, 1200, false));
+    private static IVBeacon parseBeaconJsonToIvBeacon(JSONObject beacon) {
+        long beaconId = Long.parseLong(beacon.get("beaconId").toString());
+        int xCoordinate = Integer.parseInt(beacon.get("xCoordinate").toString());
+        int yCoordinate = Integer.parseInt(beacon.get("yCoordinate").toString());
+
+        // TODO implement designation!
+        boolean isDesignated = false;
+
+        return new IVBeacon(beaconId, xCoordinate, yCoordinate, isDesignated);
     }
 }

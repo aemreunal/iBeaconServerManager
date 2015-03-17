@@ -72,7 +72,7 @@ public class CreateBeaconForm extends JFrame {
     private void createBeacon() {
         HttpResponse<JsonNode> response = BeaconManager.createBeacon(projectId, regionId, uuidField.getText().trim(),
                                                                      majorField.getText().trim(), minorField.getText().trim(),
-                                                                     descriptionField.getText().trim(), String.valueOf(xCoor), String.valueOf(xCoor));
+                                                                     descriptionField.getText().trim(), String.valueOf(xCoor), String.valueOf(yCoor));
         if (response!= null && response.getStatus() == 201) {
             String[][] beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             JOptionPane.showMessageDialog(this, "Beacon has been created with ID:" + beaconResponse[0][BeaconTab.BEACON_ID], "Beacon Created", JOptionPane.INFORMATION_MESSAGE);

@@ -36,7 +36,7 @@ public class BeaconManager extends RestManager {
         return performJsonRequest(request);
     }
 
-    public static HttpResponse<JsonNode> getAllBeacons(String uuid, String major, String minor, String projectId, String regionId) {
+    public static HttpResponse<JsonNode> getAllBeacons(String projectId, String regionId, String uuid, String major, String minor) {
         HttpRequest request = Unirest.get(beaconUrl(projectId, regionId) + "?uuid=" + uuid + "&major=" + major + "&minor=" + minor)
                                      .getHttpRequest();
         return performJsonRequest(request);

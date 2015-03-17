@@ -23,9 +23,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import com.aemreunal.model.BeaconManager;
 import com.aemreunal.model.RegionManager;
+import com.aemreunal.view.beacon.BeaconTab;
 import com.aemreunal.view.response.image.ImageResponsePanel;
 import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 
 public class RegionImagePanel extends JPanel {
     private JTextField projectIdField;
@@ -54,6 +57,8 @@ public class RegionImagePanel extends JPanel {
 
     private class ImageActionListener implements ActionListener {
         private final ImageResponsePanel imageResponsePanel;
+        private       String             projectId;
+        private       String             regionId;
 
         public ImageActionListener(ImageResponsePanel imageResponsePanel) {
             this.imageResponsePanel = imageResponsePanel;
@@ -61,8 +66,8 @@ public class RegionImagePanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String projectId = projectIdField.getText().trim();
-            String regionId = regionIdField.getText().trim();
+            projectId = projectIdField.getText().trim();
+            regionId = regionIdField.getText().trim();
             if (projectId.isEmpty() || regionId.isEmpty()) {
                 return;
             }
@@ -77,10 +82,18 @@ public class RegionImagePanel extends JPanel {
                 try {
                     BufferedImage image = ImageIO.read(response.getRawBody());
                     imageResponsePanel.showImage(image);
+                    refreshBeacons();
                 } catch (IOException e) {
                     System.err.println("Unable to display image! IOException");
                 }
             }
         }
+
+        public void refreshBeacons() {
+            // Get and show beacons
+            HttpResponse<JsonNode> beacons = BeaconManager.getAllBeacons(projectId, regionId, "", "", "");
+            imageResponsePanel.showBeacons(BeaconTab.convertBeaconJsonToIvBeacon(beacons.getBody().getArray()));
+        }
+
     }
 }

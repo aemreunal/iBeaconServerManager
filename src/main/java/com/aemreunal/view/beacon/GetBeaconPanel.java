@@ -115,11 +115,10 @@ public class GetBeaconPanel extends JPanel {
             }
             String beaconId = beaconIdField.getText().trim();
             if (beaconId.isEmpty()) {
-                response = BeaconManager.getAllBeacons(beaconUuidField.getText().trim(),
+                response = BeaconManager.getAllBeacons(projectId, regionId, beaconUuidField.getText().trim(),
                                                        beaconMajorField.getText().trim(),
-                                                       beaconMinorField.getText().trim(),
-                                                       projectId,
-                                                       regionId);
+                                                       beaconMinorField.getText().trim()
+                );
             } else {
                 response = BeaconManager.getBeacon(beaconId, projectId, regionId);
             }

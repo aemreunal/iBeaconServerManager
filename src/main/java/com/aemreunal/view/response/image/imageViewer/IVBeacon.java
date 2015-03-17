@@ -17,19 +17,19 @@ package com.aemreunal.view.response.image.imageViewer;
  */
 
 public class IVBeacon {
-    private int beaconId;
+    private long beaconId;
     private int x;
     private int y;
     private boolean isDesignated;
 
-    public IVBeacon(int beaconId, int x, int y, boolean isDesignated) {
+    public IVBeacon(long beaconId, int x, int y, boolean isDesignated) {
         this.beaconId = beaconId;
         this.x = x;
         this.y = y;
         this.isDesignated = isDesignated;
     }
 
-    public int getBeaconId() {
+    public long getBeaconId() {
         return beaconId;
     }
 
