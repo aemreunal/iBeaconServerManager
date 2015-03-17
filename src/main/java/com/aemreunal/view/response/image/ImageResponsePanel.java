@@ -74,5 +74,6 @@ public class ImageResponsePanel extends JPanel {
 
     public void clickedOnBeaconWithId(long beaconId) {
         System.out.println("Clicked on beacon with ID = " + beaconId);
+        JOptionPane.showMessageDialog(this, "That's the beacon with ID:" + beaconId, "Beacon " + beaconId, JOptionPane.INFORMATION_MESSAGE);
     }
 }
