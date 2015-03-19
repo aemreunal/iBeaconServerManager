@@ -81,7 +81,7 @@ public class RegionImagePanel extends JPanel {
             if (response.getStatus() == 200) {
                 try {
                     BufferedImage image = ImageIO.read(response.getRawBody());
-                    imageResponsePanel.showImage(image);
+                    imageResponsePanel.showImage(projectId, regionId, image);
                     refreshBeacons();
                 } catch (IOException e) {
                     System.err.println("Unable to display image! IOException");

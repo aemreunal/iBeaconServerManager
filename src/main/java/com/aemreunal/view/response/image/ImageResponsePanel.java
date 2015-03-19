@@ -30,6 +30,8 @@ import com.aemreunal.view.response.image.imageViewer.ImageViewer;
 public class ImageResponsePanel extends JPanel {
     private JLabel      statusCodeLabel;
     private ImageViewer imageViewer;
+    private String      projectId;
+    private String regionId;
 
     public ImageResponsePanel() {
         setLayout(new BorderLayout());
@@ -42,11 +44,13 @@ public class ImageResponsePanel extends JPanel {
         this.statusCodeLabel.setText("Response code: " + httpStatusCode);
     }
 
-    public void showImage(File mapImageFile) throws IOException {
-        showImage(ImageIO.read(mapImageFile));
+    public void showImage(String projectId, String regionId, File mapImageFile) throws IOException {
+        showImage(projectId, regionId, ImageIO.read(mapImageFile));
     }
 
-    public void showImage(BufferedImage image) {
+    public void showImage(String projectId, String regionId, BufferedImage image) {
+        this.projectId = projectId;
+        this.regionId = regionId;
         try {
             showImage(new ImageViewer(this, image));
         } catch (IOException e) {
@@ -69,7 +73,7 @@ public class ImageResponsePanel extends JPanel {
 
     public void clickedOnImageAt(int x, int y) {
         System.out.println("Clicked on image coords: x = " + x + ", y = " + y);
-        new CreateBeaconForm("1", "2", x, y);
+        new CreateBeaconForm(projectId, regionId, x, y);
     }
 
     public void clickedOnBeaconWithId(long beaconId) {
