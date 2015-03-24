@@ -36,13 +36,13 @@ import javax.swing.table.TableRowSorter;
 public class BeaconTableSorter extends TableRowSorter {
     public BeaconTableSorter(TableModel model) {
         super(model);
-        for (int i = 0; i < ItemTable.BEACONS_TABLE_COL_NAMES.length; i++) {
-            setComparator(i, new IntComparator());
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            setComparator(i, new StringComparator());
             this.setSortable(i, true);
         }
     }
 
-    private class IntComparator implements Comparator<String> {
+    private class StringComparator implements Comparator<String> {
         @Override
         public int compare(String s1, String s2) {
             return s1.compareToIgnoreCase(s2);
