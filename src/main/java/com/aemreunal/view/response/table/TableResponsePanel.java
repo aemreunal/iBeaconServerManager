@@ -18,18 +18,27 @@ package com.aemreunal.view.response.table;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.TableModel;
 
 public class TableResponsePanel extends JPanel {
     private JLabel      statusCodeLabel;
     private JScrollPane scrollPane;
     private ItemTable   itemTable;
+    private TableModel  tableModel;
 
     public TableResponsePanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        initStatusCodeLabel();
+        initItemTable();
+    }
+
+    private void initStatusCodeLabel() {
         this.statusCodeLabel = new JLabel("Response code: -");
         this.statusCodeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         add(this.statusCodeLabel, BorderLayout.NORTH);
-        this.itemTable = new ItemTable(new String[0][0], new String[0]);
+    }
+
+    private void initItemTable() {
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(this.itemTable);
         add(scrollPane, BorderLayout.CENTER);
@@ -43,7 +52,9 @@ public class TableResponsePanel extends JPanel {
         if (items == null) {
             items = new String[0][0];
         }
-        this.itemTable = new ItemTable(items, columnNames);
+        this.tableModel = new ItemTableModel(items, columnNames);
+        this.itemTable = new ItemTable(tableModel);
+        this.itemTable.setRowSorter(new BeaconTableSorter(tableModel));
         this.itemTable.getTableHeader().setReorderingAllowed(false);
         scrollPane.setViewportView(this.itemTable);
     }

@@ -28,10 +28,10 @@ public class BeaconManager extends RestManager {
         return PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/beacons";
     }
 
-    public static HttpResponse<JsonNode> createBeacon(String projectId, String regionId, String uuid, String major, String minor, String description, String xCoor, String yCoor) {
+    public static HttpResponse<JsonNode> createBeacon(String projectId, String regionId, String uuid, String major, String minor, String description, String xCoor, String yCoor, boolean isDesignated) {
         HttpRequest request = Unirest.post(beaconUrl(projectId, regionId))
                                      .header("Content-Type", "application/json")
-                                     .body(getBeaconCreateJson(uuid, major, minor, description, xCoor, yCoor))
+                                     .body(getBeaconCreateJson(uuid, major, minor, description, xCoor, yCoor, isDesignated))
                                      .getHttpRequest();
         return performJsonRequest(request);
     }
@@ -54,12 +54,13 @@ public class BeaconManager extends RestManager {
         return performJsonRequest(request);
     }
 
-    public static String getBeaconCreateJson(String uuid, String major, String minor, String description, String xCoor, String yCoor) {
+    public static String getBeaconCreateJson(String uuid, String major, String minor, String description, String xCoor, String yCoor, boolean isDesignated) {
         return new JSONObject().put("uuid", uuid)
                                .put("major", major)
                                .put("minor", minor)
                                .put("xCoordinate", xCoor)
                                .put("yCoordinate", yCoor)
+                               .put("designated", isDesignated)
                                .put("description", description)
                                .toString();
     }

@@ -34,9 +34,10 @@ public class BeaconTab extends CommonTab {
     public static final int MINOR         = 3;
     public static final int X_COOR        = 4;
     public static final int Y_COOR        = 5;
-    public static final int DESCRIPTION   = 6;
+    public static final int DESIGNATED    = 6;
     public static final int SCENARIO      = 7;
-    public static final int CREATION_DATE = 8;
+    public static final int DESCRIPTION   = 8;
+    public static final int CREATION_DATE = 9;
 
     @Override
     protected void addPanels() {
@@ -94,19 +95,17 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][MINOR] = beacon.get("minor").toString();
         beaconTable[index][X_COOR] = beacon.get("xCoordinate").toString();
         beaconTable[index][Y_COOR] = beacon.get("yCoordinate").toString();
+        beaconTable[index][DESIGNATED] = beacon.get("designated").toString();
         beaconTable[index][DESCRIPTION] = beacon.get("description").toString();
         beaconTable[index][SCENARIO] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
         beaconTable[index][CREATION_DATE] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
     }
 
-    //    beacons.add(new IVBeacon(6, 1600, 1200, false));
     private static IVBeacon parseBeaconJsonToIvBeacon(JSONObject beacon) {
         long beaconId = Long.parseLong(beacon.get("beaconId").toString());
         int xCoordinate = Integer.parseInt(beacon.get("xCoordinate").toString());
         int yCoordinate = Integer.parseInt(beacon.get("yCoordinate").toString());
-
-        // TODO implement designation!
-        boolean isDesignated = false;
+        boolean isDesignated = Boolean.parseBoolean(beacon.get("designated").toString());
 
         return new IVBeacon(beaconId, xCoordinate, yCoordinate, isDesignated);
     }

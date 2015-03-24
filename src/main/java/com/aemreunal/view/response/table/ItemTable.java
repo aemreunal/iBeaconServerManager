@@ -17,17 +17,22 @@ package com.aemreunal.view.response.table;
  */
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 
 public class ItemTable extends JTable {
     public static final String[] USER_TABLE_COL_NAMES      = { "User ID", "Username" };
     public static final String[] PROJECT_TABLE_COL_NAMES   = { "Project ID", "Name", "Description", "Creation Date" };
     public static final String[] REGIONS_TABLE_COL_NAMES   = { "Region ID", "Name", "Description", "Map Image Set?", "Last Updated", "Creation Date" };
-    public static final String[] BEACONS_TABLE_COL_NAMES   = { "Beacon ID", "UUID", "Major", "Minor", "X Coor.", "Y Coor.", "Description", "Scenario ID", "Creation Date" };
+    public static final String[] BEACONS_TABLE_COL_NAMES   = { "Beacon ID", "UUID", "Major", "Minor", "X Coor.", "Y Coor.", "Designated?", "Scenario ID", "Description", "Creation Date" };
     public static final String[] SCENARIO_TABLE_COL_NAMES  = { "Scenario ID", "Name", "Description", "Short Msg.", "Long Msg.", "URL", "Creation Date" };
     public static final String[] API_QUERY_TABLE_COL_NAMES = { "Short Msg.", "Long Msg.", "URL" };
 
+    public ItemTable(TableModel model) {
+        super(model);
+    }
 
-    public ItemTable(String[][] tableData, String[] columnNames) {
-        super(new ItemTableModel(tableData, columnNames));
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return String.class;
     }
 }

@@ -35,6 +35,7 @@ public class CreateBeaconPanel extends JPanel {
     private JTextField descriptionField;
     private JTextField projectIdField;
     private JTextField regionIdField;
+    private JCheckBox  designatedCheckbox;
     private JButton    createButton;
 
     public CreateBeaconPanel(TableResponsePanel tableResponsePanel) {
@@ -52,6 +53,7 @@ public class CreateBeaconPanel extends JPanel {
         descriptionField = new JTextField(10);
         projectIdField = new JTextField(5);
         regionIdField = new JTextField(5);
+        designatedCheckbox = new JCheckBox("Designated?");
         createButton = new JButton("Create");
         createButton.addActionListener(new CreateActionListener(tableResponsePanel));
     }
@@ -86,6 +88,7 @@ public class CreateBeaconPanel extends JPanel {
         JPanel descriptionPanel = new JPanel(new GridBagLayout());
         descriptionPanel.add(new JLabel("Description:"));
         descriptionPanel.add(descriptionField);
+        descriptionPanel.add(designatedCheckbox);
         descriptionPanel.setMinimumSize(descriptionPanel.getPreferredSize());
         this.add(descriptionPanel);
 
@@ -106,7 +109,8 @@ public class CreateBeaconPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             HttpResponse<JsonNode> response = BeaconManager.createBeacon(projectIdField.getText().trim(), regionIdField.getText().trim(), uuidField.getText().trim(),
                                                                          majorField.getText().trim(), minorField.getText().trim(),
-                                                                         descriptionField.getText().trim(), xCoorField.getText().trim(), yCoorField.getText().trim());
+                                                                         descriptionField.getText().trim(), xCoorField.getText().trim(), yCoorField.getText().trim(),
+                                                                         designatedCheckbox.isSelected());
             tableResponsePanel.showResponseCode(response.getStatus());
             String[][] createResponse = null;
             if (response.getStatus() == 201) {
