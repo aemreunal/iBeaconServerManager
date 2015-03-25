@@ -65,7 +65,7 @@ public class ManagerWindow extends JFrame {
         this.mainPanel.add(tabbedPane, BorderLayout.CENTER);
         add(this.mainPanel, BorderLayout.CENTER);
 
-        this.setMinimumSize(this.getPreferredSize());
+        this.setMinimumSize(new Dimension(600, 600));
         setLocationRelativeTo(null);
         this.setVisible(true);
     }
