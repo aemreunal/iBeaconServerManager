@@ -16,6 +16,8 @@ package com.aemreunal.model;
  ***************************
  */
 
+import java.io.File;
+import java.net.URLConnection;
 import org.json.JSONObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -44,6 +46,14 @@ public class BeaconManager extends RestManager {
 
     public static HttpResponse<JsonNode> getBeacon(String beaconId, String projectId, String regionId) {
         HttpRequest request = Unirest.get(beaconUrl(projectId, regionId) + "/" + beaconId)
+                                     .getHttpRequest();
+        return performJsonRequest(request);
+    }
+
+    public static HttpResponse<JsonNode> connectBeacon(String projectId, String beaconOneId, String beaconTwoId, String regionOneId, String regionTwoId, File imageFile) {
+        String imageContentType = URLConnection.guessContentTypeFromName(imageFile.getName());
+        HttpRequest request = Unirest.post(beaconUrl(projectId, regionOneId) + "/" + beaconOneId + "/connect?beacon2id=" + beaconTwoId + "&region2id=" + regionTwoId)
+                                     .field("image", imageFile, imageContentType)
                                      .getHttpRequest();
         return performJsonRequest(request);
     }

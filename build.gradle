@@ -24,10 +24,11 @@ apply plugin: 'com.github.ben-manes.versions' // https://github.com/ben-manes/gr
 sourceCompatibility = 1.8
 version = 'b1.1'
 def manifestVersion = version
-def vendor = 'Ahmet Emre Unal'
+def vendor = 'Ahmet Emre Ünal'
 def mainClass = 'com.aemreunal.iBeaconServerManager'
 
 def unirestVersion = '1.4.5'
+def commonsIoVersion = '2.4'
 def wrapperGradleVersion = '2.3'
 def jsonVersion = '20141113'
 
@@ -39,6 +40,7 @@ repositories {
 dependencies {
     compile group: 'com.mashape.unirest', name: 'unirest-java', version: unirestVersion
     compile group: 'org.json', name: 'json', version: jsonVersion
+    compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
 }
 
 task wrapper(type: Wrapper) {

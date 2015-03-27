@@ -43,6 +43,7 @@ public class BeaconTab extends CommonTab {
     protected void addPanels() {
         addCreateBeaconPanel();
         addGetBeaconPanel();
+        addConnectBeaconPanel();
         addDeleteBeaconPanel();
     }
 
@@ -56,6 +57,12 @@ public class BeaconTab extends CommonTab {
         TableResponsePanel tableResponsePanel = new TableResponsePanel();
         CommonPanel commonPanel = new CommonPanel(new GetBeaconPanel(tableResponsePanel), tableResponsePanel);
         this.tabbedPane.addTab("Get", commonPanel);
+    }
+
+    private void addConnectBeaconPanel() {
+        TableResponsePanel tableResponsePanel = new TableResponsePanel();
+        CommonPanel commonPanel = new CommonPanel(new ConnectBeaconPanel(tableResponsePanel), tableResponsePanel);
+        this.tabbedPane.addTab("Connect", commonPanel);
     }
 
     private void addDeleteBeaconPanel() {
