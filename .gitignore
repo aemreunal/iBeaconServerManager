@@ -3,3 +3,5 @@ gradle/
 .idea/
 .gradle
 build/
+
+src/main/java/com/aemreunal/newUi/
