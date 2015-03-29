@@ -52,7 +52,7 @@ public class BeaconManager extends RestManager {
 
     public static HttpResponse<JsonNode> connectBeacon(String projectId, String beaconOneId, String beaconTwoId, String regionOneId, String regionTwoId, File imageFile) {
         String imageContentType = URLConnection.guessContentTypeFromName(imageFile.getName());
-        HttpRequest request = Unirest.post(beaconUrl(projectId, regionOneId) + "/" + beaconOneId + "/connect?beacon2id=" + beaconTwoId + "&region2id=" + regionTwoId)
+        HttpRequest request = Unirest.post(beaconUrl(projectId, regionOneId) + "/" + beaconOneId + "/connection?beacon2id=" + beaconTwoId + "&region2id=" + regionTwoId)
                                      .field("image", imageFile, imageContentType)
                                      .getHttpRequest();
         return performJsonRequest(request);
