@@ -29,9 +29,10 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 
 public class CreateRegionPanel extends JPanel {
+    private JTextField projectIdField;
     private JTextField nameField;
     private JTextField descriptionField;
-    private JTextField projectIdField;
+    private JTextField displayNameField;
     private JButton    chooseImageButton;
     private JLabel     imageNameLabel;
     private JButton    createButton;
@@ -44,9 +45,10 @@ public class CreateRegionPanel extends JPanel {
     }
 
     private void createComponents(TableResponsePanel tableResponsePanel) {
+        projectIdField = new JTextField(5);
         nameField = new JTextField(10);
         descriptionField = new JTextField(10);
-        projectIdField = new JTextField(5);
+        displayNameField = new JTextField(10);
         chooseImageButton = new JButton("Choose Image");
         chooseImageButton.addActionListener(new ImageActionListener());
         imageNameLabel = new JLabel("<No chosen image>");
@@ -58,6 +60,7 @@ public class CreateRegionPanel extends JPanel {
         JPanel projectIdPanel = new JPanel(new GridBagLayout());
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
+        projectIdPanel.add(createButton);
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
@@ -66,9 +69,14 @@ public class CreateRegionPanel extends JPanel {
         regionInfoPanel.add(nameField);
         regionInfoPanel.add(new JLabel("Description:"));
         regionInfoPanel.add(descriptionField);
-        regionInfoPanel.add(createButton);
         regionInfoPanel.setMinimumSize(regionInfoPanel.getPreferredSize());
         this.add(regionInfoPanel);
+
+        JPanel regionDisplayNamePanel = new JPanel(new GridBagLayout());
+        regionDisplayNamePanel.add(new JLabel("Display Name:"));
+        regionDisplayNamePanel.add(displayNameField);
+        regionDisplayNamePanel.setMinimumSize(regionDisplayNamePanel.getPreferredSize());
+        this.add(regionDisplayNamePanel);
 
         JPanel chooseImagePanel = new JPanel(new GridBagLayout());
         chooseImagePanel.add(chooseImageButton);
@@ -93,6 +101,7 @@ public class CreateRegionPanel extends JPanel {
             HttpResponse<JsonNode> response = RegionManager.createRegion(projectId,
                                                                          nameField.getText().trim(),
                                                                          descriptionField.getText().trim(),
+                                                                         displayNameField.getText().trim(),
                                                                          chosenImage);
             tableResponsePanel.showResponseCode(response.getStatus());
             if (response.getStatus() == 201) {

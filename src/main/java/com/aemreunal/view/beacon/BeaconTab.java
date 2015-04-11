@@ -27,7 +27,6 @@ import com.aemreunal.view.response.table.ItemTable;
 import com.aemreunal.view.response.table.TableResponsePanel;
 
 public class BeaconTab extends CommonTab {
-
     public static final int BEACON_ID     = 0;
     public static final int UUID          = 1;
     public static final int MAJOR         = 2;
@@ -35,13 +34,15 @@ public class BeaconTab extends CommonTab {
     public static final int X_COOR        = 4;
     public static final int Y_COOR        = 5;
     public static final int DESIGNATED    = 6;
-    public static final int SCENARIO      = 7;
-    public static final int DESCRIPTION   = 8;
-    public static final int CREATION_DATE = 9;
+    public static final int HAS_INFO      = 7;
+    public static final int SCENARIO      = 8;
+    public static final int DESCRIPTION   = 9;
+    public static final int DISPLAY_NAME  = 10;
+    public static final int CREATION_DATE = 11;
 
     @Override
     protected void addPanels() {
-        addCreateBeaconPanel();
+//        addCreateBeaconPanel();
         addGetBeaconPanel();
         addConnectBeaconPanel();
         addDeleteBeaconPanel();
@@ -103,7 +104,9 @@ public class BeaconTab extends CommonTab {
         beaconTable[index][X_COOR] = beacon.get("xCoordinate").toString();
         beaconTable[index][Y_COOR] = beacon.get("yCoordinate").toString();
         beaconTable[index][DESIGNATED] = beacon.get("designated").toString();
+        beaconTable[index][HAS_INFO] = beacon.get("hasLocationInfo").toString();
         beaconTable[index][DESCRIPTION] = beacon.get("description").toString();
+        beaconTable[index][DISPLAY_NAME] = beacon.get("displayName").toString();
         beaconTable[index][SCENARIO] = getSubObjectID("scenario", beacon.optJSONObject("scenario"));
         beaconTable[index][CREATION_DATE] = new Date(Long.parseLong(beacon.get("creationDate").toString())).toString();
     }

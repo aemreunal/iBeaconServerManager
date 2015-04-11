@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URLConnection;
 import org.apache.http.entity.ContentType;
+import org.json.JSONObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -27,18 +28,20 @@ import com.mashape.unirest.request.HttpRequest;
 
 public class RegionManager extends RestManager {
 
-    public static HttpResponse<JsonNode> createRegion(String projectId, String name, String description, File imageFile) {
+    public static HttpResponse<JsonNode> createRegion(String projectId, String name, String description, String displayName, File imageFile) {
         String imageContentType = URLConnection.guessContentTypeFromName(imageFile.getName());
-//        String imageContentType = Files.probeContentType(imageFile.toPath());
         HttpRequest request = Unirest.post(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions")
-                                     .field("region", getRegionCreateJson(name, description), ContentType.APPLICATION_JSON.getMimeType())
+                                     .field("region", getRegionCreateJson(name, description, displayName), ContentType.APPLICATION_JSON.getMimeType())
                                      .field("image", imageFile, imageContentType)
                                      .getHttpRequest();
         return performJsonRequest(request);
     }
 
-    private static String getRegionCreateJson(String name, String description) {
-        return "{\"name\":\"" + name + "\",\"description\":\"" + description + "\"}";
+    private static String getRegionCreateJson(String name, String description, String displayName) {
+        return new JSONObject().put("name", name)
+                               .put("description", description)
+                               .put("displayName", displayName)
+                               .toString();
     }
 
     public static HttpResponse<JsonNode> getAllRegions(String name, String projectId) {

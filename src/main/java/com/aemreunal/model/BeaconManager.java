@@ -30,10 +30,10 @@ public class BeaconManager extends RestManager {
         return PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/beacons";
     }
 
-    public static HttpResponse<JsonNode> createBeacon(String projectId, String regionId, String uuid, String major, String minor, String description, String xCoor, String yCoor, boolean isDesignated) {
+    public static HttpResponse<JsonNode> createBeacon(String projectId, String regionId, String uuid, String major, String minor, String description, String displayName, String xCoor, String yCoor, boolean isDesignated) {
         HttpRequest request = Unirest.post(beaconUrl(projectId, regionId))
                                      .header("Content-Type", "application/json")
-                                     .body(getBeaconCreateJson(uuid, major, minor, description, xCoor, yCoor, isDesignated))
+                                     .body(getBeaconCreateJson(uuid, major, minor, description, displayName, xCoor, yCoor, isDesignated))
                                      .getHttpRequest();
         return performJsonRequest(request);
     }
@@ -64,7 +64,7 @@ public class BeaconManager extends RestManager {
         return performJsonRequest(request);
     }
 
-    public static String getBeaconCreateJson(String uuid, String major, String minor, String description, String xCoor, String yCoor, boolean isDesignated) {
+    public static String getBeaconCreateJson(String uuid, String major, String minor, String description, String displayName, String xCoor, String yCoor, boolean isDesignated) {
         return new JSONObject().put("uuid", uuid)
                                .put("major", major)
                                .put("minor", minor)
@@ -72,6 +72,11 @@ public class BeaconManager extends RestManager {
                                .put("yCoordinate", yCoor)
                                .put("designated", isDesignated)
                                .put("description", description)
+                               .put("displayName", displayName)
                                .toString();
+    }
+
+    public static String getBeaconLocationInfoTextJson(String locationInfoText) {
+        return new JSONObject().put("info", locationInfoText).toString();
     }
 }

@@ -20,11 +20,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.aemreunal.model.BeaconManager;
-import com.aemreunal.view.response.table.ItemTable;
 import com.aemreunal.view.response.table.TableResponsePanel;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 
 public class CreateBeaconPanel extends JPanel {
     private JTextField uuidField;
@@ -107,16 +103,16 @@ public class CreateBeaconPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            HttpResponse<JsonNode> response = BeaconManager.createBeacon(projectIdField.getText().trim(), regionIdField.getText().trim(), uuidField.getText().trim(),
-                                                                         majorField.getText().trim(), minorField.getText().trim(),
-                                                                         descriptionField.getText().trim(), xCoorField.getText().trim(), yCoorField.getText().trim(),
-                                                                         designatedCheckbox.isSelected());
-            tableResponsePanel.showResponseCode(response.getStatus());
-            String[][] createResponse = null;
-            if (response.getStatus() == 201) {
-                createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
-            }
-            tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
+//            HttpResponse<JsonNode> response = BeaconManager.createBeacon(projectIdField.getText().trim(), regionIdField.getText().trim(), uuidField.getText().trim(),
+//                                                                         majorField.getText().trim(), minorField.getText().trim(),
+//                                                                         descriptionField.getText().trim(), xCoorField.getText().trim(), yCoorField.getText().trim(),
+//                                                                         designatedCheckbox.isSelected());
+//            tableResponsePanel.showResponseCode(response.getStatus());
+//            String[][] createResponse = null;
+//            if (response.getStatus() == 201) {
+//                createResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
+//            }
+//            tableResponsePanel.showResponseTable(ItemTable.BEACONS_TABLE_COL_NAMES, createResponse);
         }
     }
 }

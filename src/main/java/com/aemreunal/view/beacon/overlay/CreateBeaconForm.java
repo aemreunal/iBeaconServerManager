@@ -40,7 +40,9 @@ public class CreateBeaconForm extends JFrame {
     private JPanel     rootPanel;
     private JLabel     xCoorLabel;
     private JLabel     yCoorLabel;
-    private JCheckBox designatedCheckBox;
+    private JCheckBox  designatedCheckBox;
+    private JTextField displayNameField;
+    private JTextArea  locationInfoField;
 
     public CreateBeaconForm(String projectId, String regionId, int xCoor, int yCoor) {
         super("Beacon at X:" + xCoor + " Y:" + yCoor + " for Region:" + regionId + " in Project:" + projectId);
@@ -73,7 +75,10 @@ public class CreateBeaconForm extends JFrame {
     private void createBeacon() {
         HttpResponse<JsonNode> response = BeaconManager.createBeacon(projectId, regionId, uuidField.getText().trim(),
                                                                      majorField.getText().trim(), minorField.getText().trim(),
-                                                                     descriptionField.getText().trim(), String.valueOf(xCoor), String.valueOf(yCoor), designatedCheckBox.isSelected());
+                                                                     descriptionField.getText().trim(),
+                                                                     displayNameField.getText().trim(),
+                                                                     String.valueOf(xCoor), String.valueOf(yCoor),
+                                                                     designatedCheckBox.isSelected());
         if (response!= null && response.getStatus() == 201) {
             String[][] beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             JOptionPane.showMessageDialog(this, "Beacon has been created with ID:" + beaconResponse[0][BeaconTab.BEACON_ID], "Beacon Created", JOptionPane.INFORMATION_MESSAGE);
@@ -88,6 +93,7 @@ public class CreateBeaconForm extends JFrame {
     private void setWindowAttributes() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setContentPane(rootPanel);
+        setMinimumSize(new Dimension(450, 450));
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
