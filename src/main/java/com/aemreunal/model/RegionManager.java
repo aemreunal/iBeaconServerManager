@@ -54,7 +54,7 @@ public class RegionManager extends RestManager {
     }
 
     public static HttpResponse<JsonNode> getRegionMembers(String regionId, String projectId) {
-        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/members")
+        HttpRequest request = Unirest.get(PrefsManager.getServerAddress() + "/human/" + PrefsManager.getUsername() + "/projects/" + projectId + "/regions/" + regionId + "/beacons")
                                      .getHttpRequest();
         return performJsonRequest(request);
     }
