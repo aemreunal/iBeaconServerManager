@@ -19,13 +19,8 @@ package com.aemreunal.view.prefs;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.HttpRequest;
 
 public class PreferencesTab extends JPanel {
     private JTextField     urlField;
@@ -36,7 +31,7 @@ public class PreferencesTab extends JPanel {
     private JButton        checkCredentialsButton;
 
     public PreferencesTab() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new GridBagLayout());
         createComponents();
         addComponents();
     }
@@ -63,32 +58,32 @@ public class PreferencesTab extends JPanel {
     }
 
     private void addComponents() {
-        JPanel urlPanel = new JPanel(new GridBagLayout());
-        urlPanel.add(new JLabel("Server URL:"));
-        urlPanel.add(urlField);
-        urlPanel.setMaximumSize(urlPanel.getPreferredSize());
-        this.add(urlPanel);
+        addLabelAndComponent(new JLabel("Server URL:"), urlField, 0);
+        addLabelAndComponent(new JLabel("Server port:"), portField, 1);
+        addLabelAndComponent(new JLabel("Username:"), usernameField, 2);
+        addLabelAndComponent(new JLabel("Password:"), passwordField, 3);
+        addLabelAndComponent(null, saveSettingsButton, 4);
+        addLabelAndComponent(null, checkCredentialsButton, 5);
+    }
 
-        JPanel portPanel = new JPanel(new GridBagLayout());
-        portPanel.add(new JLabel("Server port:"));
-        portPanel.add(portField);
-        portPanel.setMaximumSize(portPanel.getPreferredSize());
-        this.add(portPanel);
+    private void addLabelAndComponent(JLabel label, JComponent component, int row) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridy = row;
+        constraints.weighty = 0.0;
 
-        JPanel usernamePanel = new JPanel(new GridBagLayout());
-        usernamePanel.add(new JLabel("Username:"));
-        usernamePanel.add(usernameField);
-        usernamePanel.setMaximumSize(usernamePanel.getPreferredSize());
-        this.add(usernamePanel);
+        if (label != null) {
+            constraints.anchor = GridBagConstraints.LINE_END;
+            constraints.fill = GridBagConstraints.NONE;
+            constraints.gridx = 0;
+            constraints.weightx = 0.0;
+            add(label, constraints);
+        }
 
-        JPanel passwordPanel = new JPanel(new GridBagLayout());
-        passwordPanel.add(new JLabel("Password:"));
-        passwordPanel.add(passwordField);
-        passwordPanel.setMaximumSize(passwordPanel.getPreferredSize());
-        this.add(passwordPanel);
-
-        this.add(saveSettingsButton);
-        this.add(checkCredentialsButton);
+        constraints.anchor = GridBagConstraints.NORTH;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.weightx = 1.0;
+        add(component, constraints);
     }
 
     private class UpdateActionListener implements ActionListener {

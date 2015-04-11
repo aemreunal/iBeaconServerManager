@@ -17,7 +17,6 @@ package com.aemreunal.model;
  */
 
 import java.io.InputStream;
-import java.util.stream.Stream;
 import javax.swing.*;
 import com.aemreunal.iBeaconServerManager;
 import com.mashape.unirest.http.HttpResponse;
@@ -26,7 +25,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 
 public class PrefsManager {
-    public static final String HTTP_PROTOCOL       = "https://";
+    public static final String HTTP_PROTOCOL       = "https";
     public static final String SERVER_URL_KEY      = "ServerAddress";
     public static final String DEFAULT_SERVER_URL  = "localhost";
     public static final String SERVER_PORT_KEY     = "ServerPort";
@@ -37,7 +36,7 @@ public class PrefsManager {
     public static final String DEFAULT_PASSWORD    = "";
 
     public static String getServerAddress() {
-        return HTTP_PROTOCOL + getServerUrl() + ":" + getServerPort();
+        return HTTP_PROTOCOL + "://" + getServerUrl() + ":" + getServerPort();
     }
 
     public static String getServerUrl() {
