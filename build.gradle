@@ -35,10 +35,21 @@ def jsonVersion = '20141113'
 repositories {
     mavenCentral()
     jcenter()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
-    compile group: 'com.mashape.unirest', name: 'unirest-java', version: unirestVersion
+//    compile group: 'com.mashape.unirest', name: 'unirest-java', version: unirestVersion
+
+    // Custom Unirest
+    compile name: 'unirest-java-1.4.6-custom'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.apache.httpcomponents', name: 'httpasyncclient', version: '4.0.2'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.6'
+    compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.6'
+
     compile group: 'org.json', name: 'json', version: jsonVersion
     compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
 }
