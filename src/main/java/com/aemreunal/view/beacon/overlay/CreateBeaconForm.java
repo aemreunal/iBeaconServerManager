@@ -16,6 +16,7 @@ package com.aemreunal.view.beacon.overlay;
  ***************************
  */
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -73,12 +74,25 @@ public class CreateBeaconForm extends JFrame {
     }
 
     private void createBeacon() {
-        HttpResponse<JsonNode> response = BeaconManager.createBeacon(projectId, regionId, uuidField.getText().trim(),
-                                                                     majorField.getText().trim(), minorField.getText().trim(),
-                                                                     descriptionField.getText().trim(),
-                                                                     displayNameField.getText().trim(),
-                                                                     String.valueOf(xCoor), String.valueOf(yCoor),
-                                                                     designatedCheckBox.isSelected());
+        HttpResponse<JsonNode> response;
+
+        if (locationInfoField.getText().trim().isEmpty()) {
+            response = BeaconManager.createBeacon(projectId, regionId, uuidField.getText().trim(),
+                                                  majorField.getText().trim(), minorField.getText().trim(),
+                                                  descriptionField.getText().trim(),
+                                                  displayNameField.getText().trim(),
+                                                  String.valueOf(xCoor), String.valueOf(yCoor),
+                                                  designatedCheckBox.isSelected());
+        } else {
+            response = BeaconManager.createBeacon(projectId, regionId, uuidField.getText().trim(),
+                                                  majorField.getText().trim(), minorField.getText().trim(),
+                                                  descriptionField.getText().trim(),
+                                                  displayNameField.getText().trim(),
+                                                  String.valueOf(xCoor), String.valueOf(yCoor),
+                                                  designatedCheckBox.isSelected(),
+                                                  locationInfoField.getText());
+        }
+
         if (response!= null && response.getStatus() == 201) {
             String[][] beaconResponse = BeaconTab.convertBeaconJsonToTable(response.getBody().getObject());
             JOptionPane.showMessageDialog(this, "Beacon has been created with ID:" + beaconResponse[0][BeaconTab.BEACON_ID], "Beacon Created", JOptionPane.INFORMATION_MESSAGE);

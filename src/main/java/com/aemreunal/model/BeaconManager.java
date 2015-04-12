@@ -17,12 +17,17 @@ package com.aemreunal.model;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import javax.swing.*;
+import org.apache.http.entity.ContentType;
 import org.json.JSONObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.HttpRequest;
+import com.mashape.unirest.request.body.MultipartBody;
 
 public class BeaconManager extends RestManager {
 
@@ -31,11 +36,26 @@ public class BeaconManager extends RestManager {
     }
 
     public static HttpResponse<JsonNode> createBeacon(String projectId, String regionId, String uuid, String major, String minor, String description, String displayName, String xCoor, String yCoor, boolean isDesignated) {
-        HttpRequest request = Unirest.post(beaconUrl(projectId, regionId))
-                                     .header("Content-Type", "application/json")
-                                     .body(getBeaconCreateJson(uuid, major, minor, description, displayName, xCoor, yCoor, isDesignated))
-                                     .getHttpRequest();
+        HttpRequest request = getBeaconCreateBody(projectId, regionId, uuid, major, minor, description, displayName, xCoor, yCoor, isDesignated)
+                .getHttpRequest();
         return performJsonRequest(request);
+    }
+
+    public static HttpResponse<JsonNode> createBeacon(String projectId, String regionId, String uuid, String major, String minor, String description, String displayName, String xCoor, String yCoor, boolean isDesignated, String locationInfoText) {
+        File textFile = getBeaconLocationInfoTextFile(locationInfoText);
+        if (textFile == null) {
+            JOptionPane.showMessageDialog(null, "Error creating text file! The request won't be performed.", "File Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        HttpRequest request = getBeaconCreateBody(projectId, regionId, uuid, major, minor, description, displayName, xCoor, yCoor, isDesignated)
+                .field("info", textFile)
+                .getHttpRequest();
+        return performJsonRequest(request);
+    }
+
+    private static MultipartBody getBeaconCreateBody(String projectId, String regionId, String uuid, String major, String minor, String description, String displayName, String xCoor, String yCoor, boolean isDesignated) {
+        return Unirest.post(beaconUrl(projectId, regionId))
+                      .field("beacon", getBeaconCreateJson(uuid, major, minor, description, displayName, xCoor, yCoor, isDesignated), ContentType.APPLICATION_JSON.getMimeType(), true);
     }
 
     public static HttpResponse<JsonNode> getAllBeacons(String projectId, String regionId, String uuid, String major, String minor) {
@@ -76,7 +96,14 @@ public class BeaconManager extends RestManager {
                                .toString();
     }
 
-    public static String getBeaconLocationInfoTextJson(String locationInfoText) {
-        return new JSONObject().put("info", locationInfoText).toString();
+    public static File getBeaconLocationInfoTextFile(String locationInfoText) {
+        try {
+            File tempFile = File.createTempFile("info", "txt");
+            Files.write(tempFile.toPath(), locationInfoText.getBytes());
+            return tempFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
