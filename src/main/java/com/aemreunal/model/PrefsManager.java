@@ -25,18 +25,24 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 
 public class PrefsManager {
-    public static final String HTTP_PROTOCOL       = "https";
-    public static final String SERVER_URL_KEY      = "ServerAddress";
-    public static final String DEFAULT_SERVER_URL  = "localhost";
-    public static final String SERVER_PORT_KEY     = "ServerPort";
-    public static final String DEFAULT_SERVER_PORT = "8443";
-    public static final String USERNAME_KEY        = "Username";
-    public static final String DEFAULT_USERNAME    = "";
-    public static final String PASSWORD_KEY        = "Password";
-    public static final String DEFAULT_PASSWORD    = "";
+    public static final String HTTP_PROTOCOL_SECURE   = "https://";
+    public static final String HTTP_PROTOCOL_UNSECURE = "http://";
+    public static final String SERVER_URL_KEY         = "ServerAddress";
+    public static final String DEFAULT_SERVER_URL     = "localhost";
+    public static final String SERVER_PORT_KEY        = "ServerPort";
+    public static final String DEFAULT_SERVER_PORT    = "8443";
+    public static final String USERNAME_KEY           = "Username";
+    public static final String DEFAULT_USERNAME       = "";
+    public static final String PASSWORD_KEY           = "Password";
+    public static final String DEFAULT_PASSWORD       = "";
+    public static final String SECURED_KEY            = "Secure";
 
     public static String getServerAddress() {
-        return HTTP_PROTOCOL + "://" + getServerUrl() + ":" + getServerPort();
+        if (getSecured()) {
+            return HTTP_PROTOCOL_SECURE + getServerUrl() + ":" + getServerPort();
+        } else {
+            return HTTP_PROTOCOL_UNSECURE + getServerUrl() + ":" + getServerPort();
+        }
     }
 
     public static String getServerUrl() {
@@ -105,6 +111,14 @@ public class PrefsManager {
         for (int i = 0; i < password.length; i++) {
             password[i] = 0;
         }
+    }
+
+    public static void setSecured(boolean secured) {
+        iBeaconServerManager.getPreferences().put(SECURED_KEY, String.valueOf(secured));
+    }
+
+    public static boolean getSecured() {
+        return iBeaconServerManager.getPreferences().getBoolean(SECURED_KEY, true);
     }
 
     public static void testCredentials() {

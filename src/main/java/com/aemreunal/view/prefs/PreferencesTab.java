@@ -23,6 +23,7 @@ import javax.swing.*;
 import com.aemreunal.model.PrefsManager;
 
 public class PreferencesTab extends JPanel {
+    private JCheckBox      securedCheckBox;
     private JTextField     urlField;
     private JTextField     portField;
     private JTextField     usernameField;
@@ -37,6 +38,7 @@ public class PreferencesTab extends JPanel {
     }
 
     private void createComponents() {
+        securedCheckBox = new JCheckBox("Use HTTPS");
         urlField = new JTextField(17);
         portField = new JTextField(17);
         usernameField = new JTextField(17);
@@ -51,6 +53,7 @@ public class PreferencesTab extends JPanel {
     }
 
     private void refreshTextFields() {
+        securedCheckBox.setSelected(PrefsManager.getSecured());
         urlField.setText(PrefsManager.getServerUrl());
         portField.setText(PrefsManager.getServerPort());
         usernameField.setText(PrefsManager.getUsername());
@@ -58,12 +61,13 @@ public class PreferencesTab extends JPanel {
     }
 
     private void addComponents() {
-        addLabelAndComponent(new JLabel("Server URL:"), urlField, 0);
-        addLabelAndComponent(new JLabel("Server port:"), portField, 1);
-        addLabelAndComponent(new JLabel("Username:"), usernameField, 2);
-        addLabelAndComponent(new JLabel("Password:"), passwordField, 3);
-        addLabelAndComponent(null, saveSettingsButton, 4);
-        addLabelAndComponent(null, checkCredentialsButton, 5);
+        addLabelAndComponent(null, securedCheckBox, 0);
+        addLabelAndComponent(new JLabel("Server URL:"), urlField, 1);
+        addLabelAndComponent(new JLabel("Server port:"), portField, 2);
+        addLabelAndComponent(new JLabel("Username:"), usernameField, 3);
+        addLabelAndComponent(new JLabel("Password:"), passwordField, 4);
+        addLabelAndComponent(null, saveSettingsButton, 5);
+        addLabelAndComponent(null, checkCredentialsButton, 6);
     }
 
     private void addLabelAndComponent(JLabel label, JComponent component, int row) {
@@ -97,6 +101,7 @@ public class PreferencesTab extends JPanel {
     }
 
     private void saveSettings() {
+        PrefsManager.setSecured(securedCheckBox.isSelected());
         PrefsManager.setServerUrl(urlField.getText());
         PrefsManager.setServerPort(portField.getText());
         PrefsManager.setUsername(usernameField.getText());
