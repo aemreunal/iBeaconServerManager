@@ -35,7 +35,8 @@ public class ConnectBeaconPanel extends JPanel {
     private JTextField projectIdField;
     private JButton    chooseImageButton;
     private JLabel     imageNameLabel;
-    private JButton    createButton;
+    private JButton    connectButton;
+    private JButton    disconnectButton;
     private File chosenImage = null;
 
     public ConnectBeaconPanel(TableResponsePanel tableResponsePanel) {
@@ -53,15 +54,18 @@ public class ConnectBeaconPanel extends JPanel {
         chooseImageButton = new JButton("Choose Image");
         chooseImageButton.addActionListener(new ImageActionListener());
         imageNameLabel = new JLabel("<No chosen image>");
-        createButton = new JButton("Create");
-        createButton.addActionListener(new CreateActionListener(tableResponsePanel));
+        connectButton = new JButton("Connect");
+        connectButton.addActionListener(new ConnectionListener(tableResponsePanel));
+        disconnectButton = new JButton("Disconnect");
+        disconnectButton.addActionListener(new ConnectionListener(tableResponsePanel));
     }
 
     private void addComponents() {
         JPanel projectIdPanel = new JPanel(new GridBagLayout());
         projectIdPanel.add(new JLabel("Project ID:"));
         projectIdPanel.add(projectIdField);
-        projectIdPanel.add(createButton);
+        projectIdPanel.add(connectButton);
+        projectIdPanel.add(disconnectButton);
         projectIdPanel.setMinimumSize(projectIdPanel.getPreferredSize());
         this.add(projectIdPanel);
 
@@ -88,35 +92,56 @@ public class ConnectBeaconPanel extends JPanel {
         this.add(chooseImagePanel);
     }
 
-    private class CreateActionListener implements ActionListener {
+    private class ConnectionListener implements ActionListener {
         private final TableResponsePanel tableResponsePanel;
 
-        public CreateActionListener(TableResponsePanel tableResponsePanel) {
+        public ConnectionListener(TableResponsePanel tableResponsePanel) {
             this.tableResponsePanel = tableResponsePanel;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             String projectId = projectIdField.getText().trim();
-            if (projectId.isEmpty() || chosenImage == null) {
+            if (projectId.isEmpty()) {
                 return;
             }
             String beaconOneId = beaconOneIdField.getText().trim();
             String beaconTwoId = beaconTwoIdField.getText().trim();
             String regionOneId = regionOneIdField.getText().trim();
             String regionTwoId = regionTwoIdField.getText().trim();
-            HttpResponse<JsonNode> response = BeaconManager.connectBeacon(projectId,
-                                                                          beaconOneId,
-                                                                          beaconTwoId,
-                                                                          regionOneId,
-                                                                          regionTwoId,
-                                                                          chosenImage);
+
+            HttpResponse<JsonNode> response = null;
+            if (e.getSource().equals(connectButton)) {
+                if (chosenImage == null) {
+                    return;
+                }
+                response = BeaconManager.connectBeacon(projectId,
+                                                       beaconOneId,
+                                                       beaconTwoId,
+                                                       regionOneId,
+                                                       regionTwoId,
+                                                       chosenImage);
+            } else if (e.getSource().equals(disconnectButton)) {
+                response = BeaconManager.disconnectBeacon(projectId,
+                                                          beaconOneId,
+                                                          beaconTwoId,
+                                                          regionOneId,
+                                                          regionTwoId);
+            }
+            if (response == null) {
+                return;
+            }
             tableResponsePanel.showResponseCode(response.getStatus());
             if (response.getStatus() == 201) {
-                // Normal response
+                // Connect response
                 JOptionPane.showMessageDialog(tableResponsePanel, "Beacon " + beaconOneId + " in region "
                         + regionOneId + " is now connected to beacon " + beaconTwoId + " in region "
                         + regionTwoId + ".", "Connected", JOptionPane.INFORMATION_MESSAGE);
+            } else if (response.getStatus() == 200) {
+                // Disconnect response
+                JOptionPane.showMessageDialog(tableResponsePanel, "Beacon " + beaconOneId + " in region "
+                        + regionOneId + " has been disconnected from beacon " + beaconTwoId + " in region "
+                        + regionTwoId + ".", "Disconnected", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

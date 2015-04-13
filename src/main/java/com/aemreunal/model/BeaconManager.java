@@ -78,6 +78,12 @@ public class BeaconManager extends RestManager {
         return performJsonRequest(request);
     }
 
+    public static HttpResponse<JsonNode> disconnectBeacon(String projectId, String beaconOneId, String beaconTwoId, String regionOneId, String regionTwoId) {
+        HttpRequest request = Unirest.delete(beaconUrl(projectId, regionOneId) + "/" + beaconOneId + "/connection?beacon2id=" + beaconTwoId + "&region2id=" + regionTwoId)
+                                     .getHttpRequest();
+        return performJsonRequest(request);
+    }
+
     public static HttpResponse<JsonNode> deleteBeacon(String beaconId, String projectId, String regionId) {
         HttpRequest request = Unirest.delete(beaconUrl(projectId, regionId) + "/" + beaconId + "?confirm=yes")
                                      .getHttpRequest();
